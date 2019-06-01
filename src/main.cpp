@@ -33,7 +33,6 @@ void setup() {
 
 void loop() {
     if(millis() - lastCall >= CALL_INTERVAL) {
-        Serial.println("Move");
         
         boberto.forward(3000);
         
