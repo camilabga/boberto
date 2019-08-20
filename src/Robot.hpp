@@ -8,7 +8,7 @@ class Motor {
         int encoderPin;
         int pin1, pin2;
 
-        volatile long int cont;
+        volatile long unsigned int cont;
         int goal;
 
         int side;
@@ -33,6 +33,7 @@ class Robot {
         
         Robot();
 
+        void stop();
         void forward(long int goal); 
         void backward(long int goal);
         void sidewaysRight(long int goal);

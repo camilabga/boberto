@@ -15,7 +15,7 @@ void Motor::setupInterruptHandler(void (*ISR)(void), int value) {
 void Motor::handleInterrupt(void) {
     this->cont += this->side;
 
-    if (this->cont == -this->goal) {
+    if (this->cont == this->goal) {
         this->cont = 0;
         this->stop();
     }
@@ -39,25 +39,25 @@ void Motor::forward(long int _goal) {
     digitalWrite(this->pin1, HIGH);
     digitalWrite(this->pin2, LOW);
 
-    Serial.println("Starting forward");
+    //Serial.println("Starting forward");
 }
 
 void Motor::backward(long int _goal) {
-    this->side = -1;
+    this->side = 1;
     this->cont = 0;
     this->goal = _goal;
 
     digitalWrite(this->pin1, LOW);
     digitalWrite(this->pin2, HIGH);
 
-    Serial.println("Starting backward");
+    //Serial.println("Starting backward");
 }
 
 void Motor::stop() {
     digitalWrite(this->pin1, LOW);
     digitalWrite(this->pin2, LOW);
 
-    Serial.println("Stopping");
+    //Serial.println("Stopping");
 }
 
 Robot::Robot() {
@@ -98,15 +98,15 @@ void Robot::sidewaysLeft(long int goal) {
 
 void Robot::rotateLeft(long int goal) {
     this->frontLeft.backward(goal);
-    this->frontRight.backward(goal);
-    this->backLeft.forward(goal);
-    this->backRight.forward(goal);
+    this->frontRight.forward(goal);
+    this->backLeft.backward(goal);
+    this->backRight.forward(goal);  
 }
 
 void Robot::rotateRight(long int goal) {
     this->frontLeft.forward(goal);
-    this->frontRight.forward(goal);
-    this->backLeft.backward(goal);
+    this->frontRight.backward(goal);
+    this->backLeft.forward(goal);
     this->backRight.backward(goal);
 }
 
@@ -136,6 +136,13 @@ void Robot::moveLeftBackward(long int goal) {
     this->frontRight.stop();
     this->backLeft.stop();
     this->backRight.backward(goal);
+}
+
+void Robot::stop() {
+    this->frontLeft.stop();
+    this->frontRight.stop();
+    this->backLeft.stop();
+    this->backRight.stop();
 }
 
 Robot::~Robot() {}
