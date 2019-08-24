@@ -2,84 +2,51 @@
 #define ROBOT_HPP
 
 #include "Arduino.h"
+#include "Motor.hpp"
 #include "Sensor.hpp"
 
-class Motor {
- public:
-  int encoderPin;
-  int pin1, pin2;
-
-  volatile long unsigned int cont;
-  int goal;
-
-  int side;
-
-  Motor();
-  ~Motor();
-
-  void setupInterruptHandler(void (*ISR)(void), int value);
-  void handleInterrupt(void);
-
-  void setPins(int _encoderPin, int _pin1, int _pin2);
-
-  void forward(long int _goal);
-  void forward();
-  void forward(uint8_t vel);
-  void backward(long int _goal);
-  void backward();
-  void backward(uint8_t vel);
-  void stop();
-};
-
 class Robot {
- public:
-  Motor frontLeft, frontRight, backLeft, backRight;
-  Sensor sensorFL, sensorFR, sensorBL, sensorBR;
+   private:
+    Motor frontLeft{0}, frontRight{1}, backLeft{2}, backRight{3};
+    Sensor sensorFL, sensorFR, sensorBL, sensorBR;
 
-  Robot();
+   public:
+    Robot();
+    ~Robot();
 
-  void stop();
-  void forward(long int goal);
-  void forward(uint8_t vel);
-  void forward();
+    void stop();
+    void forward(unsigned long int goal);
+    // void forward(unsigned char vel);
+    void forward();
 
-  void backward(long int goal);
-  void backward(uint8_t vel);
-  void backward();
+    void backward(unsigned long int goal);
+    // void backward(unsigned char vel);
+    void backward();
 
-  void sidewaysRight(long int goal);
-  void sidewaysRight(uint8_t vel);
-  void sidewaysRight();
+    void sidewaysRight(unsigned long int goal);
+    // void sidewaysRight(unsigned char vel);
+    void sidewaysRight();
 
-  void sidewaysLeft(long int goal);
-  void sidewaysLeft(uint8_t vel);
-  void sidewaysLeft();
+    void sidewaysLeft(unsigned long int goal);
+    // void sidewaysLeft(unsigned char vel);
+    void sidewaysLeft();
 
-  void rotateLeft(long int goal);
-  void rotateLeft(uint8_t vel);
-  void rotateLeft();
+    void rotateLeft(unsigned long int goal);
+    // void rotateLeft(unsigned char vel);
+    void rotateLeft();
 
-  void rotateRight(long int goal);
-  void rotateRight(uint8_t vel);
-  void rotateRight();
+    void rotateRight(unsigned long int goal);
+    // void rotateRight(unsigned char vel);
+    void rotateRight();
+    void followLine();
 
-  void moveRightForward(long int goal);
-  void moveRightBackward(long int goal);
-  void moveLeftForward(long int goal);
-  void moveLeftBackward(long int goal);
+    void moveRightForward(unsigned long int goal);
+    void moveRightBackward(unsigned long int goal);
+    void moveLeftForward(unsigned long int goal);
+    void moveLeftBackward(unsigned long int goal);
 
-  /*
-  void rotateLeft();
-  void rotateRight();
-  void moveRightForward();
-  void moveRightBackward();
-  void moveLeftForward();
-  void moveLeftBackward();*/
-
-  void findBlackLine();
-  void alignBetweenContainers();
-
-  ~Robot();
+    void findBlackLine();
+    void alignBetweenContainers();
 };
 
 #endif  // ROBOT_HPP

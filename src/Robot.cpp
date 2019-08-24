@@ -1,299 +1,231 @@
 #include "Robot.hpp"
 
-Motor::Motor() {}
-
-Motor::~Motor() {}
-
-void Motor::setupInterruptHandler(void (*ISR)(void), int value) {
-  attachInterrupt(digitalPinToInterrupt(this->encoderPin), ISR, value);
-}
-
-void Motor::handleInterrupt(void) {
-  this->cont += this->side;
-
-  if (this->cont == this->goal) {
-    this->cont = 0;
-    this->stop();
-  }
-}
-
-void Motor::setPins(int _encoderPin, int _pin1, int _pin2) {
-  this->encoderPin = _encoderPin;
-  this->pin1 = _pin1;
-  this->pin2 = _pin2;
-
-  pinMode(this->encoderPin, INPUT_PULLUP);
-  pinMode(this->pin1, OUTPUT);
-  pinMode(this->pin2, OUTPUT);
-}
-
-void Motor::forward(long int _goal) {
-  this->side = 1;
-  this->cont = 0;
-  this->goal = _goal;
-
-  digitalWrite(this->pin1, HIGH);
-  digitalWrite(this->pin2, LOW);
-
-  // Serial.println("Starting forward");
-}
-
-/* Interrupts are meanless here*/
-void Motor::forward() {
-  digitalWrite(this->pin1, HIGH);
-  digitalWrite(this->pin2, LOW);
-
-  // Serial.println("Starting forward");
-}
-
-/* Interrupts are meanless here*/
-void Motor::forward(uint8_t vel) {
-  analogWrite(this->pin1, vel);
-  analogWrite(this->pin2, vel);
-
-  // Serial.println("Starting forward");
-}
-
-void Motor::backward(long int _goal) {
-  this->side = 1;
-  this->cont = 0;
-  this->goal = _goal;
-
-  digitalWrite(this->pin1, LOW);
-  digitalWrite(this->pin2, HIGH);
-
-  // Serial.println("Starting backward");
-}
-
-/* Interrupts are meanless here*/
-void Motor::backward() {
-  digitalWrite(this->pin1, LOW);
-  digitalWrite(this->pin2, HIGH);
-
-  // Serial.println("Starting forward");
-}
-
-/* Interrupts are meanless here*/
-void Motor::backward(uint8_t vel) {
-  analogWrite(this->pin1, vel);
-  analogWrite(this->pin2, vel);
-
-  // Serial.println("Starting forward");
-}
-
-void Motor::stop() {
-  digitalWrite(this->pin1, LOW);
-  digitalWrite(this->pin2, LOW);
-
-  // Serial.println("Stopping");
-}
-
-/*
-*********************CLASSE ROBOT*********************
-*/
-
 Robot::Robot() {
-  // Inicia os pinos dos motores
-  this->frontLeft.setPins(2, 5, 4);
-  this->frontRight.setPins(3, 6, 7);
-  this->backLeft.setPins(18, 8, 9);
-  this->backRight.setPins(19, 10, 11);
-  this->sensorFL.setPin(13);
-  this->sensorFR.setPin(12);
-  this->sensorBL.setPin(24);
-  this->sensorBR.setPin(22);
+    // Inicia os pinos dos motores
+    frontLeft.setPins(2, 5, 4);
+    frontRight.setPins(3, 6, 7);
+    backLeft.setPins(18, 8, 9);
+    backRight.setPins(19, 10, 11);
+
+    frontLeft.begin();
+    frontRight.begin();
+    backLeft.begin();
+    backRight.begin();
+
+    sensorFL.setPin(13);
+    sensorFR.setPin(12);
+    sensorBL.setPin(22);
+    sensorBR.setPin(24);
 }
 
-void Robot::forward(long int goal) {
-  this->frontLeft.forward(goal);
-  this->frontRight.forward(goal);
-  this->backLeft.forward(goal);
-  this->backRight.forward(goal);
+void Robot::forward(unsigned long int goal) {
+    frontLeft.forward(goal);
+    frontRight.forward(goal);
+    backLeft.forward(goal);
+    backRight.forward(goal);
 }
 
-/* Interrupts are meanless here*/
+/*Interrupts are meanless here*/
 void Robot::forward() {
-  this->frontLeft.forward();
-  this->frontRight.forward();
-  this->backLeft.forward();
-  this->backRight.forward();
+    frontLeft.forward();
+    frontRight.forward();
+    backLeft.forward();
+    backRight.forward();
 }
 
-/* Interrupts are meanless here*/
-void Robot::forward(uint8_t vel) {
-  this->frontLeft.forward(vel);
-  this->frontRight.forward(vel);
-  this->backLeft.forward(vel);
-  this->backRight.forward(vel);
-}
+/* Interrupts are meanless here
+void Robot::forward(unsigned char vel) {
+    frontLeft.forward(vel);
+    frontRight.forward(vel);
+    backLeft.forward(vel);
+    backRight.forward(vel);
+}*/
 
-void Robot::backward(long int goal) {
-  this->frontLeft.backward(goal);
-  this->frontRight.backward(goal);
-  this->backLeft.backward(goal);
-  this->backRight.backward(goal);
+void Robot::backward(unsigned long int goal) {
+    frontLeft.backward(goal);
+    frontRight.backward(goal);
+    backLeft.backward(goal);
+    backRight.backward(goal);
 }
 
 /* Interrupts are meanless here*/
 void Robot::backward() {
-  this->frontLeft.backward();
-  this->frontRight.backward();
-  this->backLeft.backward();
-  this->backRight.backward();
+    frontLeft.backward();
+    frontRight.backward();
+    backLeft.backward();
+    backRight.backward();
 }
+/*
+void Robot::backward(unsigned char vel) {
+    frontLeft.backward(vel);
+    frontRight.backward(vel);
+    backLeft.backward(vel);
+    backRight.backward(vel);
+}*/
 
-void Robot::backward(uint8_t vel) {
-  this->frontLeft.backward(vel);
-  this->frontRight.backward(vel);
-  this->backLeft.backward(vel);
-  this->backRight.backward(vel);
-}
-
-void Robot::sidewaysLeft(long int goal) {
-  this->frontLeft.forward(goal);
-  this->frontRight.backward(goal);
-  this->backLeft.backward(goal);
-  this->backRight.forward(goal);
-}
-void Robot::sidewaysLeft(uint8_t vel) {
-  this->frontLeft.forward(vel);
-  this->frontRight.backward(vel);
-  this->backLeft.backward(vel);
-  this->backRight.forward(vel);
-}
+void Robot::sidewaysLeft(unsigned long int goal) {
+    frontLeft.forward(goal);
+    frontRight.backward(goal);
+    backLeft.backward(goal);
+    backRight.forward(goal);
+} /*
+ void Robot::sidewaysLeft(unsigned char vel) {
+     frontLeft.forward(vel);
+     frontRight.backward(vel);
+     backLeft.backward(vel);
+     backRight.forward(vel);
+ }*/
 void Robot::sidewaysLeft() {
-  this->frontLeft.forward();
-  this->frontRight.backward();
-  this->backLeft.backward();
-  this->backRight.forward();
+    frontLeft.forward();
+    frontRight.backward();
+    backLeft.backward();
+    backRight.forward();
 }
 
-void Robot::sidewaysRight(long int goal) {
-  this->frontLeft.backward(goal);
-  this->frontRight.forward(goal);
-  this->backLeft.forward(goal);
-  this->backRight.backward(goal);
+void Robot::sidewaysRight(unsigned long int goal) {
+    frontLeft.backward(goal);
+    frontRight.forward(goal);
+    backLeft.forward(goal);
+    backRight.backward(goal);
 }
 void Robot::sidewaysRight() {
-  this->frontLeft.backward();
-  this->frontRight.forward();
-  this->backLeft.forward();
-  this->backRight.backward();
+    frontLeft.backward();
+    frontRight.forward();
+    backLeft.forward();
+    backRight.backward();
 }
-
-void Robot::sidewaysRight(uint8_t vel) {
-  this->frontLeft.backward(vel);
-  this->frontRight.forward(vel);
-  this->backLeft.forward(vel);
-  this->backRight.backward(vel);
+/*
+void Robot::sidewaysRight(unsigned char vel) {
+    frontLeft.backward(vel);
+    frontRight.forward(vel);
+    backLeft.forward(vel);
+    backRight.backward(vel);
 }
-
-void Robot::rotateLeft(long int goal) {
-  this->frontLeft.backward(goal);
-  this->frontRight.forward(goal);
-  this->backLeft.backward(goal);
-  this->backRight.forward(goal);
+*/
+void Robot::rotateLeft(unsigned long int goal) {
+    frontLeft.backward(goal);
+    frontRight.forward(goal);
+    backLeft.backward(goal);
+    backRight.forward(goal);
 }
-
-void Robot::rotateLeft(uint8_t vel) {
-  this->frontLeft.backward(vel);
-  this->frontRight.forward(vel);
-  this->backLeft.backward(vel);
-  this->backRight.forward(vel);
+/*
+void Robot::rotateLeft(unsigned char vel) {
+    frontLeft.backward(vel);
+    frontRight.forward(vel);
+    backLeft.backward(vel);
+    backRight.forward(vel);
 }
+*/
 void Robot::rotateLeft() {
-  this->frontLeft.backward();
-  this->frontRight.forward();
-  this->backLeft.backward();
-  this->backRight.forward();
+    frontLeft.backward();
+    frontRight.forward();
+    backLeft.backward();
+    backRight.forward();
 }
 
-void Robot::rotateRight(long int goal) {
-  this->frontLeft.forward(goal);
-  this->frontRight.backward(goal);
-  this->backLeft.forward(goal);
-  this->backRight.backward(goal);
+void Robot::rotateRight(unsigned long int goal) {
+    frontLeft.forward(goal);
+    frontRight.backward(goal);
+    backLeft.forward(goal);
+    backRight.backward(goal);
 }
-
-void Robot::rotateRight(uint8_t vel) {
-  this->frontLeft.forward(vel);
-  this->frontRight.backward(vel);
-  this->backLeft.forward(vel);
-  this->backRight.backward(vel);
+/*
+void Robot::rotateRight(unsigned char vel) {
+    frontLeft.forward(vel);
+    frontRight.backward(vel);
+    backLeft.forward(vel);
+    backRight.backward(vel);
 }
+*/
 void Robot::rotateRight() {
-  this->frontLeft.forward();
-  this->frontRight.backward();
-  this->backLeft.forward();
-  this->backRight.backward();
+    frontLeft.forward();
+    frontRight.backward();
+    backLeft.forward();
+    backRight.backward();
 }
 
-void Robot::moveRightForward(long int goal) {
-  this->frontLeft.forward(goal);
-  this->frontRight.stop();
-  this->backLeft.stop();
-  this->backRight.forward(goal);
+void Robot::moveRightForward(unsigned long int goal) {
+    frontLeft.forward(goal);
+    frontRight.stop();
+    backLeft.stop();
+    backRight.forward(goal);
 }
 
-void Robot::moveRightBackward(long int goal) {
-  this->frontLeft.stop();
-  this->frontRight.backward(goal);
-  this->backLeft.backward(goal);
-  this->backRight.stop();
+void Robot::moveRightBackward(unsigned long int goal) {
+    frontLeft.stop();
+    frontRight.backward(goal);
+    backLeft.backward(goal);
+    backRight.stop();
 }
 
-void Robot::moveLeftForward(long int goal) {
-  this->frontLeft.stop();
-  this->frontRight.forward(goal);
-  this->backLeft.forward(goal);
-  this->backRight.stop();
+void Robot::moveLeftForward(unsigned long int goal) {
+    frontLeft.stop();
+    frontRight.forward(goal);
+    backLeft.forward(goal);
+    backRight.stop();
 }
 
-void Robot::moveLeftBackward(long int goal) {
-  this->frontLeft.backward(goal);
-  this->frontRight.stop();
-  this->backLeft.stop();
-  this->backRight.backward(goal);
+void Robot::moveLeftBackward(unsigned long int goal) {
+    frontLeft.backward(goal);
+    frontRight.stop();
+    backLeft.stop();
+    backRight.backward(goal);
 }
 
 void Robot::stop() {
-  this->frontLeft.stop();
-  this->frontRight.stop();
-  this->backLeft.stop();
-  this->backRight.stop();
+    frontLeft.stop();
+    frontRight.stop();
+    backLeft.stop();
+    backRight.stop();
 }
 
 void Robot::findBlackLine() {
-  this->forward();
-  while (!sensorFL.getValue() || !sensorFR.getValue()) {
-    delay(1);
-  }
-  while (sensorFL.getValue() && sensorFR.getValue()) {
-    delay(1);
-  }
+    forward();
+    while (!sensorFL.getValue() || !sensorFR.getValue()) {
+        delay(1);
+    }
+    while (sensorFL.getValue() && sensorFR.getValue()) {
+        delay(1);
+    }
+    delay(200);
+    stop();
+}
 
-  this->stop();
+void Robot::followLine() {
+    double start = millis();
+    while (millis() - start < 2370) {
+        Serial.print("TIME: ");
+        Serial.println(millis() - start);
+        if (sensorFL.getValue()) {
+            rotateLeft();
+        } else if (sensorFR.getValue()) {
+            rotateRight();
+        } else {
+            forward();
+        }
+    }
 }
 void Robot::alignBetweenContainers() {
-  this->sidewaysRight();
-  while (!sensorFR.getValue()) {
-    delay(1);
-  }
-  while (sensorFR.getValue()) {
-    delay(1);
-  }
+    Serial.println("Sideways");
+    sidewaysRight();
+    while (!sensorFR.getValue()) {
+        delay(1);
+    }
+    while (sensorFR.getValue()) {
+        delay(1);
+    }
+    // stop();
+    followLine();
+    /*
+    sidewaysLeft();
+    while (!sensorFR.getValue() || !sensorBR.getValue()) {
+        Serial.print(sensorFL.getValue());
+        Serial.println(sensorFL.getValue());
+    }*/
 
-  while (!sensorBL.getValue() || !sensorBR.getValue()) {
-    this->forward();
-    Serial.println(sensorFL.getValue());
-  }
-  while (sensorBL.getValue() && sensorBR.getValue()) {
-    delay(1);
-  }
+    stop();
 
-  this->stop();
-
-  delay(5765765);
+    delay(5765765);
 }
 
 Robot::~Robot() {}
