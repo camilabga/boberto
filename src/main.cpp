@@ -1,7 +1,9 @@
 #include "Robot.hpp"
+#include "Claw.hpp"
 #define CALL_INTERVAL 4000
 
 Robot boberto;
+Claw claw(26, 27, 28, 29);
 unsigned long int lastCall = 0;
 
 void setup() {
@@ -11,6 +13,8 @@ void setup() {
 }
 
 void loop() {
-    boberto.findBlackLine();
-    boberto.alignBetweenContainers();
+    claw.goUp();
+    delay(1000);
+    claw.goHome();
+    delay(1000);
 }
