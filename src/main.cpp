@@ -24,5 +24,5 @@ void loop() {
     Serial.print("  ");
     Serial.println(lidar.getDistance());
 
-    delay(1000);
+    delay(1300);
 }
