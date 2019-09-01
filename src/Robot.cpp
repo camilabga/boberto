@@ -18,11 +18,21 @@ Robot::Robot() {
     sensorBR.setPin(24);
 }
 
+Robot::~Robot() {}
+
 void Robot::forward(unsigned long int goal) {
     frontLeft.forward(goal);
     frontRight.forward(goal);
     backLeft.forward(goal);
     backRight.forward(goal);
+}
+
+void Robot::begin() {
+    lidar.begin();
+
+    // Seta a posição inicial da garra
+    claw.goHome();
+    claw.goToContainer(5.5);
 }
 
 /*Interrupts are meanless here*/
@@ -179,6 +189,21 @@ void Robot::stop() {
     backRight.stop();
 }
 
+// Movimentação da garra
+void Robot::catchContainer(uint8_t container) {
+    claw.extend();
+    claw.goToContainer(container);
+    claw.goToContainer(container + 0.5);
+    claw.ajustContainer();
+    claw.goToContainer(5.5);
+}
+
+void Robot::releaseContainer(uint8_t container) {
+    claw.goToContainer(container);
+    claw.retract();
+    claw.goToContainer(5.5);
+}
+
 void Robot::findBlackLine() {
     forward();
     while (!sensorFL.getValue() || !sensorFR.getValue()) {
@@ -191,41 +216,40 @@ void Robot::findBlackLine() {
     stop();
 }
 
-void Robot::followLine() {
-    double start = millis();
-    while (millis() - start < 2370) {
-        Serial.print("TIME: ");
-        Serial.println(millis() - start);
-        if (sensorFL.getValue()) {
+void Robot::followLineUntilGap() {
+    Serial.println("Entrei");
+
+    while (lidar.getContainerGap()) {
+        if (sensorFL.getValue())
             rotateLeft();
-        } else if (sensorFR.getValue()) {
+        else if (sensorFR.getValue())
             rotateRight();
-        } else {
+        else
             forward();
-        }
+
+        Serial.println(lidar.getDistance());
     }
+    Serial.println("Entrei");
+    while (!lidar.getContainerGap()) {
+        if (sensorFL.getValue())
+            rotateLeft();
+        else if (sensorFR.getValue())
+            rotateRight();
+        else
+            forward();
+        Serial.println(lidar.getDistance());
+    }
+
+    stop();
 }
+
 void Robot::alignBetweenContainers() {
     Serial.println("Sideways");
     sidewaysRight();
-    while (!sensorFR.getValue()) {
-        delay(1);
-    }
-    while (sensorFR.getValue()) {
-        delay(1);
-    }
-    // stop();
-    followLine();
-    /*
-    sidewaysLeft();
-    while (!sensorFR.getValue() || !sensorBR.getValue()) {
-        Serial.print(sensorFL.getValue());
-        Serial.println(sensorFL.getValue());
-    }*/
+
+    while (!sensorFR.getValue()) delay(1);
+
+    while (sensorFR.getValue()) delay(1);
 
     stop();
-
-    delay(5765765);
 }
-
-Robot::~Robot() {}

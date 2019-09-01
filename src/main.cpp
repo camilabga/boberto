@@ -1,28 +1,40 @@
 #include <Wire.h>
-#include "Robot.hpp"
 #include "Claw.hpp"
 #include "DistanceSensor.hpp"
+#include "Robot.hpp"
 #define CALL_INTERVAL 4000
 
 Robot boberto;
-Claw claw(26, 27, 28, 29);
-DistanceSensor lidar;
-
 unsigned long int lastCall = 0;
 
 void setup() {
     Wire.begin();
     Serial.begin(9600);
-    lidar.begin();
+    boberto.begin();
 
     Serial.println(":: Ready ::");
+
+    boberto.catchContainer(1);
+
 }
 
 void loop() {
-    Serial.print("Container gap? ");
-    Serial.print(lidar.getContainerGap());
-    Serial.print("  ");
-    Serial.println(lidar.getDistance());
+    /*
+    boberto.findBlackLine();
+    boberto.alignBetweenContainers();
+    boberto.followLineUntilGap();
 
-    delay(1300);
+    boberto.catchContainer(4);
+
+    boberto.backward();
+    delay(5000);
+    boberto.stop();
+    boberto.sidewaysLeft();
+    delay(2000);
+    boberto.stop();
+
+    boberto.releaseContainer(1);
+
+    delay(666666);
+    */
 }
