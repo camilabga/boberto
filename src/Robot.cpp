@@ -33,6 +33,11 @@ void Robot::begin() {
     // Seta a posição inicial da garra
     claw.goHome();
     claw.goToContainer(5.5);
+
+    // Calibra o sensor de cor
+    colorSensor.init();
+    colorSensor.ledOn(); 
+    colorSensor.calibrate();
 }
 
 /*Interrupts are meanless here*/
@@ -254,6 +259,11 @@ void Robot::alignBetweenContainers() {
     stop();
 }
 
+void Robot::calibrateColorSensor() {
+    colorSensor.ledOn(); 
+    colorSensor.calibrate();
+}
+
 void Robot::testMoviments() {
     forward(3000);
     delay(1000);
@@ -270,4 +280,25 @@ void Robot::testClaw() {
     delay(1000);
     releaseContainer(0);
     delay(1000);
+}
+
+void Robot::testColorSensor() {
+    int color = colorSensor.readColor();
+    
+    switch (color) {
+        case 0:
+            Serial.println("Red");
+            break;
+        
+        case 1:
+            Serial.println("Green");
+            break;
+
+        case 2:
+            Serial.println("Blue");
+            break;
+        
+        default:
+            break;
+    }
 }

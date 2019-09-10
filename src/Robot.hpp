@@ -4,6 +4,7 @@
 #include <Arduino.h>
 
 #include "DistanceSensor.hpp"
+#include "ColorSensor.hpp"
 #include "Sensor.hpp"
 #include "Motor.hpp"
 #include "Claw.hpp"
@@ -15,6 +16,7 @@ class Robot {
 
         Sensor sensorFL, sensorFR, sensorBL, sensorBR;
         DistanceSensor lidar;
+        ColorSensor colorSensor{2};
 
     public:
         Robot();
@@ -60,9 +62,13 @@ class Robot {
         void alignBetweenContainers();
         void followLineUntilGap();
 
+        // Sensor de cor
+        void calibrateColorSensor();
+
         // Sanity check stuff
         void testMoviments();
         void testClaw();
+        void testColorSensor();
 };
 
 #endif  // ROBOT_HPP
