@@ -1,7 +1,8 @@
 #include <Wire.h>
-#include "Claw.hpp"
 #include "DistanceSensor.hpp"
+#include "ColorSensor.hpp"
 #include "Robot.hpp"
+#include "Claw.hpp"
 #define CALL_INTERVAL 4000
 
 Robot boberto;
@@ -10,11 +11,12 @@ unsigned long int lastCall = 0;
 void setup() {
     Wire.begin();
     Serial.begin(9600);
+
     boberto.begin();
 
     Serial.println(":: Ready ::");
 
-    boberto.catchContainer(1);
+    // boberto.catchContainer(1);
 
 }
 
@@ -36,5 +38,9 @@ void loop() {
     boberto.releaseContainer(1);
 
     delay(666666);
-    */
+    */    
+
+   boberto.testColorSensor();
+  
+    delay(1000); 
 }
