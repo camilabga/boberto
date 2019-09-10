@@ -1,11 +1,12 @@
 #include "Motor.hpp"
 
+// Instanciando os singletons
 Motor* Motor::instance0;
 Motor* Motor::instance1;
 Motor* Motor::instance2;
 Motor* Motor::instance3;
 
-Motor::Motor(uint8_t _whichISR) : whichISR(_whichISR) { cont = 0; }
+Motor::Motor(uint8_t _whichISR) : whichISR(_whichISR), cont(0) {}
 
 Motor::~Motor() {}
 
@@ -65,24 +66,18 @@ void Motor::forward(unsigned long int _goal) {
 
     analogWrite(pin1, 255);
     analogWrite(pin2, 0);
-
-    // Serial.println("Starting forward");
 }
 
-/* Interrupts are meanless here*/
+// Interrupts are meaningless here
 void Motor::forward() {
     analogWrite(pin1, 255);
     analogWrite(pin2, 0);
-
-    // Serial.println("Starting forward");
 }
 
-/* Interrupts are meanless here*/
+// Interrupts are meaningless here
 void Motor::forward(uint8_t vel) {
     analogWrite(pin1, vel);
     analogWrite(pin2, vel);
-
-    // Serial.println("Starting forward");
 }
 
 void Motor::backward(unsigned long int _goal) {
@@ -91,24 +86,18 @@ void Motor::backward(unsigned long int _goal) {
 
     analogWrite(pin1, 0);
     analogWrite(pin2, 255);
-
-    // Serial.println("Starting backward");
 }
 
-/* Interrupts are meanless here*/
+// Interrupts are meaningless here
 void Motor::backward() {
     analogWrite(pin1, 0);
     analogWrite(pin2, 255);
-
-    // Serial.println("Starting forward");
 }
 
-/* Interrupts are meanless here*/
+// Interrupts are meaningless here
 void Motor::backward(uint8_t vel) {
     analogWrite(pin1, vel);
     analogWrite(pin2, vel);
-
-    // Serial.println("Starting forward");
 }
 
 void Motor::stop() {

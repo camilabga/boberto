@@ -5,8 +5,8 @@ DistanceSensor::DistanceSensor() {}
 DistanceSensor::~DistanceSensor() {}
 
 /*
-    Não colocar no construtor e chamar no 
-    setup para o inferno não ascender a terra
+    Não colocar no construtor da classe e chamar  
+    no setup para o inferno não ascender a terra
 */
 void DistanceSensor::begin() {
     sensor.init();
@@ -15,7 +15,7 @@ void DistanceSensor::begin() {
 }
 
 int DistanceSensor::getDistance() {
-    // -55 is to compensate for error
+    // -55 para compensar o erro
     return sensor.readRangeContinuousMillimeters() - 55;
 }
 

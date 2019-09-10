@@ -253,3 +253,21 @@ void Robot::alignBetweenContainers() {
 
     stop();
 }
+
+void Robot::testMoviments() {
+    forward(3000);
+    delay(1000);
+    backward(3000);
+    delay(1000);
+    sidewaysRight(3000);
+    delay(1000);
+    sidewaysLeft(3000);
+    delay(1000);
+}
+
+void Robot::testClaw() {
+    catchContainer(1);
+    delay(1000);
+    releaseContainer(0);
+    delay(1000);
+}

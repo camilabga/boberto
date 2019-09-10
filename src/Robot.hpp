@@ -1,18 +1,20 @@
 #ifndef ROBOT_HPP
 #define ROBOT_HPP
 
-#include "Arduino.h"
-#include "Claw.hpp"
+#include <Arduino.h>
+
 #include "DistanceSensor.hpp"
-#include "Motor.hpp"
 #include "Sensor.hpp"
+#include "Motor.hpp"
+#include "Claw.hpp"
 
 class Robot {
     private:
         Motor frontLeft{0}, frontRight{1}, backLeft{2}, backRight{3};
+        Claw claw{26, 27, 28, 29, 30};
+
         Sensor sensorFL, sensorFR, sensorBL, sensorBR;
         DistanceSensor lidar;
-        Claw claw{26, 27, 28, 29, 30};
 
     public:
         Robot();
@@ -57,6 +59,10 @@ class Robot {
         void findBlackLine();
         void alignBetweenContainers();
         void followLineUntilGap();
+
+        // Sanity check stuff
+        void testMoviments();
+        void testClaw();
 };
 
 #endif  // ROBOT_HPP
