@@ -17,30 +17,31 @@ void setup() {
     Serial.println(":: Ready ::");
 
     // boberto.catchContainer(1);
+    
+    //boberto.backwardUntilBlackLine();
+    //boberto.goToBLueShip();
 
 }
 
-void loop() {
-    /*
+void loop() { 
+    
     boberto.findBlackLine();
     boberto.alignBetweenContainers();
     boberto.followLineUntilGap();
 
-    boberto.catchContainer(4);
+    boberto.catchContainer(2);
 
-    boberto.backward();
-    delay(5000);
-    boberto.stop();
-    boberto.sidewaysLeft();
-    delay(2000);
-    boberto.stop();
+    boberto.backwardUntilBlackLine();
 
-    boberto.releaseContainer(1);
+    boberto.goToGreenShip(1);
+
+    boberto.followLineUntilGap();
+
+    boberto.catchContainer(1);
+
+    boberto.backwardUntilBlackLine();
+
+    boberto.goToGreenShip(2);
 
     delay(666666);
-    */    
-
-   boberto.testColorSensor();
-  
-    delay(1000); 
 }
