@@ -28,16 +28,16 @@ void Robot::forward(unsigned long int goal) {
 }
 
 void Robot::begin() {
-    lidar.begin();
-
     // Seta a posição inicial da garra
     claw.goHome();
     claw.goToContainer(5.5);
+    
+    lidar.begin();
 
     // Calibra o sensor de cor
     colorSensor.init();
     colorSensor.ledOn(); 
-    colorSensor.calibrate();
+    //colorSensor.calibrate();
 }
 
 /*Interrupts are meanless here*/
