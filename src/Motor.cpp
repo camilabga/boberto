@@ -70,7 +70,7 @@ void Motor::forward(unsigned long int _goal) {
 
 // Interrupts are meaningless here
 void Motor::forward() {
-    analogWrite(pin1, 255);
+    analogWrite(pin1, 200);
     analogWrite(pin2, 0);
 }
 
@@ -91,7 +91,7 @@ void Motor::backward(unsigned long int _goal) {
 // Interrupts are meaningless here
 void Motor::backward() {
     analogWrite(pin1, 0);
-    analogWrite(pin2, 255);
+    analogWrite(pin2, 200);
 }
 
 // Interrupts are meaningless here
