@@ -16,6 +16,10 @@ Robot::Robot() {
     sensorFR.setPin(12);
     sensorBL.setPin(22);
     sensorBR.setPin(24);
+
+    sensorSB.setPin(35);
+    sensorSF.setPin(34);
+
 }
 
 Robot::~Robot() {}
@@ -28,11 +32,11 @@ void Robot::forward(unsigned long int goal) {
 }
 
 void Robot::begin() {
-    lidar.begin();
-
     // Seta a posição inicial da garra
     claw.goHome();
     claw.goToContainer(5.5);
+    
+    lidar.begin();
 
     // Calibra o sensor de cor
     colorSensor.init();
@@ -83,13 +87,16 @@ void Robot::sidewaysLeft(unsigned long int goal) {
     frontRight.backward(goal);
     backLeft.backward(goal);
     backRight.forward(goal);
-} /*
+} 
+
+/*
  void Robot::sidewaysLeft(unsigned char vel) {
      frontLeft.forward(vel);
      frontRight.backward(vel);
      backLeft.backward(vel);
      backRight.forward(vel);
  }*/
+
 void Robot::sidewaysLeft() {
     frontLeft.forward();
     frontRight.backward();
@@ -103,6 +110,7 @@ void Robot::sidewaysRight(unsigned long int goal) {
     backLeft.forward(goal);
     backRight.backward(goal);
 }
+
 void Robot::sidewaysRight() {
     frontLeft.backward();
     frontRight.forward();
@@ -117,42 +125,42 @@ void Robot::sidewaysRight(unsigned char vel) {
     backRight.backward(vel);
 }
 */
-void Robot::rotateLeft(unsigned long int goal) {
+void Robot::rotateRight(unsigned long int goal) {
     frontLeft.backward(goal);
     frontRight.forward(goal);
     backLeft.backward(goal);
     backRight.forward(goal);
 }
 /*
-void Robot::rotateLeft(unsigned char vel) {
+void Robot::rotateRight(unsigned char vel) {
     frontLeft.backward(vel);
     frontRight.forward(vel);
     backLeft.backward(vel);
     backRight.forward(vel);
 }
 */
-void Robot::rotateLeft() {
+void Robot::rotateRight() {
     frontLeft.backward();
     frontRight.forward();
     backLeft.backward();
     backRight.forward();
 }
 
-void Robot::rotateRight(unsigned long int goal) {
+void Robot::rotateLeft(unsigned long int goal) {
     frontLeft.forward(goal);
     frontRight.backward(goal);
     backLeft.forward(goal);
     backRight.backward(goal);
 }
 /*
-void Robot::rotateRight(unsigned char vel) {
+void Robot::rotateLeft(unsigned char vel) {
     frontLeft.forward(vel);
     frontRight.backward(vel);
     backLeft.forward(vel);
     backRight.backward(vel);
 }
 */
-void Robot::rotateRight() {
+void Robot::rotateLeft() {
     frontLeft.forward();
     frontRight.backward();
     backLeft.forward();
@@ -210,6 +218,7 @@ void Robot::releaseContainer(uint8_t container) {
 }
 
 void Robot::findBlackLine() {
+    
     forward();
     while (!sensorFL.getValue() || !sensorFR.getValue()) {
         delay(1);
@@ -219,11 +228,20 @@ void Robot::findBlackLine() {
     }
     delay(200);
     stop();
+    
+    /*
+    Serial.print("Front Left: ");
+    Serial.println(sensorFL.getValue());
+
+    Serial.print("Front Right: ");
+    Serial.println(sensorFR.getValue());
+    
+    Serial.print("\n");
+    */
 }
 
 void Robot::followLineUntilGap() {
-    Serial.println("Entrei");
-
+    // Anda até encontrar o primeiro container
     while (lidar.getContainerGap()) {
         if (sensorFL.getValue())
             rotateLeft();
@@ -232,9 +250,10 @@ void Robot::followLineUntilGap() {
         else
             forward();
 
-        Serial.println(lidar.getDistance());
+        //Serial.println(lidar.getDistance());
     }
-    Serial.println("Entrei");
+    
+    // Anda até sair do container
     while (!lidar.getContainerGap()) {
         if (sensorFL.getValue())
             rotateLeft();
@@ -242,14 +261,13 @@ void Robot::followLineUntilGap() {
             rotateRight();
         else
             forward();
-        Serial.println(lidar.getDistance());
+        //Serial.println(lidar.getDistance());
     }
 
     stop();
 }
 
 void Robot::alignBetweenContainers() {
-    Serial.println("Sideways");
     sidewaysRight();
 
     while (!sensorFR.getValue()) delay(1);
@@ -285,6 +303,7 @@ void Robot::testClaw() {
 void Robot::testColorSensor() {
     int color = colorSensor.readColor();
     
+    Serial.print("Color: ");
     switch (color) {
         case 0:
             Serial.println("Red");
@@ -299,6 +318,119 @@ void Robot::testColorSensor() {
             break;
         
         default:
+            Serial.println("404 Color Not Found");
             break;
     }
+}
+
+void Robot::testDistanceSensor() {
+    Serial.print("Distance: ");
+    Serial.println(lidar.getDistance());
+}
+
+void Robot::luiz() {
+    frontLeft.forward();
+}
+
+void Robot::backwardUntilBlackLine() {
+
+    backward();
+
+    while (!sensorFL.getValue() || !sensorFR.getValue()) delay(1);
+
+    stop();
+}
+
+void Robot::goToBLueShip(uint8_t container) {
+    forward();
+    
+    delay(300);
+
+    stop();
+
+    sidewaysRight();
+
+    delay(1414);
+
+    stop();
+
+    rotateLeft();
+
+    delay(1830);
+
+    stop();
+
+    sidewaysLeft();
+
+    delay(650);
+
+    stop();
+
+    releaseContainer(container);
+    
+    sidewaysRight();
+
+    delay(650);
+
+    stop();
+
+    rotateRight();
+
+    delay(1830);
+
+    stop();
+
+
+    sidewaysLeft();
+
+    delay(1414);
+
+    stop();
+
+}
+
+void Robot::goToGreenShip(uint8_t container) {
+    forward();
+    
+    delay(300);
+
+    stop();
+
+    sidewaysLeft();
+
+    delay(4242);
+
+    stop();
+
+    rotateLeft();
+
+    delay(1830);
+
+    stop();
+
+    sidewaysLeft();
+
+    delay(650);
+
+    stop();
+
+    releaseContainer(container);
+    
+    sidewaysRight();
+
+    delay(650);
+
+    stop();
+
+    rotateRight();
+
+    delay(1830);
+
+    stop();
+
+    sidewaysRight();
+
+    delay(1414);
+
+    stop();
 }

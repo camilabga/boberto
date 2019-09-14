@@ -15,8 +15,10 @@ class Robot {
         Claw claw{26, 27, 28, 29, 30};
 
         Sensor sensorFL, sensorFR, sensorBL, sensorBR;
+        Sensor sensorSB, sensorSF;
+
         DistanceSensor lidar;
-        ColorSensor colorSensor{2};
+        ColorSensor colorSensor{32};
 
     public:
         Robot();
@@ -61,6 +63,11 @@ class Robot {
         void findBlackLine();
         void alignBetweenContainers();
         void followLineUntilGap();
+        void backwardUntilBlackLine();
+
+        void goToBLueShip(uint8_t container);
+        void goToGreenShip(uint8_t container);
+
 
         // Sensor de cor
         void calibrateColorSensor();
@@ -69,6 +76,9 @@ class Robot {
         void testMoviments();
         void testClaw();
         void testColorSensor();
+        void testDistanceSensor();
+
+        void luiz();
 };
 
 #endif  // ROBOT_HPP
