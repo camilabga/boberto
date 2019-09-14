@@ -92,7 +92,7 @@ void Claw::retract() {
 void Claw::ajustContainer() {
     digitalWrite(motorPin1, LOW);
     digitalWrite(motorPin2, HIGH);
-    delay(MOTOR_TIME / 3);
+    delay(MOTOR_TIME / 4);
     stop();
 }
 
