@@ -1,8 +1,11 @@
 #include <Wire.h>
-#include "DistanceSensor.hpp"
-#include "ColorSensor.hpp"
-#include "Robot.hpp"
-#include "claw/Claw.hpp"
+
+#include "core/robot/Robot.hpp"
+
+#include "sensors/distanceSensor/DistanceSensor.hpp"
+#include "sensors/colorSensor/ColorSensor.hpp"
+
+#include "actuators/claw/Claw.hpp"
 #define CALL_INTERVAL 4000
 #define BOTAO_CONFIG 31
 
