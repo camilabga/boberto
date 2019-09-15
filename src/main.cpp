@@ -2,7 +2,7 @@
 #include "DistanceSensor.hpp"
 #include "ColorSensor.hpp"
 #include "Robot.hpp"
-#include "Claw.hpp"
+#include "claw/Claw.hpp"
 #define CALL_INTERVAL 4000
 #define BOTAO_CONFIG 31
 

@@ -19,7 +19,7 @@ void Stockpile::updateStockpile(SHIP color){
         greenHeight[greenIndex] = greenHeight[greenIndex] + 1;
         
     } else {
-       if(greebluenHeight[blueIndex] >= MAX_H){
+       if(blueHeight[blueIndex] >= MAX_H){
             blueIndex += 1;
         }
         blueHeight[blueIndex] = blueHeight[blueIndex] + 1;
