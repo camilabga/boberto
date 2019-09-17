@@ -10,78 +10,82 @@
 #include "Sensor.hpp"
 
 class Robot {
- private:
-  Motor frontLeft{0}, frontRight{1}, backLeft{2}, backRight{3};
-  Claw claw{26, 27, 28, 29, 30};
+	private:
+		Motor frontLeft{0}, frontRight{1}, backLeft{2}, backRight{3};
+		
+		Claw claw{26, 27, 28, 29, 30};
 
-  Sensor sensorFL, sensorFR, sensorBL, sensorBR;
-  Sensor sensorFLL, sensorFRR;  // Sensores mais externos
-  Sensor sensorSB, sensorSF;
+		// Sensores Frontais
+		Sensor sensorFL, sensorFR;
+		// Sensores Frontais mais externos
+		Sensor sensorFLL, sensorFRR;
+		// Sensores Traseiros
+		Sensor sensorBL, sensorBR;
+		// Sensores Laterais
+		Sensor sensorSB, sensorSF;
 
-  DistanceSensor lidar;
-  ColorSensor colorSensor{32};
+		DistanceSensor lidar;
 
- public:
-  Robot();
-  ~Robot();
+		ColorSensor colorSensor{32};
 
-  void stop();
-  void forward(unsigned long int goal = 0, int16_t vel = 255);
+	public:
+		Robot();
+		~Robot();
 
-  void begin();
+		void begin();
 
-  void backward(unsigned long int goal = 0, int16_t vel = 255);
+		void stop();
 
-  void sidewaysRight(unsigned long int goal = 0, int16_t vel = 255);
-  // void sidewaysRight(unsigned char vel);
-  void sidewaysRight();
+		void forward(uint32_t goal = 0, int16_t vel = 255);
 
-  void sidewaysLeft(unsigned long int goal = 0, int16_t vel = 255);
-  // void sidewaysLeft(unsigned char vel);
-  void sidewaysLeft();
+		void backward(uint32_t goal = 0, int16_t vel = 255);
 
-  void rotateLeft(unsigned long int goal = 0, int16_t vel = 255);
-  // void rotateLeft(unsigned char vel);
-  void rotateLeft();
+		void sidewaysRight(uint32_t goal = 0, int16_t vel = 255);
+		// void sidewaysRight();
 
-  void rotateRight(unsigned long int goal = 0, int16_t vel = 255);
-  // void rotateRight(unsigned char vel);
-  void rotateRight();
+		void sidewaysLeft(uint32_t goal = 0, int16_t vel = 255);
+		// void sidewaysLeft();
 
-  void moveRightForward(unsigned long int goal = 0, int16_t vel = 255);
-  void moveRightForward();
+		void rotateLeft(uint32_t goal = 0, int16_t vel = 255);
+		// void rotateLeft();
 
-  void moveRightBackward(unsigned long int goal = 0, int16_t vel = 255);
-  void moveRightBackward();
+		void rotateRight(uint32_t goal = 0, int16_t vel = 255);
+		// void rotateRight();
 
-  void moveLeftForward(unsigned long int goal = 0, int16_t vel = 255);
-  void moveLeftForward();
+		void moveRightForward(uint32_t goal = 0, int16_t vel = 255);
+		// void moveRightForward();
 
-  void moveLeftBackward(unsigned long int goal = 0, int16_t vel = 255);
-  void moveLeftBackward();
+		void moveRightBackward(uint32_t goal = 0, int16_t vel = 255);
+		// void moveRightBackward();
 
-  // Movimentação da garra
-  void catchContainer(uint8_t container);
-  void releaseContainer(uint8_t container);
+		void moveLeftForward(uint32_t goal = 0, int16_t vel = 255);
+		// void moveLeftForward();
 
-  void findBlackLine();
-  void alignBetweenContainers();
-  void followLineUntilGap();
-  void followHorizontalRight();
-  void followHorizontalLeft();
-  void backwardUntilBlackLine();
+		void moveLeftBackward(uint32_t goal = 0, int16_t vel = 255);
+		// void moveLeftBackward();
 
-  void goToBLueShip(uint8_t container);
-  void goToGreenShip(uint8_t container);
+		// Movimentação da garra
+		void catchContainer(uint8_t container);
+		void releaseContainer(uint8_t container);
 
-  // Sensor de cor
-  void calibrateColorSensor();
+		void findBlackLine();
+		void alignBetweenContainers();
+		void followLineUntilGap();
+		void followHorizontalRight();
+		void followHorizontalLeft();
+		void backwardUntilBlackLine();
 
-  // Sanity check stuff
-  void testMoviments();
-  void testClaw();
-  void testColorSensor();
-  void testDistanceSensor();
+		void goToBLueShip(uint8_t container);
+		void goToGreenShip(uint8_t container);
+
+		// Sensor de cor
+		void calibrateColorSensor();
+
+		// Sanity check stuff
+		void testMoviments();
+		void testClaw();
+		void testColorSensor();
+		void testDistanceSensor();
 };
 
 #endif  // ROBOT_HPP

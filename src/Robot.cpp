@@ -1,561 +1,487 @@
 #include "Robot.hpp"
 
 Robot::Robot() {
-  // Inicia os pinos dos motores
-  frontLeft.setPins(2, 5, 4);
-  frontRight.setPins(3, 6, 7);
-  backLeft.setPins(18, 8, 9);
-  backRight.setPins(19, 10, 11);
+    // Inicia os pinos dos motores
+    frontLeft.setPins(3, 6, 7);
+    frontRight.setPins(2, 5, 4);
+    backLeft.setPins(18, 10, 11);
+    backRight.setPins(19, 8, 9);
 
-  frontLeft.begin();
-  frontRight.begin();
-  backLeft.begin();
-  backRight.begin();
+    frontLeft.begin();
+    frontRight.begin();
+    backLeft.begin();
+    backRight.begin();
 
-  sensorFL.setPin(13);
-  sensorFR.setPin(12);
-  sensorBL.setPin(22);
-  sensorBR.setPin(24);
+    sensorFL.setPin(13);
+    sensorFR.setPin(12);
+    sensorBL.setPin(22);
+    sensorBR.setPin(24);
 
-  sensorSB.setPin(35);
-  sensorSF.setPin(34);
+    sensorSB.setPin(35);
+    sensorSF.setPin(34);
 
-  sensorFLL.setPin(36);
-  sensorFRR.setPin(34);
+    sensorFLL.setPin(36);
+    sensorFRR.setPin(34);
 }
 
 Robot::~Robot() {}
 
-void Robot::forward(unsigned long int goal, int16_t vel, int16_t vel) {
-  frontLeft.forward(goal, vel);
-  frontRight.forward(goal, vel);
-  backLeft.forward(goal, vel);
-  backRight.forward(goal, vel);
-
-  while (frontLeft.getfinished() && frontRight.getfinished() &&
-         backLeft.getfinished() && backRight.getfinished()) {
-    delay(1);
-  }
-}
-
 void Robot::begin() {
-  // Seta a posição inicial da garra
-  claw.goHome();
-  claw.goToContainer(5.5);
+    // Seta a posição inicial da garra
+    claw.goHome();
+    claw.goToContainer(5.5);
 
-  lidar.begin();
+    lidar.begin();
 
-  // Calibra o sensor de cor
-  colorSensor.init();
-  colorSensor.ledOn();
-  colorSensor.calibrate();
-}
-
-/* Interrupts are meanless here
-void Robot::forward(unsigned char vel) {
-    frontLeft.forward(vel);
-    frontRight.forward(vel);
-    backLeft.forward(vel);
-    backRight.forward(vel);
-}*/
-
-void Robot::backward(unsigned long int goal, int16_t vel) {
-  frontLeft.backward(goal);
-  frontRight.backward(goal);
-  backLeft.backward(goal);
-  backRight.backward(goal);
-  while (frontLeft.getfinished() && frontRight.getfinished() &&
-         backLeft.getfinished() && backRight.getfinished()) {
-    delay(1);
-  }
+    // Calibra o sensor de cor
+    colorSensor.init();
+    colorSensor.ledOn();
+    colorSensor.calibrate();
 }
 
-/* Interrupts are meanless here*/
-void Robot::backward() {
-  frontLeft.backward();
-  frontRight.backward();
-  backLeft.backward();
-  backRight.backward();
-}
-/*
-void Robot::backward(unsigned char vel) {
-    frontLeft.backward(vel);
-    frontRight.backward(vel);
-    backLeft.backward(vel);
-    backRight.backward(vel);
-}*/
+void Robot::forward(uint32_t goal, int16_t vel) {
+    frontLeft.forward(goal, vel);
+    frontRight.forward(goal, vel);
+    backLeft.forward(goal, vel);
+    backRight.forward(goal, vel);
 
-void Robot::sidewaysLeft(unsigned long int goal, int16_t vel) {
-  frontLeft.forward(goal);
-  frontRight.backward(goal);
-  backLeft.backward(goal);
-  backRight.forward(goal);
+    while (frontLeft.getFinished() and frontRight.getFinished() and
+           backLeft.getFinished() and backRight.getFinished()) {
+        delay(1);
+    }
 }
 
-/*
- void Robot::sidewaysLeft(unsigned char vel) {
-     frontLeft.forward(vel);
-     frontRight.backward(vel);
-     backLeft.backward(vel);
-     backRight.forward(vel);
- }*/
+void Robot::backward(uint32_t goal, int16_t vel) {
+    frontLeft.backward(goal);
+    frontRight.backward(goal);
+    backLeft.backward(goal);
+    backRight.backward(goal);
 
-void Robot::sidewaysLeft() {
-  frontLeft.forward();
-  frontRight.backward();
-  backLeft.backward();
-  backRight.forward();
+    while (frontLeft.getFinished() and frontRight.getFinished() and
+           backLeft.getFinished() and backRight.getFinished()) {
+        delay(1);
+    }
 }
 
-void Robot::sidewaysRight(unsigned long int goal, int16_t vel) {
-  frontLeft.backward(goal);
-  frontRight.forward(goal);
-  backLeft.forward(goal);
-  backRight.backward(goal);
+void Robot::sidewaysLeft(uint32_t goal, int16_t vel) {
+    frontLeft.forward(goal, vel);
+    frontRight.backward(goal, vel);
+    backLeft.backward(goal, vel);
+    backRight.forward(goal, vel);
+
+    while (frontLeft.getFinished() and frontRight.getFinished() and
+           backLeft.getFinished() and backRight.getFinished()) {
+        delay(1);
+    }
 }
 
-void Robot::sidewaysRight() {
-  frontLeft.backward();
-  frontRight.forward();
-  backLeft.forward();
-  backRight.backward();
-}
-/*
-void Robot::sidewaysRight(unsigned char vel) {
-    frontLeft.backward(vel);
-    frontRight.forward(vel);
-    backLeft.forward(vel);
-    backRight.backward(vel);
-}
-*/
-void Robot::rotateRight(unsigned long int goal, int16_t vel) {
-  frontLeft.backward(goal);
-  frontRight.forward(goal);
-  backLeft.backward(goal);
-  backRight.forward(goal);
-  while (frontLeft.getfinished() && frontRight.getfinished() &&
-         backLeft.getfinished() && backRight.getfinished()) {
-    delay(1);
-  }
-}
-/*
-void Robot::rotateRight(unsigned char vel) {
-    frontLeft.backward(vel);
-    frontRight.forward(vel);
-    backLeft.backward(vel);
-    backRight.forward(vel);
-}
-*/
-void Robot::rotateRight() {
-  frontLeft.backward();
-  frontRight.forward();
-  backLeft.backward();
-  backRight.forward();
+void Robot::sidewaysRight(uint32_t goal, int16_t vel) {
+    frontLeft.backward(goal, vel);
+    frontRight.forward(goal, vel);
+    backLeft.forward(goal, vel);
+    backRight.backward(goal, vel);
+
+    while (frontLeft.getFinished() and frontRight.getFinished() and
+           backLeft.getFinished() and backRight.getFinished()) {
+        delay(1);
+    }
 }
 
-void Robot::rotateLeft(unsigned long int goal, int16_t vel) {
-  frontLeft.forward(goal);
-  frontRight.backward(goal);
-  backLeft.forward(goal);
-  backRight.backward(goal);
-  while (frontLeft.getfinished() && frontRight.getfinished() &&
-         backLeft.getfinished() && backRight.getfinished()) {
-    delay(1);
-  }
-}
-/*
-void Robot::rotateLeft(unsigned char vel) {
-    frontLeft.forward(vel);
-    frontRight.backward(vel);
-    backLeft.forward(vel);
-    backRight.backward(vel);
-}
-*/
-void Robot::rotateLeft() {
-  frontLeft.forward();
-  frontRight.backward();
-  backLeft.forward();
-  backRight.backward();
+void Robot::rotateRight(uint32_t goal, int16_t vel) {
+    frontLeft.backward(goal, vel);
+    frontRight.forward(goal, vel);
+    backLeft.backward(goal, vel);
+    backRight.forward(goal, vel);
+
+    while (frontLeft.getFinished() and frontRight.getFinished() and
+           backLeft.getFinished() and backRight.getFinished()) {
+        delay(1);
+    }
 }
 
-void Robot::moveRightForward(unsigned long int goal, int16_t vel) {
-  frontLeft.forward(goal);
-  frontRight.stop();
-  backLeft.stop();
-  backRight.forward(goal);
+void Robot::rotateLeft(uint32_t goal, int16_t vel) {
+    frontLeft.forward(goal, vel);
+    frontRight.backward(goal, vel);
+    backLeft.forward(goal, vel);
+    backRight.backward(goal, vel);
+
+    while (frontLeft.getFinished() and frontRight.getFinished() and
+           backLeft.getFinished() and backRight.getFinished()) {
+        delay(1);
+    }
 }
 
-void Robot::moveRightBackward(unsigned long int goal, int16_t vel) {
-  frontLeft.stop();
-  frontRight.backward(goal);
-  backLeft.backward(goal);
-  backRight.stop();
+void Robot::moveRightForward(uint32_t goal, int16_t vel) {
+    frontLeft.forward(goal, vel);
+    frontRight.stop();
+    backLeft.stop();
+    backRight.forward(goal, vel);
+
+    while (frontLeft.getFinished() and frontRight.getFinished() and
+           backLeft.getFinished() and backRight.getFinished()) {
+        delay(1);
+    }
 }
 
-void Robot::moveLeftForward(unsigned long int goal, int16_t vel) {
-  frontLeft.stop();
-  frontRight.forward(goal);
-  backLeft.forward(goal);
-  backRight.stop();
+void Robot::moveRightBackward(uint32_t goal, int16_t vel) {
+    frontLeft.stop();
+    frontRight.backward(goal, vel);
+    backLeft.backward(goal, vel);
+    backRight.stop();
+
+    while (frontLeft.getFinished() and frontRight.getFinished() and
+           backLeft.getFinished() and backRight.getFinished()) {
+        delay(1);
+    }
 }
 
-void Robot::moveLeftBackward(unsigned long int goal, int16_t vel) {
-  frontLeft.backward(goal);
-  frontRight.stop();
-  backLeft.stop();
-  backRight.backward(goal);
+void Robot::moveLeftForward(uint32_t goal, int16_t vel) {
+    frontLeft.stop();
+    frontRight.forward(goal, vel);
+    backLeft.forward(goal, vel);
+    backRight.stop();
+
+    while (frontLeft.getFinished() and frontRight.getFinished() and
+           backLeft.getFinished() and backRight.getFinished()) {
+        delay(1);
+    }
 }
 
-void Robot::moveRightForward() {
-  frontLeft.forward();
-  frontRight.stop();
-  backLeft.stop();
-  backRight.forward();
-}
+void Robot::moveLeftBackward(uint32_t goal, int16_t vel) {
+    frontLeft.backward(goal, vel);
+    frontRight.stop();
+    backLeft.stop();
+    backRight.backward(goal, vel);
 
-void Robot::moveRightBackward() {
-  frontLeft.stop();
-  frontRight.backward();
-  backLeft.backward();
-  backRight.stop();
-}
-
-void Robot::moveLeftForward() {
-  frontLeft.stop();
-  frontRight.forward();
-  backLeft.forward();
-  backRight.stop();
-}
-
-void Robot::moveLeftBackward() {
-  frontLeft.backward();
-  frontRight.stop();
-  backLeft.stop();
-  backRight.backward();
+    while (frontLeft.getFinished() and frontRight.getFinished() and
+           backLeft.getFinished() and backRight.getFinished()) {
+        delay(1);
+    }
+    
 }
 
 void Robot::stop() {
-  frontLeft.stop();
-  frontRight.stop();
-  backLeft.stop();
-  backRight.stop();
+    frontLeft.stop();
+    frontRight.stop();
+    backLeft.stop();
+    backRight.stop();
 }
 
 // Movimentação da garra
 void Robot::catchContainer(uint8_t container) {
-  claw.extend();
-  claw.goToContainer(container);
-  claw.goToContainer(container + 0.5);
-  claw.ajustContainer();
-  claw.goToContainer(5.5);
+    claw.extend();
+    claw.goToContainer(container);
+    claw.goToContainer(container + 0.5);
+    claw.ajustContainer();
+    claw.goToContainer(5.5);
 }
 
 void Robot::releaseContainer(uint8_t container) {
-  claw.goToContainer(container);
-  claw.retract();
-  claw.goToContainer(5.5);
+    claw.goToContainer(container);
+    claw.retract();
+    claw.goToContainer(5.5);
 }
 
 void Robot::findBlackLine() {
-  forward();
-  while (!sensorFL.getValue() || !sensorFR.getValue()) {
-    delay(1);
-  }
-  while (sensorFL.getValue() && sensorFR.getValue()) {
-    delay(1);
-  }
-  delay(200);
-  stop();
+    forward();
+    while (!sensorFL.getValue() || !sensorFR.getValue()) {
+        delay(1);
+    }
+    while (sensorFL.getValue() && sensorFR.getValue()) {
+        delay(1);
+    }
+    delay(200);
+    stop();
 
-  /*
-  Serial.print("Front Left: ");
-  Serial.println(sensorFL.getValue());
+    /*
+    Serial.print("Front Left: ");
+    Serial.println(sensorFL.getValue());
 
-  Serial.print("Front Right: ");
-  Serial.println(sensorFR.getValue());
+    Serial.print("Front Right: ");
+    Serial.println(sensorFR.getValue());
 
-  Serial.print("\n");
-  */
+    Serial.print("\n");
+    */
 }
 
 void Robot::followLineUntilGap() {
-  // Anda até encontrar o primeiro container
-  while (lidar.getContainerGap()) {
-    if (sensorFL.getValue())
-      rotateLeft();
-    else if (sensorFR.getValue())
-      rotateRight();
-    else
-      forward();
+    // Anda até encontrar o primeiro container
+    while (lidar.getContainerGap()) {
+        if (sensorFL.getValue())
+            rotateLeft();
+        else if (sensorFR.getValue())
+            rotateRight();
+        else
+            forward();
 
-    // Serial.println(lidar.getDistance());
-  }
+        // Serial.println(lidar.getDistance());
+    }
 
-  // Anda até sair do container
-  while (!lidar.getContainerGap()) {
-    if (sensorFL.getValue())
-      rotateLeft();
-    else if (sensorFR.getValue())
-      rotateRight();
-    else
-      forward();
-    // Serial.println(lidar.getDistance());
-  }
+    // Anda até sair do container
+    while (!lidar.getContainerGap()) {
+        if (sensorFL.getValue())
+            rotateLeft();
+        else if (sensorFR.getValue())
+            rotateRight();
+        else
+            forward();
+        // Serial.println(lidar.getDistance());
+    }
 
-  stop();
+    stop();
 }
 
 void Robot::followHorizontalRight() {
-  // Anda até encontrar o primeiro container
-  forward();
-  while ((!sensorFLL.getValue() || !sensorFRR.getValue())) {
-    delay(1);
-  }
-
-  stop();
-  // delay(2000);
-  long int luiz = 0;
-  do {
-    Serial.print(sensorFLL.getValue());
-    Serial.print('\t');
-    Serial.print(sensorFL.getValue());
-    Serial.print('\t');
-    Serial.print(sensorFR.getValue());
-    Serial.print('\t');
-    Serial.println(sensorFRR.getValue());
-    if (!sensorFLL.getValue() && sensorFRR.getValue()) {
-      if (sensorFL.getValue()) {
-        rotateRight();
-      } else {
-        rotateLeft();
-      }
-    } else if (!sensorFRR.getValue() && sensorFLL.getValue()) {
-      if (sensorFL.getValue()) {
-        rotateLeft();
-      } else {
-        rotateRight();
-      }
-
-    } else if ((!sensorFRR.getValue() && !sensorFLL.getValue()) &&
-               ((!sensorFR.getValue() && !sensorFL.getValue()))) {
-      backward();
-
-    } else if ((!sensorFRR.getValue() && !sensorFLL.getValue()) &&
-               ((sensorFR.getValue() && sensorFL.getValue()))) {
-      forward();
-      delay(70);
-
-    } else {
-      sidewaysRight();
-      delay(50);
+    // Anda até encontrar o primeiro container
+    forward();
+    while ((!sensorFLL.getValue() || !sensorFRR.getValue())) {
+        delay(1);
     }
 
-    luiz++;
-  } while (luiz < 200000);
+    stop();
+    // delay(2000);
+    long int luiz = 0;
+    do {
+        Serial.print(sensorFLL.getValue());
+        Serial.print('\t');
+        Serial.print(sensorFL.getValue());
+        Serial.print('\t');
+        Serial.print(sensorFR.getValue());
+        Serial.print('\t');
+        Serial.println(sensorFRR.getValue());
+        if (!sensorFLL.getValue() && sensorFRR.getValue()) {
+            if (sensorFL.getValue()) {
+                rotateRight();
+            } else {
+                rotateLeft();
+            }
+        } else if (!sensorFRR.getValue() && sensorFLL.getValue()) {
+            if (sensorFL.getValue()) {
+                rotateLeft();
+            } else {
+                rotateRight();
+            }
+
+        } else if ((!sensorFRR.getValue() && !sensorFLL.getValue()) &&
+                   ((!sensorFR.getValue() && !sensorFL.getValue()))) {
+            backward();
+
+        } else if ((!sensorFRR.getValue() && !sensorFLL.getValue()) &&
+                   ((sensorFR.getValue() && sensorFL.getValue()))) {
+            forward();
+            delay(70);
+
+        } else {
+            sidewaysRight();
+            delay(50);
+        }
+
+        luiz++;
+    } while (luiz < 200000);
 }
 
 void Robot::followHorizontalLeft() {
-  // Anda até encontrar o primeiro container
-  /*
-  forward();
-  while ((!sensorFLL.getValue() || !sensorFRR.getValue())) {
-    delay(1);
-  }
+    // Anda até encontrar o primeiro container
+    /*
+    forward();
+    while ((!sensorFLL.getValue() || !sensorFRR.getValue())) {
+      delay(1);
+    }
 
-  stop();
-  // delay(2000);
-  */
+    stop();
+    // delay(2000);
+    */
 
-  while (!sensorSB.getValue()) {
-    if (sensorFL.getValue() && sensorBR.getValue())
-      rotateLeft();
-    else if (sensorFR.getValue() && sensorBL.getValue())
-      rotateRight();
-    else if (sensorFL.getValue() && sensorBL.getValue())
-      moveLeftForward();
-    else if (sensorFR.getValue() && sensorBR.getValue())
-      moveRightForward();
-    else
-      forward();
-  }
-  while (sensorSB.getValue()) {
-    if (sensorFL.getValue() && sensorBR.getValue())
-      rotateLeft();
-    else if (sensorFR.getValue() && sensorBL.getValue())
-      rotateRight();
-    else if (sensorFL.getValue() && sensorBL.getValue())
-      moveLeftForward();
-    else if (sensorFR.getValue() && sensorBR.getValue())
-      moveRightForward();
-    else
-      forward();
-  }
-  while (!sensorSB.getValue()) {
-    if (sensorFL.getValue() && sensorBR.getValue())
-      rotateLeft();
-    else if (sensorFR.getValue() && sensorBL.getValue())
-      rotateRight();
-    else if (sensorFL.getValue() && sensorBL.getValue())
-      moveLeftForward();
-    else if (sensorFR.getValue() && sensorBR.getValue())
-      moveRightForward();
-    else
-      forward();
-  }
-  stop();
+    while (!sensorSB.getValue()) {
+        if (sensorFL.getValue() && sensorBR.getValue())
+            rotateLeft();
+        else if (sensorFR.getValue() && sensorBL.getValue())
+            rotateRight();
+        else if (sensorFL.getValue() && sensorBL.getValue())
+            moveLeftForward();
+        else if (sensorFR.getValue() && sensorBR.getValue())
+            moveRightForward();
+        else
+            forward();
+    }
+    while (sensorSB.getValue()) {
+        if (sensorFL.getValue() && sensorBR.getValue())
+            rotateLeft();
+        else if (sensorFR.getValue() && sensorBL.getValue())
+            rotateRight();
+        else if (sensorFL.getValue() && sensorBL.getValue())
+            moveLeftForward();
+        else if (sensorFR.getValue() && sensorBR.getValue())
+            moveRightForward();
+        else
+            forward();
+    }
+    while (!sensorSB.getValue()) {
+        if (sensorFL.getValue() && sensorBR.getValue())
+            rotateLeft();
+        else if (sensorFR.getValue() && sensorBL.getValue())
+            rotateRight();
+        else if (sensorFL.getValue() && sensorBL.getValue())
+            moveLeftForward();
+        else if (sensorFR.getValue() && sensorBR.getValue())
+            moveRightForward();
+        else
+            forward();
+    }
+    stop();
 }
 
 void Robot::alignBetweenContainers() {
-  sidewaysRight();
+    sidewaysRight();
 
-  while (!sensorFR.getValue()) delay(1);
+    while (!sensorFR.getValue()) delay(1);
 
-  while (sensorFR.getValue()) delay(1);
+    while (sensorFR.getValue()) delay(1);
 
-  stop();
-}
-
-void Robot::calibrateColorSensor() {
-  colorSensor.ledOn();
-  colorSensor.calibrate();
-}
-
-void Robot::testMoviments() {
-  forward(3000);
-  delay(1000);
-  backward(3000);
-  delay(1000);
-  sidewaysRight(3000);
-  delay(1000);
-  sidewaysLeft(3000);
-  delay(1000);
-}
-
-void Robot::testClaw() {
-  catchContainer(1);
-  delay(1000);
-  releaseContainer(0);
-  delay(1000);
-}
-
-void Robot::testColorSensor() {
-  int color = colorSensor.readColor();
-
-  Serial.print("Color: ");
-  switch (color) {
-    case 0:
-      Serial.println("Red");
-      break;
-
-    case 1:
-      Serial.println("Green");
-      break;
-
-    case 2:
-      Serial.println("Blue");
-      break;
-
-    default:
-      Serial.println("404 Color Not Found");
-      break;
-  }
-}
-
-void Robot::testDistanceSensor() {
-  Serial.print("Distance: ");
-  Serial.println(lidar.getDistance());
+    stop();
 }
 
 void Robot::backwardUntilBlackLine() {
-  backward();
+    backward();
 
-  while (!sensorFL.getValue() || !sensorFR.getValue()) delay(1);
+    while (!sensorFL.getValue() || !sensorFR.getValue()) delay(1);
 
-  stop();
+    stop();
 }
 
 void Robot::goToBLueShip(uint8_t container) {
-  forward();
+    forward();
 
-  delay(300);
+    delay(300);
 
-  stop();
+    stop();
 
-  sidewaysRight();
+    sidewaysRight();
 
-  delay(1414);
+    delay(1414);
 
-  stop();
+    stop();
 
-  rotateLeft();
+    rotateLeft();
 
-  delay(1830);
+    delay(1830);
 
-  stop();
+    stop();
 
-  sidewaysLeft();
+    sidewaysLeft();
 
-  delay(650);
+    delay(650);
 
-  stop();
+    stop();
 
-  releaseContainer(container);
+    releaseContainer(container);
 
-  sidewaysRight();
+    sidewaysRight();
 
-  delay(650);
+    delay(650);
 
-  stop();
+    stop();
 
-  rotateRight();
+    rotateRight();
 
-  delay(1830);
+    delay(1830);
 
-  stop();
+    stop();
 
-  sidewaysLeft();
+    sidewaysLeft();
 
-  delay(1414);
+    delay(1414);
 
-  stop();
+    stop();
 }
 
 void Robot::goToGreenShip(uint8_t container) {
-  for (uint8_t i = 0; i < 35; i++) rotateLeft(100);
+    for (uint8_t i = 0; i < 35; i++) rotateLeft(100);
 
-  alignBetweenContainers();
+    alignBetweenContainers();
 
-  followHorizontalLeft();
+    followHorizontalLeft();
 
-  forward();
+    forward();
 
-  delay(600);
+    delay(600);
 
-  stop();
+    stop();
 
-  sidewaysLeft();
+    sidewaysLeft();
 
-  delay(1100);
+    delay(1100);
 
-  stop();
+    stop();
 
-  releaseContainer(container);
+    releaseContainer(container);
 
-  sidewaysRight();
+    sidewaysRight();
 
-  delay(650);
+    delay(650);
 
-  stop();
+    stop();
 
-  rotateRight();
+    rotateRight();
 
-  delay(1830);
+    delay(1830);
 
-  stop();
+    stop();
 
-  sidewaysRight();
+    sidewaysRight();
 
-  delay(1414);
+    delay(1414);
 
-  stop();
+    stop();
+}
+
+void Robot::calibrateColorSensor() {
+    colorSensor.ledOn();
+    colorSensor.calibrate();
+}
+
+void Robot::testMoviments() {
+    forward(1000);
+    delay(3000);
+    backward(1000);
+    delay(3000);
+    sidewaysRight(1000);
+    delay(3000);
+    sidewaysLeft(1000);
+    delay(3000);
+}
+
+void Robot::testClaw() {
+    catchContainer(1);
+    delay(1000);
+    releaseContainer(1);
+    delay(1000);
+}
+
+void Robot::testColorSensor() {
+    int color = colorSensor.readColor();
+
+    Serial.print("Color: ");
+    switch (color) {
+        case 0:
+            Serial.println("Red");
+            break;
+
+        case 1:
+            Serial.println("Green");
+            break;
+
+        case 2:
+            Serial.println("Blue");
+            break;
+
+        default:
+            Serial.println("404 Color Not Found");
+            break;
+    }
+}
+
+void Robot::testDistanceSensor() {
+    Serial.print("Distance: ");
+    Serial.println(lidar.getDistance());
 }
