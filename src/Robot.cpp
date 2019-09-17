@@ -26,11 +26,16 @@ Robot::Robot() {
 
 Robot::~Robot() {}
 
-void Robot::forward(unsigned long int goal) {
-  frontLeft.forward(goal);
-  frontRight.forward(goal);
-  backLeft.forward(goal);
-  backRight.forward(goal);
+void Robot::forward(unsigned long int goal, int16_t vel, int16_t vel) {
+  frontLeft.forward(goal, vel);
+  frontRight.forward(goal, vel);
+  backLeft.forward(goal, vel);
+  backRight.forward(goal, vel);
+
+  while (frontLeft.getfinished() && frontRight.getfinished() &&
+         backLeft.getfinished() && backRight.getfinished()) {
+    delay(1);
+  }
 }
 
 void Robot::begin() {
@@ -46,14 +51,6 @@ void Robot::begin() {
   colorSensor.calibrate();
 }
 
-/*Interrupts are meanless here*/
-void Robot::forward() {
-  frontLeft.forward();
-  frontRight.forward();
-  backLeft.forward();
-  backRight.forward();
-}
-
 /* Interrupts are meanless here
 void Robot::forward(unsigned char vel) {
     frontLeft.forward(vel);
@@ -62,11 +59,15 @@ void Robot::forward(unsigned char vel) {
     backRight.forward(vel);
 }*/
 
-void Robot::backward(unsigned long int goal) {
+void Robot::backward(unsigned long int goal, int16_t vel) {
   frontLeft.backward(goal);
   frontRight.backward(goal);
   backLeft.backward(goal);
   backRight.backward(goal);
+  while (frontLeft.getfinished() && frontRight.getfinished() &&
+         backLeft.getfinished() && backRight.getfinished()) {
+    delay(1);
+  }
 }
 
 /* Interrupts are meanless here*/
@@ -84,7 +85,7 @@ void Robot::backward(unsigned char vel) {
     backRight.backward(vel);
 }*/
 
-void Robot::sidewaysLeft(unsigned long int goal) {
+void Robot::sidewaysLeft(unsigned long int goal, int16_t vel) {
   frontLeft.forward(goal);
   frontRight.backward(goal);
   backLeft.backward(goal);
@@ -106,7 +107,7 @@ void Robot::sidewaysLeft() {
   backRight.forward();
 }
 
-void Robot::sidewaysRight(unsigned long int goal) {
+void Robot::sidewaysRight(unsigned long int goal, int16_t vel) {
   frontLeft.backward(goal);
   frontRight.forward(goal);
   backLeft.forward(goal);
@@ -127,11 +128,15 @@ void Robot::sidewaysRight(unsigned char vel) {
     backRight.backward(vel);
 }
 */
-void Robot::rotateRight(unsigned long int goal) {
+void Robot::rotateRight(unsigned long int goal, int16_t vel) {
   frontLeft.backward(goal);
   frontRight.forward(goal);
   backLeft.backward(goal);
   backRight.forward(goal);
+  while (frontLeft.getfinished() && frontRight.getfinished() &&
+         backLeft.getfinished() && backRight.getfinished()) {
+    delay(1);
+  }
 }
 /*
 void Robot::rotateRight(unsigned char vel) {
@@ -148,11 +153,15 @@ void Robot::rotateRight() {
   backRight.forward();
 }
 
-void Robot::rotateLeft(unsigned long int goal) {
+void Robot::rotateLeft(unsigned long int goal, int16_t vel) {
   frontLeft.forward(goal);
   frontRight.backward(goal);
   backLeft.forward(goal);
   backRight.backward(goal);
+  while (frontLeft.getfinished() && frontRight.getfinished() &&
+         backLeft.getfinished() && backRight.getfinished()) {
+    delay(1);
+  }
 }
 /*
 void Robot::rotateLeft(unsigned char vel) {
@@ -169,28 +178,28 @@ void Robot::rotateLeft() {
   backRight.backward();
 }
 
-void Robot::moveRightForward(unsigned long int goal) {
+void Robot::moveRightForward(unsigned long int goal, int16_t vel) {
   frontLeft.forward(goal);
   frontRight.stop();
   backLeft.stop();
   backRight.forward(goal);
 }
 
-void Robot::moveRightBackward(unsigned long int goal) {
+void Robot::moveRightBackward(unsigned long int goal, int16_t vel) {
   frontLeft.stop();
   frontRight.backward(goal);
   backLeft.backward(goal);
   backRight.stop();
 }
 
-void Robot::moveLeftForward(unsigned long int goal) {
+void Robot::moveLeftForward(unsigned long int goal, int16_t vel) {
   frontLeft.stop();
   frontRight.forward(goal);
   backLeft.forward(goal);
   backRight.stop();
 }
 
-void Robot::moveLeftBackward(unsigned long int goal) {
+void Robot::moveLeftBackward(unsigned long int goal, int16_t vel) {
   frontLeft.backward(goal);
   frontRight.stop();
   backLeft.stop();
@@ -512,11 +521,7 @@ void Robot::goToBLueShip(uint8_t container) {
 }
 
 void Robot::goToGreenShip(uint8_t container) {
-  rotateLeft();
-
-  delay(1830);
-
-  stop();
+  for (uint8_t i = 0; i < 35; i++) rotateLeft(100);
 
   alignBetweenContainers();
 

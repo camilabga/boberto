@@ -11,8 +11,9 @@ unsigned long int lastCall = 0;
 void setup() {
   Wire.begin();
   Serial.begin(9600);
-
+  Serial.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
   boberto.begin();
+  Serial.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
 
   Serial.println(":: Ready ::");
 
@@ -23,6 +24,10 @@ void setup() {
 }
 
 void loop() {
+  for (uint8_t i = 0; i < 35; i++) boberto.rotateLeft(100);
+  delay(2000);
+  for (uint8_t i = 0; i < 35; i++) boberto.rotateRight(100);
+  delay(2000);
   
   boberto.findBlackLine();
   boberto.alignBetweenContainers();
@@ -43,4 +48,5 @@ void loop() {
   boberto.goToGreenShip(2);
 
   delay(666666);
+  */
 }

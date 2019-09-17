@@ -26,42 +26,38 @@ class Robot {
   ~Robot();
 
   void stop();
-  void forward(unsigned long int goal);
-  // void forward(unsigned char vel);
-  void forward();
+  void forward(unsigned long int goal = 0, int16_t vel = 255);
 
   void begin();
 
-  void backward(unsigned long int goal);
-  // void backward(unsigned char vel);
-  void backward();
+  void backward(unsigned long int goal = 0, int16_t vel = 255);
 
-  void sidewaysRight(unsigned long int goal);
+  void sidewaysRight(unsigned long int goal = 0, int16_t vel = 255);
   // void sidewaysRight(unsigned char vel);
   void sidewaysRight();
 
-  void sidewaysLeft(unsigned long int goal);
+  void sidewaysLeft(unsigned long int goal = 0, int16_t vel = 255);
   // void sidewaysLeft(unsigned char vel);
   void sidewaysLeft();
 
-  void rotateLeft(unsigned long int goal);
+  void rotateLeft(unsigned long int goal = 0, int16_t vel = 255);
   // void rotateLeft(unsigned char vel);
   void rotateLeft();
 
-  void rotateRight(unsigned long int goal);
+  void rotateRight(unsigned long int goal = 0, int16_t vel = 255);
   // void rotateRight(unsigned char vel);
   void rotateRight();
 
-  void moveRightForward(unsigned long int goal);
+  void moveRightForward(unsigned long int goal = 0, int16_t vel = 255);
   void moveRightForward();
 
-  void moveRightBackward(unsigned long int goal);
+  void moveRightBackward(unsigned long int goal = 0, int16_t vel = 255);
   void moveRightBackward();
 
-  void moveLeftForward(unsigned long int goal);
+  void moveLeftForward(unsigned long int goal = 0, int16_t vel = 255);
   void moveLeftForward();
 
-  void moveLeftBackward(unsigned long int goal);
+  void moveLeftBackward(unsigned long int goal = 0, int16_t vel = 255);
   void moveLeftBackward();
 
   // Movimentação da garra

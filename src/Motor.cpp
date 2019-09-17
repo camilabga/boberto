@@ -46,7 +46,9 @@ void Motor::handleInterrupt() {
 
   if (cont == goal) {
     cont = 0;
-    stop();
+    analogWrite(pin1, 0);
+    analogWrite(pin2, 0);
+    finished = false;
   }
 }
 
@@ -60,44 +62,40 @@ void Motor::setPins(uint8_t _encoderPin, uint8_t _pin1, uint8_t _pin2) {
   pinMode(pin2, OUTPUT);
 }
 
-void Motor::forward(unsigned long int _goal) {
-  cont = 0;
-  goal = _goal;
-
-  analogWrite(pin1, 255);
-  analogWrite(pin2, 0);
+void Motor::forward(unsigned long int _goal, int16_t vel) {
+  if (_goal != 0) {
+    cont = 0;
+    goal = _goal;
+    finished = true;
+  }
+  if (vel > 0) {
+    analogWrite(pin1, vel);
+    analogWrite(pin2, 0);
+  } else {
+    analogWrite(pin1, 0);
+    analogWrite(pin2, vel);
+  }
 }
 
-// Interrupts are meaningless here
-void Motor::forward() {
-  analogWrite(pin1, 255);
-  analogWrite(pin2, 0);
-}
-
-// Interrupts are meaningless here
+/* Interrupts are meaningless here
 void Motor::forward(uint8_t vel) {
   analogWrite(pin1, vel);
   analogWrite(pin2, vel);
-}
+}*/
 
-void Motor::backward(unsigned long int _goal) {
-  cont = 0;
-  goal = _goal;
-
-  analogWrite(pin1, 0);
-  analogWrite(pin2, 255);
-}
-
-// Interrupts are meaningless here
-void Motor::backward() {
-  analogWrite(pin1, 0);
-  analogWrite(pin2, 255);
-}
-
-// Interrupts are meaningless here
-void Motor::backward(uint8_t vel) {
-  analogWrite(pin1, vel);
-  analogWrite(pin2, vel);
+void Motor::backward(unsigned long int _goal, int16_t vel) {
+  if (_goal != 0) {
+    cont = 0;
+    goal = _goal;
+    finished = true;
+  }
+  if (vel > 0) {
+    analogWrite(pin1, 0);
+    analogWrite(pin2, vel);
+  } else {
+    analogWrite(pin1, vel);
+    analogWrite(pin2, 0);
+  }
 }
 
 void Motor::stop() {
