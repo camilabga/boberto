@@ -85,7 +85,7 @@ void Claw::extend() {
 void Claw::retract() {
     digitalWrite(motorPin1, LOW);
     digitalWrite(motorPin2, HIGH);
-    delay((3 * MOTOR_TIME) / 4);
+    delay(850);
     stop();
 }
 
