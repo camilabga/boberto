@@ -9,44 +9,38 @@ Robot boberto;
 unsigned long int lastCall = 0;
 
 void setup() {
-  Wire.begin();
-  Serial.begin(9600);
-  Serial.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-  boberto.begin();
-  Serial.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+    Wire.begin();
+    Serial.begin(9600);
 
-  Serial.println(":: Ready ::");
+    boberto.begin();
 
-  // boberto.catchContainer(1);
+    Serial.println(":: Ready ::");
 
-  // boberto.backwardUntilBlackLine();
-  // boberto.goToBLueShip();
 }
 
 void loop() {
-  for (uint8_t i = 0; i < 35; i++) boberto.rotateLeft(100);
-  delay(2000);
-  for (uint8_t i = 0; i < 35; i++) boberto.rotateRight(100);
-  delay(2000);
-  
-  boberto.findBlackLine();
-  boberto.alignBetweenContainers();
-  boberto.followLineUntilGap();
+    boberto.rotateLeft(10);
+    delay(2000);
+    boberto.rotateRight(10);
+    delay(2000);
 
-  boberto.catchContainer(2);
+    boberto.findBlackLine();
+    boberto.alignBetweenContainers();
+    boberto.followLineUntilGap();
 
-  boberto.backwardUntilBlackLine();
+    boberto.catchContainer(2);
 
-  boberto.goToGreenShip(1);
+    boberto.backwardUntilBlackLine();
 
-  boberto.followLineUntilGap();
+    boberto.goToGreenShip(1);
 
-  boberto.catchContainer(1);
+    boberto.followLineUntilGap();
 
-  boberto.backwardUntilBlackLine();
+    boberto.catchContainer(1);
 
-  boberto.goToGreenShip(2);
+    boberto.backwardUntilBlackLine();
 
-  delay(666666);
-  */
+    boberto.goToGreenShip(2);
+
+    delay(666666);
 }
