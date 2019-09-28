@@ -1,12 +1,10 @@
 #include "Claw.hpp"
 
-#define MOTOR_TIME 2500
-#define PERIODO 40
-
-Claw::Claw(uint8_t _setPin, uint8_t _dirPin, uint8_t _motorPin1,
+Claw::Claw(uint8_t _setPin, uint8_t _dirPin, uint8_t _enable,uint8_t _motorPin1,
            uint8_t _motorPin2, uint8_t _endStopPin) {
     setPin = _setPin;
     dirPin = _dirPin;
+    enable = _enable;
     motorPin1 = _motorPin1;
     motorPin2 = _motorPin2;
     endStopPin = _endStopPin;
@@ -14,10 +12,13 @@ Claw::Claw(uint8_t _setPin, uint8_t _dirPin, uint8_t _motorPin1,
     pinMode(setPin, OUTPUT);
     pinMode(dirPin, OUTPUT);
 
+    pinMode(enable, OUTPUT);
+    digitalWrite(enable, LOW);
+
     pinMode(motorPin1, OUTPUT);
     pinMode(motorPin2, OUTPUT);
 
-    pinMode(endStopPin, INPUT_PULLUP);
+    pinMode(endStopPin, INPUT);
 }
 
 Claw::~Claw() {}
@@ -25,7 +26,7 @@ Claw::~Claw() {}
 void Claw::goUp() {
     digitalWrite(dirPin, HIGH);
 
-    for (int i = 0; i < 12800; i++) {
+    for (uint16_t i = 0; i < 12800; i++) {
         digitalWrite(setPin, HIGH);
         delayMicroseconds(25);
         digitalWrite(setPin, LOW);
@@ -36,7 +37,7 @@ void Claw::goUp() {
 void Claw::goDown() {
     digitalWrite(dirPin, LOW);
 
-    for (int i = 0; i < 12800; i++) {
+    for (uint16_t i = 0; i < 12800; i++) {
         digitalWrite(setPin, HIGH);
         delayMicroseconds(25);
         digitalWrite(setPin, LOW);
@@ -47,14 +48,14 @@ void Claw::goDown() {
 void Claw::goHome() {
     digitalWrite(dirPin, LOW);
 
-    while (digitalRead(endStopPin)) {
+    while (!digitalRead(endStopPin)) {
         digitalWrite(setPin, HIGH);
         delayMicroseconds(25);
         digitalWrite(setPin, LOW);
         delayMicroseconds(25);
     }
 
-    height = 1;
+    height = 1.0f;
 }
 
 void Claw::goToContainer(float container) {
@@ -65,7 +66,7 @@ void Claw::goToContainer(float container) {
     else
         digitalWrite(dirPin, LOW);
 
-    for (int i = 0; i < 3200 * abs(container - height); i++) {
+    for (uint16_t i = 0; i < 3200 * abs(container - height); i++) {
         digitalWrite(setPin, HIGH);
         delayMicroseconds(25);
         digitalWrite(setPin, LOW);
@@ -78,7 +79,7 @@ void Claw::goToContainer(float container) {
 void Claw::extend() {
     digitalWrite(motorPin1, HIGH);
     digitalWrite(motorPin2, LOW);
-    delay(1100);
+    delay(1500);
     stop();
 }
 

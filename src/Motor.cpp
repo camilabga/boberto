@@ -19,6 +19,7 @@ void Motor::handleInterrupt() {
 
     if (cont == goal) {
         cont = 0;
+        goal = 0;
 
         analogWrite(pin1, 0);
         analogWrite(pin2, 0);

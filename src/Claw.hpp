@@ -1,5 +1,5 @@
-#ifndef CLAW_H
-#define CLAW_H
+#ifndef CLAW_HPP
+#define CLAW_HPP
 
 #include <Arduino.h>
 
@@ -8,6 +8,7 @@ class Claw {
         // Pinos do motor de passo
         uint8_t setPin; 
         uint8_t dirPin;
+        uint8_t enable;
         
         // Pinos do motor DC
         uint8_t motorPin1;
@@ -20,7 +21,7 @@ class Claw {
         float height;
 
     public:
-        Claw(uint8_t _setPin, uint8_t _dirPin, uint8_t _motorPin1, uint8_t _motorPin2, uint8_t _endStopPin);
+        Claw(uint8_t _setPin, uint8_t _dirPin, uint8_t _enable, uint8_t _motorPin1, uint8_t _motorPin2, uint8_t _endStopPin);
         ~Claw();
 
         void goUp();
@@ -38,4 +39,4 @@ class Claw {
     
 };
 
-#endif // CLAW_H
+#endif // CLAW_HPP
