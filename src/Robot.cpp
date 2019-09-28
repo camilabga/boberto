@@ -2,10 +2,10 @@
 
 Robot::Robot() {
     // Inicia os pinos dos motores
-    frontLeft.setPins(3, 6, 7);
-    frontRight.setPins(2, 5, 4);
-    backLeft.setPins(18, 10, 11);
-    backRight.setPins(19, 8, 9);
+    frontLeft.setPins(19, 46, 44);
+    frontRight.setPins(18, 45, 4);
+    backLeft.setPins(3, 8, 7);
+    backRight.setPins(2, 5, 6);
 
     frontLeft.begin();
     frontRight.begin();
@@ -31,12 +31,12 @@ void Robot::begin() {
     claw.goHome();
     claw.goToContainer(5.5);
 
-    lidar.begin();
+    // lidar.begin();
 
     // Calibra o sensor de cor
-    colorSensor.init();
-    colorSensor.ledOn();
-    colorSensor.calibrate();
+    // colorSensor.init();
+    // colorSensor.ledOn();
+    // colorSensor.calibrate();
 }
 
 void Robot::forward(uint8_t goal, int16_t vel) {
@@ -46,11 +46,12 @@ void Robot::forward(uint8_t goal, int16_t vel) {
         backLeft.forward(100, vel);
         backRight.forward(100, vel);
 
-        while (frontLeft.getFinished() and frontRight.getFinished() and
-            backLeft.getFinished() and backRight.getFinished()) {
+        while (frontLeft.getFinished() or frontRight.getFinished() or
+            backLeft.getFinished() or backRight.getFinished()) {
             delay(1);
         }
     }
+    stop();
 }
 
 void Robot::backward(uint8_t goal, int16_t vel) {
@@ -60,11 +61,12 @@ void Robot::backward(uint8_t goal, int16_t vel) {
         backLeft.backward(100, vel);
         backRight.backward(100, vel);
 
-        while (frontLeft.getFinished() and frontRight.getFinished() and
-            backLeft.getFinished() and backRight.getFinished()) {
+        while (frontLeft.getFinished() or frontRight.getFinished() or
+            backLeft.getFinished() or backRight.getFinished()) {
             delay(1);
         }
     }
+    stop();
 }
 
 void Robot::sidewaysLeft(uint8_t goal, int16_t vel) {
@@ -74,11 +76,12 @@ void Robot::sidewaysLeft(uint8_t goal, int16_t vel) {
         backLeft.backward(100, vel);
         backRight.forward(100, vel);
 
-        while (frontLeft.getFinished() and frontRight.getFinished() and
-            backLeft.getFinished() and backRight.getFinished()) {
+        while (frontLeft.getFinished() or frontRight.getFinished() or
+            backLeft.getFinished() or backRight.getFinished()) {
             delay(1);
         }
     }
+    stop();
 }
 
 void Robot::sidewaysRight(uint8_t goal, int16_t vel) {
@@ -88,11 +91,12 @@ void Robot::sidewaysRight(uint8_t goal, int16_t vel) {
         backLeft.forward(100, vel);
         backRight.backward(100, vel);
 
-        while (frontLeft.getFinished() and frontRight.getFinished() and
-            backLeft.getFinished() and backRight.getFinished()) {
+        while (frontLeft.getFinished() or frontRight.getFinished() or
+            backLeft.getFinished() or backRight.getFinished()) {
             delay(1);
         }
     }
+    stop();
 }
 
 void Robot::rotateRight(uint8_t goal, int16_t vel) {
@@ -102,11 +106,12 @@ void Robot::rotateRight(uint8_t goal, int16_t vel) {
         backLeft.backward(100, vel);
         backRight.forward(100, vel);
 
-        while (frontLeft.getFinished() and frontRight.getFinished() and
-            backLeft.getFinished() and backRight.getFinished()) {
+        while (frontLeft.getFinished() or frontRight.getFinished() or
+            backLeft.getFinished() or backRight.getFinished()) {
             delay(1);
         }
     }
+    stop();
 }
 
 void Robot::rotateLeft(uint8_t goal, int16_t vel) {
@@ -116,11 +121,12 @@ void Robot::rotateLeft(uint8_t goal, int16_t vel) {
         backLeft.forward(100, vel);
         backRight.backward(100, vel);
 
-        while (frontLeft.getFinished() and frontRight.getFinished() and
-            backLeft.getFinished() and backRight.getFinished()) {
+        while (frontLeft.getFinished() or frontRight.getFinished() or
+            backLeft.getFinished() or backRight.getFinished()) {
             delay(1);
         }
     }
+    stop();
 }
 
 void Robot::moveRightForward(uint8_t goal, int16_t vel) {
@@ -130,11 +136,12 @@ void Robot::moveRightForward(uint8_t goal, int16_t vel) {
         backLeft.stop();
         backRight.forward(100, vel);
 
-        while (frontLeft.getFinished() and frontRight.getFinished() and
-            backLeft.getFinished() and backRight.getFinished()) {
+        while (frontLeft.getFinished() or frontRight.getFinished() or
+            backLeft.getFinished() or backRight.getFinished()) {
             delay(1);
         }
     }
+    stop();
 }
 
 void Robot::moveRightBackward(uint8_t goal, int16_t vel) {
@@ -144,11 +151,12 @@ void Robot::moveRightBackward(uint8_t goal, int16_t vel) {
         backLeft.backward(100, vel);
         backRight.stop();
 
-        while (frontLeft.getFinished() and frontRight.getFinished() and
-            backLeft.getFinished() and backRight.getFinished()) {
+        while (frontLeft.getFinished() or frontRight.getFinished() or
+            backLeft.getFinished() or backRight.getFinished()) {
             delay(1);
         }
     }
+    stop();
 }
 
 void Robot::moveLeftForward(uint8_t goal, int16_t vel) {
@@ -158,11 +166,12 @@ void Robot::moveLeftForward(uint8_t goal, int16_t vel) {
         backLeft.forward(100, vel);
         backRight.stop();
 
-        while (frontLeft.getFinished() and frontRight.getFinished() and
-            backLeft.getFinished() and backRight.getFinished()) {
+        while (frontLeft.getFinished() or frontRight.getFinished() or
+            backLeft.getFinished() or backRight.getFinished()) {
             delay(1);
         }
     }
+    stop();
 }
 
 void Robot::moveLeftBackward(uint8_t goal, int16_t vel) {
@@ -172,11 +181,12 @@ void Robot::moveLeftBackward(uint8_t goal, int16_t vel) {
         backLeft.stop();
         backRight.backward(100, vel);
 
-        while (frontLeft.getFinished() and frontRight.getFinished() and
-            backLeft.getFinished() and backRight.getFinished()) {
+        while (frontLeft.getFinished() or frontRight.getFinished() or
+            backLeft.getFinished() or backRight.getFinished()) {
             delay(1);
         }
-    }    
+    }  
+    stop();  
 }
 
 void Robot::stop() {
@@ -460,14 +470,14 @@ void Robot::calibrateColorSensor() {
 }
 
 void Robot::testMoviments() {
-    forward(1000);
-    delay(3000);
-    backward(1000);
-    delay(3000);
-    sidewaysRight(1000);
-    delay(3000);
-    sidewaysLeft(1000);
-    delay(3000);
+    forward(10);
+    delay(2000);
+    backward(10);
+    delay(2000);
+    sidewaysRight(10);
+    delay(2000);
+    sidewaysLeft(10);
+    delay(2000);
 }
 
 void Robot::testClaw() {

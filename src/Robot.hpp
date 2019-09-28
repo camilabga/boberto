@@ -13,7 +13,7 @@ class Robot {
 	private:
 		Motor frontLeft{0}, frontRight{1}, backLeft{2}, backRight{3};
 		
-		Claw claw{26, 27, 28, 29, 30};
+		Claw claw{50 , 52, 13, 11, 12, 53};
 
 		// Sensores Frontais
 		LineSensor sensorFL, sensorFR;
