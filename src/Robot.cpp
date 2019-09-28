@@ -22,6 +22,9 @@ Robot::Robot() {
 
     sensorFLL.setPin(36);
     sensorFRR.setPin(34);
+
+    blueSensorL.setPin(38);
+    blueSensorR.setPin(39);
 }
 
 Robot::~Robot() {}
@@ -207,8 +210,50 @@ void Robot::catchContainer(uint8_t container) {
     claw.goToContainer(5.5);
 }
 
-void Robot::releaseContainer(uint8_t container) {
+void Robot::catchContainer() {
+    uint8_t container = arena.containers[currentZone].getHeight(clawSide);
+    claw.extend();
     claw.goToContainer(container);
+    claw.goToContainer(container + 0.5);
+    claw.ajustContainer();
+    claw.goToContainer(5.5);
+
+    arena.containers[currentZone].updateHeight(clawSide);
+    if (arena.containers[currentZone].isEmpty(clawSide)) {
+        currentZone++;
+        if (currentZone == 3) 
+            currentZone = 0;
+    }
+}
+
+/*void Robot::releaseContainer(uint8_t container) {
+    claw.goToContainer(container);
+    claw.retract();
+    claw.goToContainer(5.5);
+}*/
+
+void Robot::releaseContainer(COLOR color) {
+    switch (color) {
+        case Green:
+            claw.goToContainer(arena.greenShip.currentHeight);
+            arena.greenShip.increment();
+            break;
+
+        case Blue:
+            claw.goToContainer(arena.blueShip.currentHeight);
+            arena.blueShip.increment();
+            break;
+
+        case Red:
+            stop();
+            /* code */
+            break;
+    
+        default:
+            stop();
+            break;
+    }
+    
     claw.retract();
     claw.goToContainer(5.5);
 }
@@ -233,6 +278,15 @@ void Robot::findBlackLine() {
 
     Serial.print("\n");
     */
+}
+
+void Robot::findBlueLine() {
+    sidewaysLeft();
+    while (blueSensorL.getValue() && blueSensorR.getValue()) {
+        delay(1);
+    }
+
+    stop();
 }
 
 void Robot::followLineUntilGap() {
@@ -362,14 +416,45 @@ void Robot::followHorizontalLeft() {
     stop();
 }
 
-void Robot::alignBetweenContainers() {
-    sidewaysRight();
+void Robot::alignBetweenContainers(uint8_t zone) {
+    switch (zone) {
+        case 0:
+            /* decidir dps */
+            stop();
+            break;
+        case 1:
+            sidewaysRight();
+            break;
+        case 2:
+            sidewaysLeft(); 
+            break;
+        
+        default:
+            stop();
+            break;
+    }
 
     while (!sensorFR.getValue()) delay(1);
 
     while (sensorFR.getValue()) delay(1);
 
     stop();
+}
+
+void Robot::alignWithShip(){
+    if ((!blueSensorR.getValue() && !blueSensorL.getValue())) {
+        return ;
+    } else if (!blueSensorR.getValue()) {
+        rotateLeft();
+        while (blueSensorL.getValue()) 
+            delay(1);
+        stop();
+    } else {
+        rotateRight();
+        while (blueSensorR.getValue()) 
+            delay(1);
+        stop();
+    }
 }
 
 void Robot::backwardUntilBlackLine() {
@@ -380,8 +465,20 @@ void Robot::backwardUntilBlackLine() {
     stop();
 }
 
-void Robot::goToBLueShip(uint8_t container) {
-    forward();
+void Robot::goToBlueShip() {
+    if (arena.side) {
+        rotateLeft(35);
+        followHorizontalRight();
+        findBlueLine();
+        alignWithShip();
+    } else { 
+        rotateLeft(35);
+        followHorizontalLeft();
+        findBlueLine();
+        alignWithShip();        
+    }
+
+    /*forward();
 
     delay(300);
 
@@ -423,11 +520,27 @@ void Robot::goToBLueShip(uint8_t container) {
 
     delay(1414);
 
-    stop();
+    stop();*/
 }
 
-void Robot::goToGreenShip(uint8_t container) {
-    for (uint8_t i = 0; i < 35; i++) rotateLeft(100);
+void Robot::goToGreenShip() {
+    /*
+	side: true ==> green | blue
+		  false ==> blue | green
+    */
+    if (arena.side) {
+        rotateLeft(35);
+        followHorizontalLeft();
+        findBlueLine();
+        alignWithShip();
+    } else { 
+        rotateLeft(35);
+        followHorizontalRight();
+        findBlueLine();
+        alignWithShip();
+    }
+
+    /*rotateLeft(35);
 
     alignBetweenContainers();
 
@@ -463,7 +576,13 @@ void Robot::goToGreenShip(uint8_t container) {
 
     delay(1414);
 
-    stop();
+    stop();*/
+}
+
+void Robot::goToContainerZone(uint8_t zone){
+    findBlackLine();
+    alignBetweenContainers(zone);
+    followLineUntilGap();
 }
 
 void Robot::calibrateColorSensor() {
@@ -485,7 +604,7 @@ void Robot::testMoviments() {
 void Robot::testClaw() {
     catchContainer(1);
     delay(1000);
-    releaseContainer(1);
+    releaseContainer(Green);
     delay(1000);
 }
 
@@ -515,4 +634,33 @@ void Robot::testColorSensor() {
 void Robot::testDistanceSensor() {
     Serial.print("Distance: ");
     Serial.println(lidar.getDistance());
+}
+
+void Robot::chooseContainerDestination() {
+    currentDestination = colorSensor.readColor();
+}
+
+void Robot::goToCurrentDestination() {
+    switch (currentDestination) {
+        case Green:
+            backwardUntilBlackLine();
+            goToGreenShip();
+            releaseContainer(Green);
+            break;
+
+        case Blue:
+            backwardUntilBlackLine();
+            goToBlueShip();
+            releaseContainer(Blue);
+            break;
+
+        case Red:
+            /* code */
+            stop();
+            break;
+        
+        default:
+            stop();
+            break;
+    }
 }
