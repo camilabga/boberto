@@ -30,6 +30,8 @@ void Robot::begin() {
     // Seta a posição inicial da garra
     claw.goHome();
     claw.goToContainer(5.5);
+    
+    lidar.begin();
 
     // lidar.begin();
 

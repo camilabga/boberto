@@ -1,0 +1,30 @@
+Pin:
+
+- Motor de passo
+	- 52 Dir
+	- 50 Step
+	- 13 enable
+
+- Ponte H 1
+	- 11 input 1
+	- 12 input 2
+	- 9 input 3
+	- 10 input 4
+
+- Ponte H 2
+	- 7 input 1
+	- 8 input 2
+	- 6 input 3
+	- 5 input 4
+
+- Ponte H 3
+	- 45 input 1
+	- 4 input 2
+	- 46 input 3
+	- 44 input 4
+
+- Encoders (Interrupt)
+	- 3 - motor 1
+	- 2 - motor 2
+	- 18 - motor 3
+	- 19 - motor 4
