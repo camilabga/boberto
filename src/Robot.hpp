@@ -66,8 +66,6 @@ struct ContainerZone {
 			}
 		}
 	}
-
-
 };
 
 /*
