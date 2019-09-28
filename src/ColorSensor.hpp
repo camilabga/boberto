@@ -40,6 +40,10 @@
 #define OFFSET_BLUE 0x4A
 #define OFFSET_CLEAR 0x4B
 
+enum COLOR {
+	Green, Blue, Red, None
+};
+
 struct RGBC {
     int red;
     int blue;
@@ -103,7 +107,7 @@ class ColorSensor {
             1: Green
             2: Blue
         */
-        uint8_t readColor();
+        COLOR readColor();
 };
 
 #endif // COLORSENSOR_HPP

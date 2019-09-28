@@ -255,7 +255,7 @@ RGBC ColorSensor::read() {
     return color;
 }
 
-uint8_t ColorSensor::readColor() {
+COLOR ColorSensor::readColor() {
     RGBC color = read();
 
     byte red = 0, green = 0, blue = 0;
@@ -270,11 +270,11 @@ uint8_t ColorSensor::readColor() {
     }
     
     if(red > blue and red > green)
-        return 0;
+        return Red;
     else if (green > red and green > blue)
-        return 1;
+        return Green;
     else if (blue > red and blue > green)
-        return 2;
+        return Blue;
     else 
-        return -1;
+        return None;
 }

@@ -31,23 +31,21 @@ void setup() {
 }
 
 void loop() {
-    boberto.findBlackLine();
-    boberto.alignBetweenContainers();
-    boberto.followLineUntilGap();
+    boberto.goToContainerZone(1);
 
-    boberto.catchContainer(2);
+    boberto.catchContainer();
 
-    boberto.backwardUntilBlackLine();
+    boberto.chooseContainerDestination();
 
-    boberto.goToGreenShip(1);
+    boberto.goToCurrentDestination();
 
-    boberto.followLineUntilGap();
+    /*boberto.followLineUntilGap();
 
     boberto.catchContainer(1);
 
     boberto.backwardUntilBlackLine();
 
-    boberto.goToGreenShip(2);
+    boberto.goToGreenShip(2);*/
 
     delay(666666);
 }
