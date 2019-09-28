@@ -2,20 +2,20 @@
 
 Robot::Robot() {
     // Inicia os pinos dos motores
-    frontLeft.setPins(19, 46, 44);
-    frontRight.setPins(18, 45, 4);
-    backLeft.setPins(3, 8, 7);
-    backRight.setPins(2, 5, 6);
+    frontRight.setPins(19, 44, 46);
+    frontLeft.setPins(18, 4, 45);
+    backRight.setPins(3, 7, 8);
+    backLeft.setPins(2, 6, 5);
 
     frontLeft.begin();
     frontRight.begin();
     backLeft.begin();
     backRight.begin();
 
-    sensorFL.setPin(13);
-    sensorFR.setPin(12);
-    sensorBL.setPin(22);
-    sensorBR.setPin(24);
+    sensorFL.setPin(23);
+    sensorFR.setPin(15);
+    sensorBL.setPin(27);
+    sensorBR.setPin(29);
 
     sensorSB.setPin(35);
     sensorSF.setPin(34);
@@ -34,7 +34,7 @@ void Robot::begin() {
     claw.goHome();
     claw.goToContainer(5.5);
     
-    lidar.begin();
+    //lidar.begin();
 
     // lidar.begin();
 
@@ -591,6 +591,7 @@ void Robot::calibrateColorSensor() {
 }
 
 void Robot::testMoviments() {
+    
     forward(10);
     delay(2000);
     backward(10);

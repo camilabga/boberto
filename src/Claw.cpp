@@ -1,7 +1,9 @@
 #include "Claw.hpp"
 
-Claw::Claw(uint8_t _setPin, uint8_t _dirPin, uint8_t _enable,uint8_t _motorPin1,
-           uint8_t _motorPin2, uint8_t _endStopPin) {
+#define SPEED 15
+#define MICRO_STEP 16
+
+Claw::Claw(uint8_t _setPin, uint8_t _dirPin, uint8_t _enable,uint8_t _motorPin1, uint8_t _motorPin2, uint8_t _endStopPin) {
     setPin = _setPin;
     dirPin = _dirPin;
     enable = _enable;
@@ -26,22 +28,22 @@ Claw::~Claw() {}
 void Claw::goUp() {
     digitalWrite(dirPin, HIGH);
 
-    for (uint16_t i = 0; i < 12800; i++) {
+    for (uint16_t i = 0; i < MICRO_STEP * 800; i++) {
         digitalWrite(setPin, HIGH);
-        delayMicroseconds(25);
+        delayMicroseconds(SPEED);
         digitalWrite(setPin, LOW);
-        delayMicroseconds(25);
+        delayMicroseconds(SPEED);
     }
 }
 
 void Claw::goDown() {
     digitalWrite(dirPin, LOW);
 
-    for (uint16_t i = 0; i < 12800; i++) {
+    for (uint16_t i = 0; i < MICRO_STEP * 800; i++) {
         digitalWrite(setPin, HIGH);
-        delayMicroseconds(25);
+        delayMicroseconds(SPEED);
         digitalWrite(setPin, LOW);
-        delayMicroseconds(25);
+        delayMicroseconds(SPEED);
     }
 }
 
@@ -50,9 +52,9 @@ void Claw::goHome() {
 
     while (!digitalRead(endStopPin)) {
         digitalWrite(setPin, HIGH);
-        delayMicroseconds(25);
+        delayMicroseconds(SPEED);
         digitalWrite(setPin, LOW);
-        delayMicroseconds(25);
+        delayMicroseconds(SPEED);
     }
 
     height = 1.0f;
@@ -66,11 +68,11 @@ void Claw::goToContainer(float container) {
     else
         digitalWrite(dirPin, LOW);
 
-    for (uint16_t i = 0; i < 3200 * abs(container - height); i++) {
+    for (uint16_t i = 0; i < MICRO_STEP * 200 * abs(container - height); i++) {
         digitalWrite(setPin, HIGH);
-        delayMicroseconds(25);
+        delayMicroseconds(SPEED);
         digitalWrite(setPin, LOW);
-        delayMicroseconds(25);
+        delayMicroseconds(SPEED);
     }
 
     height = container;
