@@ -258,10 +258,10 @@ RGBC ColorSensor::read() {
 uint8_t ColorSensor::readColor() {
     RGBC color = read();
 
-    uint8_t red = 0, green = 0, blue = 0;
+    byte red = 0, green = 0, blue = 0;
 
-    for(int i = 0; i < 5; i++) {
-        if(color.red > color.blue and color.red > color.green)
+    for(byte i = 0; i < 5; i++) {
+        if (color.red > color.blue and color.red > color.green)
             red++;
         else if (color.green > color.red and color.green > color.blue)
             green++;
