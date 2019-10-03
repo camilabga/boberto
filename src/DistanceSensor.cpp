@@ -10,20 +10,19 @@ DistanceSensor::~DistanceSensor() {}
 */
 void DistanceSensor::begin() {
     sensor.init();
-    sensor.setTimeout(500);
-    sensor.startContinuous();
+    sensor.setTimeout(700);
+    // sensor.startContinuous();
 }
 
-int DistanceSensor::getDistance() {
-    // -55 para compensar o erro
-    return sensor.readRangeContinuousMillimeters() - 55;
+uint16_t DistanceSensor::getDistance() {
+    //return sensor.readRangeContinuousMillimeters();
+    return sensor.readRangeSingleMillimeters();
 }
 
 bool DistanceSensor::getContainerGap() {
-    int distance = sensor.readRangeContinuousMillimeters();
-    distance -= 55;
-
-    if(distance > 50) 
+    uint16_t distance = sensor.readRangeContinuousMillimeters();
+    
+    if(distance >= 90) 
         return true;
     else
         return false;

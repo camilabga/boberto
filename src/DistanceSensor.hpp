@@ -16,7 +16,7 @@ class DistanceSensor {
         void begin();
 
         // Realiza uma leitura
-        int getDistance();
+        uint16_t getDistance();
         // Detecta uma mudança brusca nos valores lidos
         bool getContainerGap(); 
 };
