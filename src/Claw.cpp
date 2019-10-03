@@ -1,6 +1,6 @@
 #include "Claw.hpp"
 
-#define SPEED 15
+#define SPEED 20
 #define MICRO_STEP 16
 
 Claw::Claw(uint8_t _setPin, uint8_t _dirPin, uint8_t _enable,uint8_t _motorPin1, uint8_t _motorPin2, uint8_t _endStopPin) {
@@ -81,21 +81,26 @@ void Claw::goToContainer(float container) {
 void Claw::extend() {
     digitalWrite(motorPin1, HIGH);
     digitalWrite(motorPin2, LOW);
-    delay(1500);
+    delay(800);
     stop();
 }
 
 void Claw::retract() {
     digitalWrite(motorPin1, LOW);
     digitalWrite(motorPin2, HIGH);
-    delay(850);
+    delay(1200);
     stop();
 }
 
 void Claw::ajustContainer() {
+    digitalWrite(motorPin1, HIGH);
+    digitalWrite(motorPin2, LOW);
+    delay(1000);
+    stop();
+
     digitalWrite(motorPin1, LOW);
     digitalWrite(motorPin2, HIGH);
-    delay(250);
+    delay(600);
     stop();
 }
 
