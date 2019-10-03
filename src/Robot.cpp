@@ -434,8 +434,7 @@ void Robot::followHorizontalLeft() {
         else
             forward();
     }
-
-    
+  
     while (sensorFRR.getValue()) {
         if (sensorFL.getValue() and sensorBR.getValue())
             rotateLeft();
@@ -448,7 +447,8 @@ void Robot::followHorizontalLeft() {
         else
             forward();
     }
-    
+
+    /*
     while (!sensorFRR.getValue()) {
         if (sensorFL.getValue() and sensorBR.getValue())
             rotateLeft();
@@ -461,6 +461,7 @@ void Robot::followHorizontalLeft() {
         else
             forward();
     }
+    */
 
     stop();
 }
@@ -473,18 +474,24 @@ void Robot::alignBetweenContainers(uint8_t zone) {
             break;
         case 1:
             sidewaysRight(); 
+
+            while (!sensorFR.getValue()) delay(1);
+
+            while (sensorFR.getValue()) delay(1);
+
             break;
         case 2:
             sidewaysLeft();
+
+            while (!sensorFL.getValue()) delay(1);
+
+            while (sensorFL.getValue()) delay(1);
+
             break;
         default:
             stop();
             break;
     }
-
-    while (!sensorFR.getValue()) delay(1);
-
-    while (sensorFR.getValue()) delay(1);
 
     stop();
 }
@@ -512,30 +519,57 @@ void Robot::backwardUntilBlackLine() {
 
 void Robot::goToBlueShip() {
     if (arena.side) {
-        rotateLeft(16);
+        if (currentZone == 1) {
+            rotateLeft(16);
 
-        while (!sensorFR.getValue()) 
-            sidewaysRight(0, 200);
+            while (!sensorFR.getValue()) 
+                sidewaysRight(0, 200);
 
-        while (sensorFR.getValue())
-            sidewaysRight(0, 200);
-        
-        sidewaysRight(1, 200);
-        
-        followHorizontalRight();
+            while (sensorFR.getValue())
+                sidewaysRight(0, 200);
+            
+            sidewaysRight(1, 200);
+            
+            followHorizontalRight();
 
-        backward(5, 200);
+            backward(5, 200);
 
-        while (!sensorFRR.getValue()) 
-            sidewaysLeft();
+            while (!sensorFRR.getValue()) 
+                sidewaysLeft();
 
-        while (sensorFRR.getValue())
-            sidewaysLeft();
+            while (sensorFRR.getValue())
+                sidewaysLeft();
 
-        sidewaysLeft(3);
+            sidewaysLeft(3);
 
-        // findBlueLine();
-        // alignWithShip();
+            alignWithShip();                 
+
+        } else if (currentZone == 2) {
+            rotateLeft(16);
+
+            while (!sensorFR.getValue()) 
+                sidewaysRight(0, 200);
+
+            while (sensorFR.getValue())
+                sidewaysRight(0, 200);
+            
+            sidewaysRight(1, 200);
+
+            followHorizontalRight();
+            followHorizontalRight();
+
+            backward(5, 200);
+
+            while (!sensorFRR.getValue()) 
+                sidewaysLeft();
+
+            while (sensorFRR.getValue())
+                sidewaysLeft();
+
+            sidewaysLeft(3);
+
+            alignWithShip();
+        }
     } else { 
         rotateLeft(35);
         followHorizontalLeft();
@@ -550,29 +584,57 @@ void Robot::goToGreenShip() {
 		  false ==> blue | green
     */
     if (arena.side) {
-        rotateLeft(16);
+        if (currentZone == 1) {
+           rotateLeft(16);
 
-        while (!sensorFR.getValue()) 
-            sidewaysRight(0, 200);
+            while (!sensorFR.getValue()) 
+                sidewaysRight(0, 200);
 
-        while (sensorFR.getValue())
-            sidewaysRight(0, 200);
-        
-        sidewaysRight(1, 200);
-        
-        followHorizontalLeft();
+            while (sensorFR.getValue())
+                sidewaysRight(0, 200);
+            
+            sidewaysRight(1, 200);
+            
+            followHorizontalLeft();
+            followHorizontalLeft();
 
-        backward(5, 200);
+            backward(5, 200);
 
-        while (!sensorFRR.getValue()) 
-            sidewaysLeft();
+            while (!sensorFRR.getValue()) 
+                sidewaysLeft();
 
-        while (sensorFRR.getValue())
-            sidewaysLeft();
+            while (sensorFRR.getValue())
+                sidewaysLeft();
 
-        sidewaysLeft(3);
-        
-        alignWithShip();
+            sidewaysLeft(3);
+            
+            alignWithShip();             
+
+        } else if (currentZone == 2){
+            rotateLeft(16);
+
+            while (!sensorFR.getValue()) 
+                sidewaysRight(0, 200);
+
+            while (sensorFR.getValue())
+                sidewaysRight(0, 200);
+            
+            sidewaysRight(1, 200);
+            
+            followHorizontalLeft();
+
+            backward(5, 200);
+
+            while (!sensorFRR.getValue()) 
+                sidewaysLeft();
+
+            while (sensorFRR.getValue())
+                sidewaysLeft();
+
+            sidewaysLeft(3);
+            
+            alignWithShip();  
+        }
     } else { 
         rotateLeft(35);
         followHorizontalRight();
@@ -697,11 +759,40 @@ void Robot::goToCurrentDestination() {
 }
 
 void Robot::thereAndBackAgain() {
-    while (!sensorFRR.getValue())
-        sidewaysRight();
-    
-    while (sensorFRR.getValue())
-        sidewaysRight();
+    if(currentDestination == Blue) {
+        while (!sensorFRR.getValue())
+            sidewaysRight();
 
-    rotateRight(15);
+        while (sensorFRR.getValue())
+            sidewaysRight();
+
+        rotateRight(15);
+
+        while (!sensorFL.getValue())
+            sidewaysLeft();
+        
+        while (sensorFL.getValue())
+            sidewaysLeft();
+
+        currentZone = 1;
+
+    } else if (currentDestination == Green) {
+        while (!sensorFRR.getValue())
+            sidewaysRight();
+
+        while (sensorFRR.getValue())
+            sidewaysRight();
+
+        rotateRight(15);
+
+        while (!sensorFR.getValue())
+            sidewaysRight();
+        
+        while (sensorFR.getValue())
+            sidewaysRight();
+
+        forward(1, 150);
+
+        currentZone = 2;
+    }
 }
