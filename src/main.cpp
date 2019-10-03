@@ -13,31 +13,42 @@ void setup() {
     pinMode(BOTAO_CONFIG, INPUT);
 
     Wire.begin();
-    Serial.begin(9600);
+    Serial.begin(115200);
 
     boberto.begin();
 
     // esperar botao para calibrar o sensor de cor
-    while (!digitalRead(BOTAO_CONFIG)) if(digitalRead(BOTAO_CONFIG)) break;
-    boberto.calibrateColorSensor();
+    // while (!digitalRead(BOTAO_CONFIG)) if(digitalRead(BOTAO_CONFIG)) break;
+    // boberto.calibrateColorSensor();
 
     Serial.println(":: Ready ::");
 
     // boberto.catchContainer(1);
 
     // wait botao para começar rotina padrão do robô
-    while (!digitalRead(BOTAO_CONFIG)) if(digitalRead(BOTAO_CONFIG)) break;
+    // while (!digitalRead(BOTAO_CONFIG)) if(digitalRead(BOTAO_CONFIG)) break;
 
+    boberto.goToContainerZone();
+    boberto.catchContainer();   
+    boberto.chooseContainerDestination();
+    boberto.goToCurrentDestination();
+
+    boberto.thereAndBackAgain();
+    
+    boberto.followLineUntilGap();
+    boberto.catchContainer();   
+    boberto.chooseContainerDestination();
+    boberto.goToCurrentDestination();
 }
 
 void loop() {
-    boberto.goToContainerZone(1);
+    // boberto.goToContainerZone();
 
-    boberto.catchContainer();
+    // boberto.catchContainer();
 
-    boberto.chooseContainerDestination();
+    // boberto.chooseContainerDestination();
 
-    boberto.goToCurrentDestination();
+    // boberto.goToCurrentDestination();
 
     /*boberto.followLineUntilGap();
 
@@ -47,5 +58,8 @@ void loop() {
 
     boberto.goToGreenShip(2);*/
 
-    delay(666666);
+    //delay(666666);
+
+    // boberto.testClaw();
+    // delay(800);
 }
