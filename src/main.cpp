@@ -27,18 +27,18 @@ void setup() {
 
     // wait botao para começar rotina padrão do robô
     // while (!digitalRead(BOTAO_CONFIG)) if(digitalRead(BOTAO_CONFIG)) break;
-
-    boberto.goToContainerZone();
-    boberto.catchContainer();   
-    boberto.chooseContainerDestination();
-    boberto.goToCurrentDestination();
-
-    boberto.thereAndBackAgain();
     
-    boberto.followLineUntilGap();
-    boberto.catchContainer();   
-    boberto.chooseContainerDestination();
+    boberto.goToContainerZone();
+    boberto.catchContainer();
     boberto.goToCurrentDestination();
+
+    while (true) {
+        boberto.thereAndBackAgain();
+        boberto.followLineUntilGap();    
+        boberto.catchContainer();
+        boberto.goToCurrentDestination();
+    }
+
 }
 
 void loop() {
@@ -58,8 +58,8 @@ void loop() {
 
     boberto.goToGreenShip(2);*/
 
-    //delay(666666);
+    // delay(666666);
 
-    // boberto.testClaw();
+    // boberto.testColorSensor();
     // delay(800);
 }

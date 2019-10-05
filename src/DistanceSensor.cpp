@@ -10,7 +10,7 @@ DistanceSensor::~DistanceSensor() {}
 */
 void DistanceSensor::begin() {
     sensor.init();
-    sensor.setTimeout(700);
+    sensor.setTimeout(300);
     // sensor.startContinuous();
 }
 

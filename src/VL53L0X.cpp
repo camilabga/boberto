@@ -857,6 +857,7 @@ uint16_t VL53L0X::readRangeSingleMillimeters(void)
     }
   }
 
+
   return readRangeContinuousMillimeters();
 }
 

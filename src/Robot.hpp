@@ -29,12 +29,12 @@ class Robot {
 
 		DistanceSensor lidar;
 
-		ColorSensor colorSensor{32};
+		ColorSensor colorSensor{33};
 
 		Arena arena;
-		uint8_t currentZone = 1;
+		uint8_t currentZone = 2;
 
-		COLOR currentDestination = None;
+		COLOR currentDestination = Blue;
 
 	public:
 		Robot();
@@ -63,6 +63,9 @@ class Robot {
 		void moveLeftForward(uint8_t goal = 0, int16_t vel = 255);
 
 		void moveLeftBackward(uint8_t goal = 0, int16_t vel = 255);
+
+		void smoothRotateLeft();
+		void smoothRotateRight();
 
 		// Movimentação da garra
 		void catchContainer(uint8_t container);
