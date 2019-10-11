@@ -631,61 +631,65 @@ void Robot::goToContainerZone() {
 
 void Robot::goToBlueShip() {
     if (arena.side) {
-        if (currentZone == 1) {
-            rotateLeft(16);
+        if (arena.blueShip.currentPile == 0) {
+            if (currentZone == 1) {
+                rotateLeft(16);
 
-            while (!sensorFR.getValue() or !sensorBR.getValue()) {
-                if(sensorFR.getValue() and !sensorBR.getValue())
-                    rotateLeft(0, 180);
-                else if (sensorBR.getValue() and !sensorFR.getValue())
-                    rotateRight(0, 180);
-                else 
-                    sidewaysRight(0, 180);
+                while (!sensorFR.getValue() or !sensorBR.getValue()) {
+                    if(sensorFR.getValue() and !sensorBR.getValue())
+                        rotateLeft(0, 180);
+                    else if (sensorBR.getValue() and !sensorFR.getValue())
+                        rotateRight(0, 180);
+                    else 
+                        sidewaysRight(0, 180);
+                }
+
+                sidewaysRight(1, 180);
+
+                followHorizontalRight();
+
+                backward(3, 200);
+
+                while (!sensorFRR.getValue()) sidewaysLeft(0, 180);
+
+                while (sensorFRR.getValue()) sidewaysLeft(0, 180);
+
+                sidewaysLeft(3, 180);
+
+                alignWithShip();
+
+            } else if (currentZone == 2) {
+                rotateLeft(16);
+
+                while (!sensorFR.getValue() or !sensorBR.getValue()) {
+                    if(sensorFR.getValue() and !sensorBR.getValue())
+                        rotateLeft(0, 180);
+                    else if (sensorBR.getValue() and !sensorFR.getValue())
+                        rotateRight(0, 180);
+                    else 
+                        sidewaysRight(0, 180);
+                }
+
+                sidewaysRight(1, 180);
+
+                // Serial.println("followHorizontalRight 1");
+                followHorizontalRight();
+                // Serial.println("followHorizontalRight 2");
+                // delay(50);
+                followHorizontalRight();
+
+                backward(3, 200);
+
+                while (!sensorFRR.getValue()) sidewaysLeft(0, 180);
+
+                while (sensorFRR.getValue()) sidewaysLeft(0, 180);
+
+                sidewaysLeft(3, 180);
+
+                alignWithShip();
             }
-
-            sidewaysRight(1, 180);
-
-            followHorizontalRight();
-
-            backward(3, 200);
-
-            while (!sensorFRR.getValue()) sidewaysLeft(0, 180);
-
-            while (sensorFRR.getValue()) sidewaysLeft(0, 180);
-
-            sidewaysLeft(3, 180);
-
-            alignWithShip();
-
-        } else if (currentZone == 2) {
-            rotateLeft(16);
-
-            while (!sensorFR.getValue() or !sensorBR.getValue()) {
-                if(sensorFR.getValue() and !sensorBR.getValue())
-                    rotateLeft(0, 180);
-                else if (sensorBR.getValue() and !sensorFR.getValue())
-                    rotateRight(0, 180);
-                else 
-                    sidewaysRight(0, 180);
-            }
-
-            sidewaysRight(1, 180);
-
-            // Serial.println("followHorizontalRight 1");
-            followHorizontalRight();
-            // Serial.println("followHorizontalRight 2");
-            // delay(50);
-            followHorizontalRight();
-
-            backward(3, 200);
-
-            while (!sensorFRR.getValue()) sidewaysLeft(0, 180);
-
-            while (sensorFRR.getValue()) sidewaysLeft(0, 180);
-
-            sidewaysLeft(3, 180);
-
-            alignWithShip();
+        } else {
+            // Código para ir para a segunda pilha 
         }
     } else {
         rotateLeft(35);
@@ -701,57 +705,61 @@ void Robot::goToGreenShip() {
               false ==> blue | green
     */
     if (arena.side) {
-        if (currentZone == 1) {
-            rotateLeft(16);
+        if (arena.greenShip.currentPile == 0) {
+            if (currentZone == 1) {
+                rotateLeft(16);
 
-            while (!sensorFR.getValue() or !sensorBR.getValue()) {
-                if(sensorFR.getValue() and !sensorBR.getValue())
-                    rotateLeft(0, 180);
-                else if (sensorBR.getValue() and !sensorFR.getValue())
-                    rotateRight(0, 180);
-                else 
-                    sidewaysRight(0, 180);
+                while (!sensorFR.getValue() or !sensorBR.getValue()) {
+                    if(sensorFR.getValue() and !sensorBR.getValue())
+                        rotateLeft(0, 180);
+                    else if (sensorBR.getValue() and !sensorFR.getValue())
+                        rotateRight(0, 180);
+                    else 
+                        sidewaysRight(0, 180);
+                }
+
+                sidewaysRight(1, 180);
+
+                // Serial.println("followHorizontalLeft 1");
+                followHorizontalLeft();
+                // Serial.println("followHorizontalLeft 2");          
+                followHorizontalLeft();
+
+                backward(6, 200);
+
+                while (!sensorFRR.getValue()) sidewaysLeft(0, 180);
+
+                while (sensorFRR.getValue()) sidewaysLeft(0, 180);
+
+                alignWithShip();
+
+            } else if (currentZone == 2) {
+                Serial.println("Currente Zone 2");
+                rotateLeft(16);
+
+                while (!sensorFR.getValue() or !sensorBR.getValue()) {
+                    if(sensorFR.getValue() and !sensorBR.getValue())
+                        rotateLeft(0, 180);
+                    else if (sensorBR.getValue() and !sensorFR.getValue())
+                        rotateRight(0, 180);
+                    else 
+                        sidewaysRight(0, 180);
+                }
+
+                sidewaysRight(1, 180);
+
+                followHorizontalLeft();
+
+                backward(6, 200);
+
+                while (!sensorFRR.getValue()) sidewaysLeft(0, 180);
+
+                while (sensorFRR.getValue()) sidewaysLeft(0, 180);
+
+                alignWithShip();
             }
-
-            sidewaysRight(1, 180);
-
-            // Serial.println("followHorizontalLeft 1");
-            followHorizontalLeft();
-            // Serial.println("followHorizontalLeft 2");          
-            followHorizontalLeft();
-
-            backward(6, 200);
-
-            while (!sensorFRR.getValue()) sidewaysLeft(0, 180);
-
-            while (sensorFRR.getValue()) sidewaysLeft(0, 180);
-
-            alignWithShip();
-
-        } else if (currentZone == 2) {
-            Serial.println("Currente Zone 2");
-            rotateLeft(16);
-
-            while (!sensorFR.getValue() or !sensorBR.getValue()) {
-                if(sensorFR.getValue() and !sensorBR.getValue())
-                    rotateLeft(0, 180);
-                else if (sensorBR.getValue() and !sensorFR.getValue())
-                    rotateRight(0, 180);
-                else 
-                    sidewaysRight(0, 180);
-            }
-
-            sidewaysRight(1, 180);
-
-            followHorizontalLeft();
-
-            backward(6, 200);
-
-            while (!sensorFRR.getValue()) sidewaysLeft(0, 180);
-
-            while (sensorFRR.getValue()) sidewaysLeft(0, 180);
-
-            alignWithShip();
+        } else {
+            // Código para ir para a segunda pilha 
         }
     } else {
         rotateLeft(35);
