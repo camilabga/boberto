@@ -32,7 +32,7 @@ class Robot {
 		ColorSensor colorSensor{33};
 
 		Arena arena;
-		uint8_t currentZone = 2;
+		uint8_t currentZone = 1;
 
 		COLOR currentDestination = Blue;
 
@@ -70,8 +70,6 @@ class Robot {
 		// Movimentação da garra
 		void catchContainer(uint8_t container);
 		void catchContainer();
-
-		// void releaseContainer(uint8_t container);
 		void releaseContainer(COLOR color);
 
 		void findBlackLine();
@@ -79,24 +77,21 @@ class Robot {
 
 		void alignBetweenContainers(uint8_t zone);
 		void alignWithShip();
+		void alignWithContainersPile();
 
 		void followLineUntilGap();
 		void followHorizontalRight();
 		void followHorizontalLeft();
 		
-		void backwardUntilBlackLine();
-
 		void goToContainerZone();
-
 		void goToBlueShip();
 		void goToGreenShip();
 		void goToCurrentDestination();
 
 		void thereAndBackAgain();
+		void backwardUntilBlackLine();
 
-		// Sensor de cor
 		void calibrateColorSensor();
-		void chooseContainerDestination();
 
 		// Sanity check stuff
 		void testMoviments();
