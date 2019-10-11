@@ -23,8 +23,6 @@ void setup() {
 
     Serial.println(":: Ready ::");
 
-    // boberto.catchContainer(1);
-
     // wait botao para começar rotina padrão do robô
     // while (!digitalRead(BOTAO_CONFIG)) if(digitalRead(BOTAO_CONFIG)) break;
     
@@ -34,7 +32,7 @@ void setup() {
 
     while (true) {
         boberto.thereAndBackAgain();
-        boberto.followLineUntilGap();    
+        boberto.alignWithContainersPile();  
         boberto.catchContainer();
         boberto.goToCurrentDestination();
     }
