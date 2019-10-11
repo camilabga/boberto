@@ -370,23 +370,16 @@ void Robot::releaseContainer(COLOR color) {
 }
 
 void Robot::findBlackLine() {
-    forward();
-    while (!sensorFL.getValue() or !sensorFR.getValue()) delay(1);
-
-    while (sensorFL.getValue() and sensorFR.getValue()) delay(1);
     
-    delay(200);
+    while (!sensorFL.getValue() or !sensorFR.getValue()) forward();
+
+    while (sensorFL.getValue() and sensorFR.getValue()) forward();
+
+    while (!sensorFL.getValue() or !sensorFR.getValue()) forward();
+
+    while (sensorFL.getValue() and sensorFR.getValue()) forward();
+    
     stop();
-
-    /*
-    Serial.print("Front Left: ");
-    Serial.println(sensorFL.getValue());
-
-    Serial.print("Front Right: ");
-    Serial.println(sensorFR.getValue());
-
-    Serial.print("\n");
-    */
 }
 
 void Robot::findBlueLine() {
