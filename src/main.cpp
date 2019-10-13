@@ -1,20 +1,15 @@
-#include <Wire.h>
-#include "Claw.hpp"
-#include "ColorSensor.hpp"
-#include "DistanceSensor.hpp"
+// #include <Wire.h>
 #include "Robot.hpp"
-#define CALL_INTERVAL 4000
 #define BOTAO_CONFIG 31
 
 Robot boberto;
-unsigned long int lastCall = 0;
 
 void setup() {
-    pinMode(BOTAO_CONFIG, INPUT);
+    // pinMode(BOTAO_CONFIG, INPUT);
 
-    Wire.begin();
+    // Wire.begin();
     Serial.begin(115200);
-
+    
     boberto.begin();
 
     // esperar botao para calibrar o sensor de cor
@@ -30,12 +25,12 @@ void setup() {
     boberto.catchContainer();
     boberto.goToCurrentDestination();
 
-    while (true) {
-        boberto.thereAndBackAgain();
-        boberto.alignWithContainersPile();  
-        boberto.catchContainer();
-        boberto.goToCurrentDestination();
-    }
+    // while (true) {
+    //     boberto.thereAndBackAgain();
+    //     boberto.alignWithContainersPile();  
+    //     boberto.catchContainer();
+    //     boberto.goToCurrentDestination();
+    // }
 
 }
 
@@ -58,6 +53,8 @@ void loop() {
 
     // delay(666666);
 
+
+    // boberto.testDistanceSensor();
     // boberto.testColorSensor();
-    // delay(800);
+    // delay(300);
 }
