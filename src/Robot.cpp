@@ -31,24 +31,28 @@ Robot::~Robot() {}
 
 void Robot::begin() {
     // Calibra o sensor de cor
-    colorSensor.init();
-    colorSensor.ledOn();
+    // colorSensor.ledOn();
+    // Serial.println("Going to init");
+    // colorSensor.init();
+    // Serial.println("Initialized");
+    // Serial.println("Going to calibrate");
     // colorSensor.calibrate();
+    // Serial.println("Calibrated");
 
     // Seta a posição inicial da garra
+    // claw.goHome();
+    // claw.goToContainer(1.05);
+
+    // Serial.println("Calibrating...");
+    // delay(500);
+    // colorSensor.calibrate();
+    // Serial.println("Calibrated");
+    // delay(500);
+    claw.retract();
     claw.goHome();
-
-    claw.goToContainer(1.05);
-
-    Serial.println("Calibrating...");
-    delay(500);
-    calibrateColorSensor();
-    Serial.println("Calibrated");
-    delay(500);
-
     claw.goToContainer(5.5);
 
-    lidar.begin();
+    // lidar.begin();
 }
 
 void Robot::stop() {
@@ -294,13 +298,13 @@ void Robot::smoothRotateRight() {
     frontLeft.backward(0, 255);
 }
 
-void Robot::catchContainer(uint8_t container) {
+/*void Robot::catchContainer(uint8_t container) {
     claw.extend();
     claw.goToContainer(container);
     claw.goToContainer(container + 0.5);
     claw.ajustContainer();
     claw.goToContainer(5.5);
-}
+}*/
 
 void Robot::catchContainer() {
     uint8_t containerHeight = arena.containers[currentZone].getHeight(clawSide);
@@ -370,16 +374,17 @@ void Robot::releaseContainer(COLOR color) {
 }
 
 void Robot::findBlackLine() {
+    forward();
+
+    // while (!sensorFL.getValue() and !sensorFR.getValue()) delay(1);
+    // while (sensorFL.getValue() or sensorFR.getValue()) delay(1);
     
-    while (!sensorFL.getValue() or !sensorFR.getValue()) forward();
-
-    while (sensorFL.getValue() and sensorFR.getValue()) forward();
-
-    while (!sensorFL.getValue() or !sensorFR.getValue()) forward();
-
-    while (sensorFL.getValue() and sensorFR.getValue()) forward();
+    while (!sensorFL.getValue() or !sensorFR.getValue()) delay(1);
+    while (sensorFL.getValue() and sensorFR.getValue()) delay(1);
     
     stop();
+
+    forward(2, 200);
 }
 
 void Robot::findBlueLine() {
@@ -391,14 +396,18 @@ void Robot::findBlueLine() {
     stop();
 }
 
-void Robot::alignBetweenContainers(uint8_t zone) {
+void Robot::alignBetweenContainers() {
     switch (currentZone) {
         case 0:
-    
             while (!sensorFR.getValue()) sidewaysRight();
+            
+            sidewaysRight(1, 255);
+            forward(1, 255);
 
             while (sensorFR.getValue()) sidewaysRight();
 
+            sidewaysRight(1, 255);
+            
             while (!sensorFR.getValue()) sidewaysRight();
 
             while (sensorFR.getValue()) sidewaysRight();
@@ -446,19 +455,28 @@ void Robot::alignWithShip() {
 void Robot::alignWithContainersPile() {
     // Verifica se a primeira pilha está vazia
     if (arena.containers[currentZone].clawSide[0]) {
-        while (!sensorFR.getValue() or !sensorFL.getValue()) {
+        do {
             if (sensorFL.getValue())
                 rotateLeft();
             else if (sensorFR.getValue())
                 rotateRight();
             else
                 forward(0, 200);
-        }
+        } while (!sensorBL.getValue());
 
-        backward(7, 150);
+        do {
+            if (sensorFL.getValue())
+                rotateLeft();
+            else if (sensorFR.getValue())
+                rotateRight();
+            else
+                forward(0, 200);
+        } while (sensorBL.getValue());
 
+        forward(7, 200);
+        
     } else {
-        while (!sensorBR.getValue() or !sensorBL.getValue()) {
+        while (!sensorFL.getValue()) {
             if (sensorFL.getValue())
                 rotateLeft();
             else if (sensorFR.getValue())
@@ -467,16 +485,7 @@ void Robot::alignWithContainersPile() {
                 forward(0, 200);
         }
 
-        while (sensorBR.getValue() and sensorBL.getValue()) {
-            if (sensorFL.getValue())
-                rotateLeft();
-            else if (sensorFR.getValue())
-                rotateRight();
-            else
-                forward(0, 200);
-        }
-
-        forward(7, 150);
+        backward(7, 150); 
     }
 }
 
@@ -624,8 +633,8 @@ void Robot::followHorizontalLeft() {
 
 void Robot::goToContainerZone() {
     findBlackLine();
-    alignBetweenContainers(currentZone);
-    alignWithContainerPile();
+    alignBetweenContainers();
+    alignWithContainersPile();
     // followLineUntilGap();
 }
 
@@ -706,7 +715,36 @@ void Robot::goToGreenShip() {
     */
     if (arena.side) {
         if (arena.greenShip.currentPile == 0) {
-            if (currentZone == 1) {
+            if (currentZone == 0) {
+                rotateLeft(16);
+
+                while (!sensorFR.getValue() or !sensorBR.getValue()) {
+                    if(sensorFR.getValue() and !sensorBR.getValue())
+                        rotateLeft(0, 180);
+                    else if (sensorBR.getValue() and !sensorFR.getValue())
+                        rotateRight(0, 180);
+                    else 
+                        sidewaysRight(0, 180);
+                }
+
+                sidewaysRight(1, 180);
+
+                // Serial.println("followHorizontalLeft 1");
+                followHorizontalLeft();
+                // Serial.println("followHorizontalLeft 2");          
+                followHorizontalLeft();
+                followHorizontalLeft();
+
+                backward(6, 200);
+
+                while (!sensorFRR.getValue()) sidewaysLeft(0, 180);
+
+                while (sensorFRR.getValue()) sidewaysLeft(0, 180);
+
+                alignWithShip();
+
+
+            } else if (currentZone == 1) {
                 rotateLeft(16);
 
                 while (!sensorFR.getValue() or !sensorBR.getValue()) {
@@ -828,16 +866,18 @@ void Robot::thereAndBackAgain() {
 }
 
 void Robot::backwardUntilBlackLine() {
-    backward();
+    if (currentZone) {
+        
+        while (!sensorFL.getValue() or !sensorFR.getValue()) backward();
 
-    while (!sensorFL.getValue() || !sensorFR.getValue()) delay(1);
+        stop();
+    } else {
+        Serial.println("Vou andar para tras ate !blueSensorF");
+        
+        while (!blueSensorF.getValue()) backward();
 
-    stop();
-}
-
-void Robot::calibrateColorSensor() {
-    colorSensor.ledOn();
-    colorSensor.calibrate();
+        stop();
+    }
 }
 
 void Robot::testMoviments() {
@@ -889,6 +929,7 @@ void Robot::testColorSensor() {
             Serial.println("404 Color Not Found\n");
             break;
     }
+
 }
 
 void Robot::testDistanceSensor() {
@@ -901,14 +942,4 @@ void Robot::testDistanceSensor() {
     Serial.print(" ");
     Serial.print(end - start);
     Serial.print("ms\n");
-
-    start = millis();
-    bool gap = lidar.getContainerGap();
-    end = millis();
-
-    Serial.print("Container Gap: ");
-    Serial.print(gap ? "Yes" : "No");
-    Serial.print(" ");
-    Serial.print(end - start);
-    Serial.print("ms\n\n");
 }

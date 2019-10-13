@@ -4,7 +4,8 @@
 #include <Arduino.h>
 
 #include "Claw.hpp"
-#include "ColorSensor.hpp"
+// #include "ColorSensor.hpp"
+#include "ColorSensorAnalog.hpp"
 #include "DistanceSensor.hpp"
 #include "Motor.hpp"
 #include "LineSensor.hpp"
@@ -29,10 +30,11 @@ class Robot {
 
 		DistanceSensor lidar;
 
-		ColorSensor colorSensor{33};
+		// ColorSensor colorSensor{33};
+		ColorSensorAnalog colorSensor{33, 0};
 
 		Arena arena;
-		uint8_t currentZone = 1;
+		uint8_t currentZone = 0;
 
 		COLOR currentDestination = Blue;
 
@@ -45,37 +47,32 @@ class Robot {
 		void stop();
 
 		void forward(uint8_t goal = 0, int16_t vel = 255);
-
 		void backward(uint8_t goal = 0, int16_t vel = 255);
 
-		void sidewaysRight(uint8_t goal = 0, int16_t vel = 255);
-		
+		void sidewaysRight(uint8_t goal = 0, int16_t vel = 255);		
 		void sidewaysLeft(uint8_t goal = 0, int16_t vel = 255);
 
 		void rotateLeft(uint8_t goal = 0, int16_t vel = 255);
-
 		void rotateRight(uint8_t goal = 0, int16_t vel = 255);
 
 		void moveRightForward(uint8_t goal = 0, int16_t vel = 255);
-
 		void moveRightBackward(uint8_t goal = 0, int16_t vel = 255);
 
 		void moveLeftForward(uint8_t goal = 0, int16_t vel = 255);
-
 		void moveLeftBackward(uint8_t goal = 0, int16_t vel = 255);
 
 		void smoothRotateLeft();
 		void smoothRotateRight();
 
 		// Movimentação da garra
-		void catchContainer(uint8_t container);
+		// void catchContainer(uint8_t container);
 		void catchContainer();
 		void releaseContainer(COLOR color);
 
 		void findBlackLine();
 		void findBlueLine();
 
-		void alignBetweenContainers(uint8_t zone);
+		void alignBetweenContainers();
 		void alignWithShip();
 		void alignWithContainersPile();
 
@@ -91,13 +88,12 @@ class Robot {
 		void thereAndBackAgain();
 		void backwardUntilBlackLine();
 
-		void calibrateColorSensor();
-
 		// Sanity check stuff
 		void testMoviments();
 		void testClaw();
 		void testColorSensor();
 		void testDistanceSensor();
+
 };
 
 #endif  // ROBOT_HPP
