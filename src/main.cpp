@@ -25,12 +25,12 @@ void setup() {
     boberto.catchContainer();
     boberto.goToCurrentDestination();
 
-    // while (true) {
-    //     boberto.thereAndBackAgain();
-    //     boberto.alignWithContainersPile();  
-    //     boberto.catchContainer();
-    //     boberto.goToCurrentDestination();
-    // }
+    while (true) {
+        boberto.thereAndBackAgain();
+        boberto.alignWithContainersPile();  
+        boberto.catchContainer();
+        boberto.goToCurrentDestination();
+    }
 
 }
 
