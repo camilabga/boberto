@@ -49,7 +49,7 @@ void Robot::begin() {
     // Serial.println("Calibrated");
     // delay(500);
 
-    // claw.retract();
+    claw.retract();
     claw.goHome();
     claw.goToContainer(5.5);
 
@@ -335,6 +335,7 @@ void Robot::catchContainer() {
 
     claw.goToContainer(containerHeight + 0.5);
     claw.extend();
+    sidewaysLeft(1,200);
     claw.goToContainer(containerHeight);
     claw.goToContainer(5.5);
 
@@ -475,6 +476,21 @@ void Robot::alignWithContainersPile() {
         } while (sensorBL.getValue());
 
         forward(7, 200);
+
+        // alinhando com a linha para pegar o container retinho sem ser tortao
+        Serial.println("Fazendo os role de alinhar!");
+        sidewaysLeft(1,200);
+        while (!sensorBL.getValue() && !sensorFL.getValue()) {
+            if (!sensorBL.getValue() && sensorFL.getValue()) {
+                rotateLeft(0, 200);
+            } else if (sensorBL.getValue() && !sensorFL.getValue()) {
+                rotateRight(0, 200);
+            } else {
+                sidewaysRight(0, 200);
+            }
+        }
+
+        stop();
         
     } else {
         while (!sensorFL.getValue()) {
@@ -717,9 +733,10 @@ void Robot::goToBlueShip() {
 
                 sidewaysRight(1, 180);
 
-                // Serial.println("followHorizontalRight 1");
+                Serial.println("followHorizontalRight 1");
                 followHorizontalRight();
-                // Serial.println("followHorizontalRight 2");
+                stop(); delay(2000); sidewaysRight(1, 180);
+                Serial.println("followHorizontalRight 2");
                 // delay(50);
                 followHorizontalRight();
 
@@ -904,7 +921,6 @@ void Robot::thereAndBackAgain() {
 
 void Robot::backwardUntilBlackLine() {
     if (currentZone) {
-        
         while (!sensorFL.getValue() or !sensorFR.getValue()) backward();
 
         stop();
@@ -918,10 +934,10 @@ void Robot::backwardUntilBlackLine() {
 }
 
 void Robot::testMoviments() {
-    // forward(20);
-    // delay(1000);
-    // backward(20);
-    // delay(1000);
+    forward(20);
+    delay(1000);
+    backward(20);
+    delay(1000);
     sidewaysRight(40);
     delay(1000);
     sidewaysLeft(40);
@@ -934,6 +950,17 @@ void Robot::testMoviments() {
 }
 
 void Robot::testClaw() {
+    claw.extend();
+
+    delay(2000);
+
+    claw.ajustContainer();
+
+    delay(2000);
+
+    claw.retract();
+
+    delay(2000);
     // catchContainer(1);
     // delay(1000);
     // releaseContainer(Green);

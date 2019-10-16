@@ -31,7 +31,7 @@ void setup() {
         boberto.catchContainer();
         boberto.goToCurrentDestination();
     }
-
+    
 }
 
 void loop() {
@@ -53,6 +53,9 @@ void loop() {
 
     // delay(666666);
 
+    //boberto.testMoviments();
+    
+    //boberto.testClaw();
 
     // boberto.testDistanceSensor();
     // boberto.testColorSensor();
