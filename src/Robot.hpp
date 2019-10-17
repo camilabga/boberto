@@ -28,6 +28,8 @@ class Robot {
 		//Sensores de Azul
 		LineSensor blueSensorF, blueSensorB;
 
+		LineSensor containerSensor;
+
 		DistanceSensor lidar;
 
 		// ColorSensor colorSensor{33};
@@ -76,6 +78,7 @@ class Robot {
 		void alignWithShip();
 		void alignWithContainersPile();
 
+		void followLineUntilContainer();
 		void followLineUntilGap();
 		void followHorizontalRight();
 		void followHorizontalLeft();

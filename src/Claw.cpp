@@ -2,8 +2,8 @@
 
 #define SPEED 20
 #define MICRO_STEP 16
-#define AJUST_FORWARD 1100
-#define AJUST_BACKWARD 600
+#define AJUST_FORWARD 1300
+#define AJUST_BACKWARD 800
 
 Claw::Claw(uint8_t _setPin, uint8_t _dirPin, uint8_t _enable,uint8_t _motorPin1, uint8_t _motorPin2, uint8_t _endStopPin) {
     setPin = _setPin;
@@ -97,12 +97,12 @@ void Claw::retract() {
 void Claw::ajustContainer() {
     digitalWrite(motorPin1, HIGH);
     digitalWrite(motorPin2, LOW);
-    delay(1000);
+    delay(AJUST_FORWARD);
     stop();
 
     digitalWrite(motorPin1, LOW);
     digitalWrite(motorPin2, HIGH);
-    delay(600);
+    delay(AJUST_BACKWARD);
     stop();
 }
 

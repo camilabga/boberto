@@ -25,6 +25,8 @@ Robot::Robot() {
 
     blueSensorF.setPin(51);
     blueSensorB.setPin(49);
+
+    containerSensor.setPin(47);
 }
 
 Robot::~Robot() {}
@@ -49,11 +51,9 @@ void Robot::begin() {
     // Serial.println("Calibrated");
     // delay(500);
 
-    claw.retract();
+    // claw.retract();
     claw.goHome();
     claw.goToContainer(5.5);
-
-    // lidar.begin();
 }
 
 void Robot::stop() {
@@ -310,7 +310,7 @@ void Robot::smoothRotateRight() {
 void Robot::catchContainer() {
     uint8_t containerHeight = arena.containers[currentZone].getHeight(clawSide);
 
-    claw.goToContainer(containerHeight + 0.07);
+    claw.goToContainer(containerHeight + 0.3);
 
     currentDestination = colorSensor.readColor();
 
@@ -335,7 +335,6 @@ void Robot::catchContainer() {
 
     claw.goToContainer(containerHeight + 0.5);
     claw.extend();
-    sidewaysLeft(1,200);
     claw.goToContainer(containerHeight);
     claw.goToContainer(5.5);
 
@@ -451,6 +450,21 @@ void Robot::alignWithShip() {
             sidewaysLeft(0, 150);
     }
 
+    Ship destination;
+    if(currentDestination == Green)
+        destination = arena.greenShip;
+    else if(currentDestination == Blue)
+        destination = arena.blueShip;
+    
+    if(destination.currentHeight != 1) {
+        if (containerSensor.getValue())
+            while (containerSensor.getValue()) backward(0, 180);
+        else 
+            while (!containerSensor.getValue()) forward(0, 180);   
+    
+        forward(1, 180);
+    }
+    
     stop();
 }
 
@@ -506,6 +520,19 @@ void Robot::alignWithContainersPile() {
     }
 }
 
+void Robot::followLineUntilContainer() {
+    while (!containerSensor.getValue()) {
+        if (sensorFL.getValue())
+            rotateLeft(0, 200);
+        else if (sensorFR.getValue())
+            rotateRight(0, 200);
+        else
+            forward(0, 200);
+    }
+    
+    stop();
+}
+
 void Robot::followLineUntilGap() {
     // Anda até encontrar o primeiro container
     uint16_t dist = 130;
@@ -516,17 +543,16 @@ void Robot::followLineUntilGap() {
         dist = lidar.getDistance();
         Serial.println(dist);
 
-
         if (sensorFL.getValue())
             rotateLeft();
         else if (sensorFR.getValue())
             rotateRight();
         else
-            forward(0, 150);
+            forward(0, 180);
     }
     
     // Anda até sair do container
-    dist = 0;
+    /*dist = 0;
     lidar.begin();
     while (dist < 120) {
 
@@ -540,7 +566,7 @@ void Robot::followLineUntilGap() {
             rotateRight();
         else
             forward(0, 150);
-    }
+    }*/
 
     stop();
 }
@@ -653,8 +679,7 @@ void Robot::followHorizontalLeft() {
 void Robot::goToContainerZone() {
     findBlackLine();
     alignBetweenContainers();
-    alignWithContainersPile();
-    // followLineUntilGap();
+    followLineUntilContainer();
 }
 
 void Robot::goToBlueShip() {
@@ -707,9 +732,10 @@ void Robot::goToBlueShip() {
                 // }
                 // sidewaysRight(1, 200);
 
+
                 followHorizontalRight();
 
-                backward(7, 200);
+                backward(5, 200);
 
                 while (!sensorFRR.getValue()) sidewaysLeft(0, 200);
 
@@ -925,8 +951,7 @@ void Robot::backwardUntilBlackLine() {
 
         stop();
     } else {
-        Serial.println("Vou andar para tras ate !blueSensorF");
-        
+
         while (!blueSensorF.getValue()) backward();
 
         stop();
@@ -934,14 +959,14 @@ void Robot::backwardUntilBlackLine() {
 }
 
 void Robot::testMoviments() {
-    forward(20);
-    delay(1000);
-    backward(20);
-    delay(1000);
-    sidewaysRight(40);
-    delay(1000);
-    sidewaysLeft(40);
-    delay(1000);
+    forward(2);
+    delay(10);
+    backward(2);
+    delay(10);
+    //sidewaysRight(40);
+    //delay(1000);
+    //sidewaysLeft(40);
+    //delay(1000);
     
     // rotateLeft(20);
     // delay(1000);

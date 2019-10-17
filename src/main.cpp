@@ -2,21 +2,28 @@
 #include "Robot.hpp"
 #define BOTAO_CONFIG 31
 
+// #include "DistanceSensor.hpp"
+// DistanceSensor lidar;
+
 Robot boberto;
 
 void setup() {
     // pinMode(BOTAO_CONFIG, INPUT);
 
-    // Wire.begin();
     Serial.begin(115200);
-    
+    // Wire.begin();
+
     boberto.begin();
 
     // esperar botao para calibrar o sensor de cor
     // while (!digitalRead(BOTAO_CONFIG)) if(digitalRead(BOTAO_CONFIG)) break;
     // boberto.calibrateColorSensor();
-
+    
     Serial.println(":: Ready ::");
+
+    // Serial.println("Going to begin");
+    // lidar.begin();
+    // Serial.println("Done begin");
 
     // wait botao para começar rotina padrão do robô
     // while (!digitalRead(BOTAO_CONFIG)) if(digitalRead(BOTAO_CONFIG)) break;
@@ -27,7 +34,7 @@ void setup() {
 
     while (true) {
         boberto.thereAndBackAgain();
-        boberto.alignWithContainersPile();  
+        boberto.followLineUntilContainer(); 
         boberto.catchContainer();
         boberto.goToCurrentDestination();
     }
@@ -59,5 +66,6 @@ void loop() {
 
     // boberto.testDistanceSensor();
     // boberto.testColorSensor();
-    // delay(300);
+    // lidar.getDistance();
+    // delay(500);
 }
