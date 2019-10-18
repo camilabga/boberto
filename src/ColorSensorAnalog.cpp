@@ -37,6 +37,8 @@ void ColorSensorAnalog::changeColor(COLOR color) {
 }
 
 COLOR ColorSensorAnalog::readColor() {
+    changeColor(None);
+
     uint8_t redCont = 0, greenCont = 0, blueCont = 0;
 
     for(uint8_t i = 0; i < NUM_SAMPLES; i++) {
@@ -56,20 +58,23 @@ COLOR ColorSensorAnalog::readColor() {
 
         changeColor(None);
 
-        if (green < red and green < blue) 
-            greenCont++;
-        else if (red < (((green + blue) / 2) - 30)) 
+        if (red > green && red > blue) 
             redCont++;
-        else 
+        else if (green > red && green > blue) 
+            greenCont++;
+        else if (blue > red && blue > green) 
             blueCont++;
     }
 
-    if (redCont > greenCont and redCont > blueCont) 
+    if (redCont > greenCont and redCont > blueCont) {
+        changeColor(Red);
         return Red;
-    else if (greenCont > redCont and greenCont > blueCont)
+    } else if (greenCont > redCont and greenCont > blueCont) {
+        changeColor(Green);
         return Green;
-    else if (blueCont > greenCont and blueCont > redCont)
+    } else if (blueCont > greenCont and blueCont > redCont) {
+        changeColor(Blue);
         return Blue;
-    else 
+    } else 
         return None;
 }

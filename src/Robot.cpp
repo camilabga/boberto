@@ -310,30 +310,11 @@ void Robot::smoothRotateRight() {
 void Robot::catchContainer() {
     uint8_t containerHeight = arena.containers[currentZone].getHeight(clawSide);
 
-    claw.goToContainer(containerHeight + 0.3);
+    claw.goToContainer(containerHeight + 0.5);
 
     currentDestination = colorSensor.readColor();
 
-    Serial.print("\nDestino: ");
-    switch (currentDestination) {
-        case Red:
-            Serial.println(" Red\n");
-            break;
-
-        case Green:
-            Serial.println(" Green\n");
-            break;
-
-        case Blue:
-            Serial.println(" Blue\n");
-            break;
-
-        default:
-            Serial.println(" Color Not Found\n");
-            break;
-    }
-
-    claw.goToContainer(containerHeight + 0.5);
+    claw.goToContainer(containerHeight + 0.2);
     claw.extend();
     claw.goToContainer(containerHeight);
     claw.goToContainer(5.5);
@@ -457,12 +438,15 @@ void Robot::alignWithShip() {
         destination = arena.blueShip;
     
     if(destination.currentHeight != 1) {
-        if (containerSensor.getValue())
+        if (containerSensor.getValue()) {
             while (containerSensor.getValue()) backward(0, 180);
-        else 
+
+            delay(100);
+
+            while (!containerSensor.getValue()) forward(0, 180);
+            
+        } else 
             while (!containerSensor.getValue()) forward(0, 180);   
-    
-        forward(1, 180);
     }
     
     stop();
@@ -523,11 +507,11 @@ void Robot::alignWithContainersPile() {
 void Robot::followLineUntilContainer() {
     while (!containerSensor.getValue()) {
         if (sensorFL.getValue())
-            rotateLeft(0, 200);
+            rotateLeft(0, 180);
         else if (sensorFR.getValue())
-            rotateRight(0, 200);
+            rotateRight(0, 180);
         else
-            forward(0, 200);
+            forward(0, 180);
     }
     
     stop();
@@ -583,6 +567,8 @@ void Robot::followHorizontalRight() {
             backward();
     }
 
+    delay(100);
+
     while (sensorFRR.getValue()) {
         if (sensorBR.getValue() and sensorBL.getValue())
             backward();
@@ -594,7 +580,8 @@ void Robot::followHorizontalRight() {
             backward();
     }
 
-    // backward(1, 200);
+    delay(100);
+
     stop();
 
     /*
@@ -759,11 +746,14 @@ void Robot::goToBlueShip() {
 
                 sidewaysRight(1, 180);
 
-                Serial.println("followHorizontalRight 1");
-                followHorizontalRight();
-                stop(); delay(2000); sidewaysRight(1, 180);
-                Serial.println("followHorizontalRight 2");
-                // delay(50);
+                followHorizontalRight();    
+
+                // sidewaysRight
+                frontLeft.forward(50, 180);
+                frontRight.backward(50, 180);
+                backLeft.backward(50, 180);
+                backRight.forward(50, 180);
+
                 followHorizontalRight();
 
                 backward(3, 200);

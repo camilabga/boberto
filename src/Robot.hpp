@@ -15,7 +15,7 @@ class Robot {
 	private:
 		Motor frontLeft{0}, frontRight{1}, backLeft{2}, backRight{3};
 		
-		Claw claw{50 , 52, 13, 11, 12, 53};
+		Claw claw{50 , 52, 13, 11, 12, 53, 43};
 
 		// Sensores Frontais
 		LineSensor sensorFL, sensorFR;
@@ -36,7 +36,7 @@ class Robot {
 		ColorSensorAnalog colorSensor{33, 0};
 
 		Arena arena;
-		uint8_t currentZone = 0;
+		uint8_t currentZone = 2;
 
 		COLOR currentDestination = Blue;
 

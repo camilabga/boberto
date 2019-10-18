@@ -5,13 +5,14 @@
 #define AJUST_FORWARD 1300
 #define AJUST_BACKWARD 800
 
-Claw::Claw(uint8_t _setPin, uint8_t _dirPin, uint8_t _enable,uint8_t _motorPin1, uint8_t _motorPin2, uint8_t _endStopPin) {
+Claw::Claw(uint8_t _setPin, uint8_t _dirPin, uint8_t _enable,uint8_t _motorPin1, uint8_t _motorPin2, uint8_t _endStopPin, uint8_t _endStopPin2) {
     setPin = _setPin;
     dirPin = _dirPin;
     enable = _enable;
     motorPin1 = _motorPin1;
     motorPin2 = _motorPin2;
     endStopPin = _endStopPin;
+    endStopPin2 = _endStopPin2;
 
     pinMode(setPin, OUTPUT);
     pinMode(dirPin, OUTPUT);
@@ -23,6 +24,7 @@ Claw::Claw(uint8_t _setPin, uint8_t _dirPin, uint8_t _enable,uint8_t _motorPin1,
     pinMode(motorPin2, OUTPUT);
 
     pinMode(endStopPin, INPUT);
+    pinMode(endStopPin2, INPUT_PULLUP);
 }
 
 Claw::~Claw() {}
@@ -52,11 +54,17 @@ void Claw::goDown() {
 void Claw::goHome() {
     digitalWrite(dirPin, LOW);
 
+    while (digitalRead(endStopPin2)) {
+        digitalWrite(motorPin1, LOW);
+        digitalWrite(motorPin2, HIGH);
+    }
+    stop();
+
     while (!digitalRead(endStopPin)) {
         digitalWrite(setPin, HIGH);
-        delayMicroseconds(SPEED);
+        delayMicroseconds(50);
         digitalWrite(setPin, LOW);
-        delayMicroseconds(SPEED);
+        delayMicroseconds(50);
     }
 
     height = 1.0f;
