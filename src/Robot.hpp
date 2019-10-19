@@ -4,11 +4,10 @@
 #include <Arduino.h>
 
 #include "Claw.hpp"
-// #include "ColorSensor.hpp"
 #include "ColorSensorAnalog.hpp"
 #include "DistanceSensor.hpp"
-#include "Motor.hpp"
 #include "LineSensor.hpp"
+#include "Motor.hpp"
 #include "Arena.hpp"
 
 class Robot {
@@ -36,7 +35,7 @@ class Robot {
 		ColorSensorAnalog colorSensor{33, 0};
 
 		Arena arena;
-		uint8_t currentZone = 2;
+		uint8_t currentZone = 1;
 
 		COLOR currentDestination = Blue;
 
@@ -76,6 +75,7 @@ class Robot {
 
 		void alignBetweenContainers();
 		void alignWithShip();
+		void alignWithShipSide();
 		void alignWithContainersPile();
 
 		void followLineUntilContainer();

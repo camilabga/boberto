@@ -17,7 +17,7 @@ struct Ship {
 
 		if (currentHeight == 6) {
 			currentPile = 1;
-			currentHeight = 0;
+			currentHeight = 1;
 		}
 	}
 };

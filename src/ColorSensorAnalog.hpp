@@ -6,7 +6,7 @@
 
 #define NUM_SAMPLES 10
 #define NUM_PIXELS 2
-#define COLOR_DELAY 10
+#define COLOR_DELAY 5
 
 enum COLOR {
 	Green, Blue, Red, None
