@@ -25,6 +25,8 @@ class ColorSensorAnalog {
 
         void changeColor(COLOR color);
         COLOR readColor();
+
+        void defineRanges();
     
 };
 

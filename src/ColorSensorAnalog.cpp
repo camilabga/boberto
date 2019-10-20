@@ -42,7 +42,7 @@ COLOR ColorSensorAnalog::readColor() {
     uint8_t redCont = 0, greenCont = 0, blueCont = 0;
 
     for(uint8_t i = 0; i < NUM_SAMPLES; i++) {
-        uint8_t red = 0, green = 0, blue = 0;
+        uint16_t red = 0, green = 0, blue = 0;
 
         changeColor(Red);
         delay(COLOR_DELAY);
@@ -77,4 +77,44 @@ COLOR ColorSensorAnalog::readColor() {
         return Blue;
     } else 
         return None;
+}
+
+void ColorSensorAnalog::defineRanges() {
+    changeColor(None);
+    
+    uint16_t red = 0, green = 0, blue = 0;
+
+    changeColor(Red);
+    delay(COLOR_DELAY);
+    red = analogRead(analogPin);
+
+    Serial.print("Red: ");
+    Serial.println(red);
+    
+    changeColor(Green);
+    delay(COLOR_DELAY);
+    green = analogRead(analogPin);
+
+    Serial.print("Green: ");
+    Serial.println(green);
+
+    changeColor(Blue);
+    delay(COLOR_DELAY);
+    blue = analogRead(analogPin);
+
+    Serial.print("Blue: ");
+    Serial.println(blue);
+
+    changeColor(None);
+
+    Serial.println();
+
+    if (red > green and red > blue) 
+        changeColor(Red); 
+    else if (green > red and green > blue) 
+        changeColor(Green);
+    else if (blue > green and blue > red) 
+        changeColor(Blue);
+    else 
+        changeColor(None);
 }

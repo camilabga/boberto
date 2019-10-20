@@ -27,7 +27,7 @@ class Robot {
 		//Sensores de Azul
 		LineSensor blueSensorF, blueSensorB;
 
-		LineSensor containerSensor;
+		LineSensor containerSensorF, containerSensorB;
 
 		DistanceSensor lidar;
 
@@ -35,7 +35,7 @@ class Robot {
 		ColorSensorAnalog colorSensor{33, 0};
 
 		Arena arena;
-		uint8_t currentZone = 1;
+		uint8_t currentZone = 0;
 
 		COLOR currentDestination = Blue;
 
@@ -86,10 +86,13 @@ class Robot {
 		void goToContainerZone();
 		void goToBlueShip();
 		void goToGreenShip();
+		void goToNextPile();
 		void goToCurrentDestination();
 
 		void thereAndBackAgain();
 		void backwardUntilBlackLine();
+
+		void checkColor();
 
 		// Sanity check stuff
 		void testMoviments();

@@ -14,17 +14,19 @@ void setup() {
     // while (!digitalRead(BOTAO_CONFIG)) if(digitalRead(BOTAO_CONFIG)) break;
     // boberto.calibrateColorSensor();
     
-    Serial.println(":: Ready ::");
+    Serial.println(":: Oi, eu sou o Boberto ::");
 
     // wait botao para começar rotina padrão do robô
     // while (!digitalRead(BOTAO_CONFIG)) if(digitalRead(BOTAO_CONFIG)) break;
     
     boberto.goToContainerZone();
+    boberto.checkColor();
     boberto.catchContainer();
     boberto.goToCurrentDestination();
     while (true) {
         boberto.thereAndBackAgain();
         boberto.followLineUntilContainer(); 
+        boberto.checkColor();
         boberto.catchContainer();
         boberto.goToCurrentDestination();
     } 
@@ -56,6 +58,5 @@ void loop() {
 
     // boberto.testDistanceSensor();
     // boberto.testColorSensor();
-    // lidar.getDistance();
-    // delay(500);
+    // delay(1000);
 }
