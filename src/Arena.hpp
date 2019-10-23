@@ -16,7 +16,7 @@ struct Ship {
 		currentHeight++;
 
 		if (currentHeight == 6) {
-			currentPile = 1;
+			currentPile++;
 			currentHeight = 1;
 		}
 	}
@@ -86,7 +86,7 @@ struct ContainerZone {
 	}
 
 	void lockPile() {
-		if (clawSide[0] or !locked[0])
+		if (!locked[0])
 			locked[0] = 1;
 		else
 			locked[1] = 1;

@@ -431,16 +431,18 @@ void Robot::alignWithShip() {
             sidewaysLeft(0, 180);
     }
 
-    sidewaysRight(1, 180);
+    sidewaysRight(2, 180);
+
 
     while (!blueSensorF.getValue() or !blueSensorB.getValue()) {
         if (blueSensorB.getValue())
-            rotateLeft(0, 150);
+            rotateLeft(0, 200);
         else if (blueSensorF.getValue())
-            rotateRight(0, 150);
+            rotateRight(0, 200);
         else if (!blueSensorF.getValue() and !blueSensorB.getValue())
-            sidewaysLeft(0, 150);
+            sidewaysLeft(0, 100);
     }
+
 
     Ship destination;
     if(currentDestination == Green)
@@ -472,10 +474,27 @@ void Robot::alignWithShip() {
         delay(100);
 
     } else {
+       
 
-        while (blueSensorF.getValue()) forward(0, 150);
+        if (currentDestination == Blue) {
+            
+            stop();
+            delay(1000);
+            frontLeft.backward(30, 100);
+            frontRight.forward(30, 100);
+            backLeft.forward(30, 100);
+            backRight.backward(30, 100);
+            delay(1000);
+            stop();
 
-        backward(2, 150);
+            while (blueSensorB.getValue()) backward(0, 100);
+
+            forward(1, 150);
+        } else {
+            while (blueSensorF.getValue()) forward(0, 100);
+
+            backward(2, 150);
+        }   
     }
 
     stop();
@@ -571,9 +590,15 @@ void Robot::alignWithContainersPile() {
 }
 
 void Robot::followLineUntilContainer() {
+    Serial.println("followLineUntilContainer");
+
     // Se a pilha estiver travada ou a primeira pilha estiver vazia
-    if (arena.containers[currentZone].isLocked() 
-     or !arena.containers[currentZone].clawSide[0]) {
+    if (arena.containers[currentZone].isLocked()) {
+        Serial.println("Vou para a segunda pilha e a primeria esta travada");
+
+        forward(1, 150);
+
+        Serial.println("Vou detectar o container");
         while (!containerSensorB.getValue()) {
             if (sensorFL.getValue())
                 rotateLeft(0, 150);
@@ -582,6 +607,34 @@ void Robot::followLineUntilContainer() {
             else
                 forward(0, 150);
         }
+        
+        stop();
+        
+        // Serial.println("Vou sair do container");
+        // while (containerSensorB.getValue()) {
+            if (sensorFL.getValue())
+                rotateLeft(0, 150);
+            else if (sensorFR.getValue())
+                rotateRight(0, 150);
+            else
+                forward(0, 150);
+        // }
+
+        stop();
+        
+    } else if (!arena.containers[currentZone].clawSide[0]) {
+        Serial.println("Vou para a segunda pilha e segunda esta vazia");
+
+        while (!containerSensorB.getValue()) {
+            if (sensorFL.getValue())
+                rotateLeft(0, 150);
+            else if (sensorFR.getValue())
+                rotateRight(0, 150);
+            else
+                forward(0, 150);
+        }
+        
+        Serial.println("Sai do container");
 
         while (containerSensorB.getValue()) {
             if (sensorFL.getValue())
@@ -601,6 +654,7 @@ void Robot::followLineUntilContainer() {
                 forward(0, 150);
         }
 
+        Serial.println("Sai do container");
     } else {
         while (!containerSensorB.getValue()) {
             if (sensorFL.getValue())
@@ -1085,7 +1139,7 @@ void Robot::goToGreenShip() {
 
 void Robot::goToNextPile() {
     
-    Serial.println("goToNextPile");
+    Serial.println("\ngoToNextPile");
 
     Serial.print("currentZone: ");
     Serial.println(currentZone);
@@ -1107,8 +1161,9 @@ void Robot::goToNextPile() {
     if (arena.containers[currentZone].getCurrentPile()) {
         Serial.println("Estou na pilha 1");
         // Pilha 1
-        Serial.println("backwardUntilBlackLine");
+        Serial.println("backwardUntilBlackLine in goToNextPile");
         backwardUntilBlackLine();
+        forward(2, 200);
 
         if (currentZone == 0) {
             
@@ -1117,7 +1172,7 @@ void Robot::goToNextPile() {
                 while (sensorFL.getValue()) sidewaysLeft();
 
                 currentZone = 1;
-            } else {
+            } else if (!arena.containers[2].isEmpty(clawSide)){
 
                 while (!sensorFL.getValue()) sidewaysLeft();
                 while (sensorFL.getValue()) sidewaysLeft();
@@ -1129,19 +1184,33 @@ void Robot::goToNextPile() {
                 while (sensorFL.getValue()) sidewaysLeft();
 
                 currentZone = 2;
-            }
+            } else 
+                stop();
 
         } else if (currentZone == 1) {
-            while (!sensorFR.getValue()) sidewaysRight();
-            while (sensorFR.getValue()) sidewaysRight();
 
-            currentZone = 0;
+            if (!arena.containers[2].isEmpty(clawSide)) {
+                while (!sensorFL.getValue()) sidewaysLeft();
+                while (sensorFL.getValue()) sidewaysLeft();
+
+                currentZone = 2;
+            } else if (!arena.containers[0].isEmpty(clawSide)) {
+                while (!sensorFR.getValue()) sidewaysRight();
+                while (sensorFR.getValue()) sidewaysRight();
+
+                currentZone = 0;
+            } else 
+                stop();
+
+
         } else if (currentZone == 2) {
             
             if (!arena.containers[1].isEmpty(clawSide)) {
+                forward(1, 200);
                 while (!sensorFR.getValue()) sidewaysRight();
                 while (sensorFR.getValue()) sidewaysRight(); 
 
+                
                 currentZone = 1;
 
             } else {
@@ -1183,6 +1252,7 @@ void Robot::goToNextPile() {
         stop();
     }
 
+    followLineUntilContainer();
     checkColor();
 }
 
@@ -1219,7 +1289,7 @@ void Robot::thereAndBackAgain() {
         destination = arena.blueShip;
 
     // Se estiver no lado do navio
-    if (destination.currentPile and destination.currentHeight != 1) {
+    if (destination.currentPile > 0 and destination.currentHeight != 1) {
         if (currentDestination == Blue) {
             sidewaysRight(5, 255);
             rotateLeft(32, 255);
