@@ -30,10 +30,22 @@ struct ContainerZone {
 
 	bool isEmpty(uint8_t side) {
 		if (side) {
-			if (clawSide[1] == 0) 
+			if (locked[0] and locked[1]) 
                 return true;
+			else if (locked[0] and clawSide[1])
+				return false;
+			else if (locked[0] and !clawSide[1])
+				return true;
+			else if (!clawSide[0] and locked[1])
+				return true;
+			else if (!clawSide[0] and clawSide[1])
+				return false;
+			else if (!clawSide[0] and !clawSide[1])
+				return true;
+			else if (clawSide[0] and clawSide[1])
+				return false;
 			else 
-                return false;
+                return true;
 
 		} else {
 			if (otherSide[1] == 0) 
@@ -74,7 +86,7 @@ struct ContainerZone {
 	}
 
 	void lockPile() {
-		if (clawSide[0])
+		if (clawSide[0] or !locked[0])
 			locked[0] = 1;
 		else
 			locked[1] = 1;
@@ -85,10 +97,10 @@ struct ContainerZone {
 	}
 
 	uint8_t getCurrentPile() {
-		if (clawSide[0] == 0 or locked[0])
-			return 0;
-		else
+		if ((!clawSide[0] or locked[0]) and (!clawSide[1] or locked[1]))
 			return 1;
+		else
+			return 0;
 	}
 
 };
