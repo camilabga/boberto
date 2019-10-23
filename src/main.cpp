@@ -29,8 +29,8 @@ void setup() {
         boberto.checkColor();
         boberto.catchContainer();
         boberto.goToCurrentDestination();
+    
     } 
-
 }
 
 void loop() {

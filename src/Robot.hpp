@@ -35,7 +35,7 @@ class Robot {
 		ColorSensorAnalog colorSensor{33, 0};
 
 		Arena arena;
-		uint8_t currentZone = 0;
+		uint8_t currentZone = 1;
 
 		COLOR currentDestination = Blue;
 

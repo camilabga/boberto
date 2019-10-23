@@ -1,6 +1,6 @@
 #include "Claw.hpp"
 
-#define SPEED 20
+#define SPEED 25
 #define MICRO_STEP 16
 #define AJUST_FORWARD  800
 #define AJUST_BACKWARD 1000
