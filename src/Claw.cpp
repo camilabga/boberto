@@ -77,7 +77,7 @@ void Claw::goToContainer(float container) {
     else
         digitalWrite(dirPin, LOW);
 
-    for (uint16_t i = 0; i < MICRO_STEP * 200 * abs(container - height); i++) {
+    for (uint16_t i = 0; i < MICRO_STEP * 190 * abs(container - height); i++) {
         digitalWrite(setPin, HIGH);
         delayMicroseconds(SPEED);
         digitalWrite(setPin, LOW);

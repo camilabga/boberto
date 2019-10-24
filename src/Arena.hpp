@@ -15,7 +15,7 @@ struct Ship {
 	void increment () {
 		currentHeight++;
 
-		if (currentHeight == 6) {
+		if (currentHeight == 7) {
 			currentPile++;
 			currentHeight = 1;
 		}
