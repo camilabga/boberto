@@ -22,11 +22,12 @@ Robot::Robot() {
 
     // sensorFLL.setPin(31);
     sensorFRR.setPin(31);
+    sensorBLL.setPin(41);
 
     blueSensorF.setPin(51);
     blueSensorB.setPin(49);
 
-    containerSensorF.setPin(41);
+    // containerSensorF.setPin(41);
     containerSensorB.setPin(47);
 
 }
@@ -431,18 +432,28 @@ void Robot::alignWithShip() {
             sidewaysLeft(0, 180);
     }
 
-    sidewaysRight(2, 180);
+    stop();
+    delay(1000);
 
+    // sidewaysLeft
+    frontLeft.backward(65, 180);
+    frontRight.forward(65, 180);
+    backLeft.forward(65, 180);
+    backRight.backward(65, 180);
+    
+    delay(1000);
+    stop();
+    
 
-    while (!blueSensorF.getValue() or !blueSensorB.getValue()) {
-        if (blueSensorB.getValue())
-            rotateLeft(0, 200);
-        else if (blueSensorF.getValue())
-            rotateRight(0, 200);
-        else if (!blueSensorF.getValue() and !blueSensorB.getValue())
-            sidewaysLeft(0, 100);
-    }
-
+    // sidewaysRight(1, 180);
+    // while (!blueSensorF.getValue() or !blueSensorB.getValue()) {
+    //     if (blueSensorB.getValue())
+    //         rotateLeft(0, 150);
+    //     else if (blueSensorF.getValue())
+    //         rotateRight(0, 150);
+    //     else if (!blueSensorF.getValue() and !blueSensorB.getValue())
+    //         sidewaysLeft(0, 150);
+    // }
 
     Ship destination;
     if(currentDestination == Green)
@@ -474,27 +485,9 @@ void Robot::alignWithShip() {
         delay(100);
 
     } else {
-       
+        while (blueSensorF.getValue()) forward(0, 100);
 
-        if (currentDestination == Blue) {
-            
-            stop();
-            delay(1000);
-            frontLeft.backward(30, 100);
-            frontRight.forward(30, 100);
-            backLeft.forward(30, 100);
-            backRight.backward(30, 100);
-            delay(1000);
-            stop();
-
-            while (blueSensorB.getValue()) backward(0, 100);
-
-            forward(1, 150);
-        } else {
-            while (blueSensorF.getValue()) forward(0, 100);
-
-            backward(2, 150);
-        }   
+        backward(2, 150);  
     }
 
     stop();
@@ -708,87 +701,119 @@ void Robot::followLineUntilGap() {
 }
 
 void Robot::followHorizontalRight() {
-    while (!sensorFRR.getValue()) {
+    while (!sensorBLL.getValue()) {
         if (sensorBR.getValue() and sensorBL.getValue())
-            backward();
+            backward(0, 200);
         else if (sensorBR.getValue())
             smoothRotateRight();
         else if (sensorBL.getValue())
             smoothRotateLeft();
         else 
-            backward();
+            backward(0, 200);
     }
 
     delay(100);
 
-    while (sensorFRR.getValue()) {
+    while (sensorBLL.getValue()) {
         if (sensorBR.getValue() and sensorBL.getValue())
-            backward();
+            backward(0, 200);
         else if (sensorBR.getValue())
             smoothRotateLeft();
         else if (sensorBL.getValue())
             smoothRotateRight();
         else 
-            backward();
+            backward(0, 200);
     }
 
     delay(100);
 
+    backward(1, 200);
     stop();
 
     /*
-    while (!sensorFRR.getValue()) {
-        if (sensorFL.getValue() and sensorBR.getValue())
-            rotateLeft();
-        else if (sensorFR.getValue() and sensorBL.getValue())
-            rotateRight();
-        else if (sensorFL.getValue() and sensorBL.getValue())
-            moveLeftBackward();
-        else if (sensorFR.getValue() and sensorBR.getValue())
-            moveRightBackward();
-        else
-            backward();
-    }
+        // Sem sensor BLL
+        while (!sensorFRR.getValue()) {
+            if (sensorBR.getValue() and sensorBL.getValue())
+                backward();
+            else if (sensorBR.getValue())
+                smoothRotateRight();
+            else if (sensorBL.getValue())
+                smoothRotateLeft();
+            else 
+                backward();
+        }
 
-    while (sensorFRR.getValue()) {
-        if (sensorFL.getValue() and sensorBR.getValue())
-            rotateLeft();
-        else if (sensorFR.getValue() and sensorBL.getValue())
-            rotateRight();
-        else if (sensorFL.getValue() and sensorBL.getValue())
-            moveLeftBackward();
-        else if (sensorFR.getValue() and sensorBR.getValue())
-            moveRightBackward();
-        else
-            backward();
-    }
+        delay(100);
 
-    backward(1, 200);
+        while (sensorFRR.getValue()) {
+            if (sensorBR.getValue() and sensorBL.getValue())
+                backward();
+            else if (sensorBR.getValue())
+                smoothRotateLeft();
+            else if (sensorBL.getValue())
+                smoothRotateRight();
+            else 
+                backward();
+        }
+
+        delay(100);
+    */
+
+    /*
+        while (!sensorFRR.getValue()) {
+            if (sensorFL.getValue() and sensorBR.getValue())
+                rotateLeft();
+            else if (sensorFR.getValue() and sensorBL.getValue())
+                rotateRight();
+            else if (sensorFL.getValue() and sensorBL.getValue())
+                moveLeftBackward();
+            else if (sensorFR.getValue() and sensorBR.getValue())
+                moveRightBackward();
+            else
+                backward();
+        }
+
+        while (sensorFRR.getValue()) {
+            if (sensorFL.getValue() and sensorBR.getValue())
+                rotateLeft();
+            else if (sensorFR.getValue() and sensorBL.getValue())
+                rotateRight();
+            else if (sensorFL.getValue() and sensorBL.getValue())
+                moveLeftBackward();
+            else if (sensorFR.getValue() and sensorBR.getValue())
+                moveRightBackward();
+            else
+                backward();
+        }
+
+        backward(1, 200);
     */
 }
 
 void Robot::followHorizontalLeft() {
     while (!sensorFRR.getValue()) {
         if (sensorFR.getValue() and sensorFL.getValue())
-            forward();
+            forward(0, 200);
         else if (sensorFR.getValue())
             smoothRotateLeft();
         else if (sensorFL.getValue())
             smoothRotateRight();
         else 
-            forward();
+            forward(0, 200);
     }
+
+    delay(100);
 
     if (currentZone != 0) {
         while (sensorFRR.getValue()) {
             if (sensorFR.getValue() and sensorFL.getValue())
-                forward();
+                forward(0, 200);
             else if (sensorFR.getValue())
                 smoothRotateLeft();
             else if (sensorFL.getValue())
                 smoothRotateRight();
             else
-                forward(); 
+                forward(0, 200); 
         }
     }
 
@@ -836,7 +861,7 @@ void Robot::goToContainerZone() {
 void Robot::goToBlueShip() {
     if (arena.side) {
         if (arena.blueShip.currentPile == 0) {
-            // Primeira pilha
+            // Primeira pilha no navio
             if (currentZone == 0) {
                 forward(2, 200);
                 rotateLeft(16);
@@ -852,13 +877,43 @@ void Robot::goToBlueShip() {
 
                 sidewaysRight(1, 200);
 
-                followHorizontalLeft();
+                while (!sensorBLL.getValue()) {
+                    if (sensorFR.getValue() and sensorFL.getValue())
+                        forward(0, 200);
+                    else if (sensorFR.getValue())
+                        smoothRotateLeft();
+                    else if (sensorFL.getValue())
+                        smoothRotateRight();
+                    else 
+                        forward(0, 200);
+                }
 
-                backward(4, 200);
+                while (sensorBLL.getValue()) {
+                    if (sensorFR.getValue() and sensorFL.getValue())
+                        forward(0, 200);
+                    else if (sensorFR.getValue())
+                        smoothRotateLeft();
+                    else if (sensorFL.getValue())
+                        smoothRotateRight();
+                    else 
+                        forward(0, 200);
+                }
+
+                forward(5, 200);
 
                 while (!sensorFRR.getValue()) sidewaysLeft(0, 200);
-
                 while (sensorFRR.getValue()) sidewaysLeft(0, 200);
+
+
+                /*
+                    followHorizontalLeft();
+
+                    backward(4, 200);
+
+                    while (!sensorFRR.getValue()) sidewaysLeft(0, 200);
+
+                    while (sensorFRR.getValue()) sidewaysLeft(0, 200);
+                */
 
                 alignWithShip();
 
@@ -874,26 +929,12 @@ void Robot::goToBlueShip() {
                         sidewaysRight(0, 180);
                 }
 
-                // while (!sensorBR.getValue()) {
-                //     if(sensorFR.getValue() and !sensorBR.getValue())
-                //         rotateLeft(0, 200);
-                //     else if (sensorBR.getValue() and !sensorFR.getValue())
-                //         rotateRight(0, 200);
-                //     else 
-                //         sidewaysRight(0, 200);
-                // }
-                // sidewaysRight(1, 200);
-
-
                 followHorizontalRight();
 
-                backward(3, 200);
+                forward(6, 200);
 
                 while (!sensorFRR.getValue()) sidewaysLeft(0, 180);
-
                 while (sensorFRR.getValue()) sidewaysLeft(0, 180);
-
-                sidewaysLeft(3, 180);
 
                 alignWithShip();
 
@@ -921,18 +962,16 @@ void Robot::goToBlueShip() {
 
                 followHorizontalRight();
 
-                backward(3, 200);
+                forward(6, 200);
 
                 while (!sensorFRR.getValue()) sidewaysLeft(0, 180);
-
                 while (sensorFRR.getValue()) sidewaysLeft(0, 180);
-
-                sidewaysLeft(3, 180);
 
                 alignWithShip();
             }
+
         } else {
-            // Segunda pilha 
+            // Segunda pilha no navio
             if (currentZone == 0) {
                 forward(3, 200);
 
@@ -997,7 +1036,7 @@ void Robot::goToGreenShip() {
               false ==> blue | green
     */
     if (arena.side) {
-        // Primeira pilha
+        // Primeira pilha no navio
         if (arena.greenShip.currentPile == 0) {
             if (currentZone == 0) {
                 rotateLeft(16);
@@ -1082,7 +1121,7 @@ void Robot::goToGreenShip() {
                 alignWithShip();
             }
         } else {
-            // Segunda pilha 
+            // Segunda pilha no navio
             if (currentZone == 0) {
                 forward(3, 200);
 
@@ -1129,6 +1168,7 @@ void Robot::goToGreenShip() {
 
             }
         }
+
     } else {
         rotateLeft(35);
         followHorizontalRight();
@@ -1593,17 +1633,9 @@ void Robot::testMoviments() {
 }
 
 void Robot::testClaw() {
-    claw.extend();
+    
+    claw.goToContainer(6.04);
 
-    delay(2000);
-
-    claw.ajustContainer();
-
-    delay(2000);
-
-    claw.retract();
-
-    delay(2000);
     // catchContainer(1);
     // delay(1000);
     // releaseContainer(Green);

@@ -70,7 +70,7 @@ void Claw::goHome() {
 }
 
 void Claw::goToContainer(float container) {
-    if (container > 5.5) return;
+    if (container > 7.5) return;
 
     if (container > height)
         digitalWrite(dirPin, HIGH);

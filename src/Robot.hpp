@@ -19,7 +19,7 @@ class Robot {
 		// Sensores Frontais
 		LineSensor sensorFL, sensorFR;
 		// Sensores Frontais mais externos
-		LineSensor sensorFLL, sensorFRR;
+		LineSensor sensorFLL, sensorFRR, sensorBLL;
 		// Sensores Traseiros
 		LineSensor sensorBL, sensorBR;
 		// Sensores Laterais
@@ -35,9 +35,9 @@ class Robot {
 		ColorSensorAnalog colorSensor{33, 0};
 
 		Arena arena;
-		uint8_t currentZone = 1;
+		uint8_t currentZone = 2;
 
-		COLOR currentDestination = Blue;
+		COLOR currentDestination = Green;
 
 	public:
 		Robot();

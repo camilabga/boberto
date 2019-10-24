@@ -32,7 +32,11 @@ void setup() {
     // 
     // }
 
+    // boberto.backwardUntilBlackLine();
+    // boberto.goToGreenShip();
+
     boberto.alignWithShip();
+
 }
 
 void loop() {
