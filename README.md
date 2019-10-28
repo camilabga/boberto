@@ -1,4 +1,4 @@
-# Boberto: 2019 IEEE Open Robot Competition
+# Boberto: 2019 IEEE Open Competition Robot
 
 Boberto was a robot developed by six students of LAR-UFRN (https://github.com/lar-ect). The competition consisted in proposing, developing and manufacturing a robot able to solve a portuary challenge.
 
