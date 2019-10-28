@@ -2,6 +2,7 @@
 #define DISTANCESENSOR_HPP
 
 #include <Arduino.h>
+// #include "./VL53L0X/Adafruit_VL53L0X.h"
 #include "VL53L0X.h"
 
 class DistanceSensor {
@@ -16,7 +17,7 @@ class DistanceSensor {
         void begin();
 
         // Realiza uma leitura
-        int getDistance();
+        uint16_t getDistance();
         // Detecta uma mudança brusca nos valores lidos
         bool getContainerGap(); 
 };

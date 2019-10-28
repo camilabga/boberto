@@ -14,14 +14,15 @@ class Claw {
         uint8_t motorPin1;
         uint8_t motorPin2;
 
-        // Pino do fim de curso
+        // Pino do fins de curso
         uint8_t endStopPin;
+        uint8_t endStopPin2;
 
         // Altura atual da garra
         float height;
 
     public:
-        Claw(uint8_t _setPin, uint8_t _dirPin, uint8_t _enable, uint8_t _motorPin1, uint8_t _motorPin2, uint8_t _endStopPin);
+        Claw(uint8_t _setPin, uint8_t _dirPin, uint8_t _enable, uint8_t _motorPin1, uint8_t _motorPin2, uint8_t _endStopPin, uint8_t _endStopPin2);
         ~Claw();
 
         void goUp();
