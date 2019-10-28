@@ -24,28 +24,28 @@ The students that composed the team of LAR-UFRN were:
 * Wendell Alves (https://github.com/wendellalves)
 
 
-## Utilizando [PlatformIO Cli](http://docs.platformio.org/en/latest/)
+## Using [PlatformIO Cli](http://docs.platformio.org/en/latest/)
 
-* Instalação
+* Installing
 
 ```console
 user@computer:~$ sudo python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/develop/scripts/get-platformio.py)"
 ```
 
-* Upload de código
+* Uploading the code
 
 ```console
 user@computer:~/IEEE-2019 $ pio run -t upload --upload-port=/dev/ttyUSB0
 ```
 
-## Esquemático do Arduino Mega
+## Arduino Mega Schema
 
 ![arduinoMega](./readme_imgs/arduinoMega.png)
 
 
-## Pinout do Boberto
+## Boberto Pinout
 
-### Motor de Passo
+### Stepper motor
 
 | Port      | Pin     |
 |:--------: |:-------:|
@@ -53,7 +53,7 @@ user@computer:~/IEEE-2019 $ pio run -t upload --upload-port=/dev/ttyUSB0
 | Step      | 50      |
 | Enable    | 13      |
 
-### Ponte H1
+### Bridge H1
 
 | Port      | Pin     |
 |:--------: |:-------:|
@@ -63,7 +63,7 @@ user@computer:~/IEEE-2019 $ pio run -t upload --upload-port=/dev/ttyUSB0
 | Motor 2.2 | 10      |
 
 
-### Ponte H2
+### Bridge H2
 
 | Port         | Pin     |
 |:-----------: |:-------:|
@@ -72,7 +72,7 @@ user@computer:~/IEEE-2019 $ pio run -t upload --upload-port=/dev/ttyUSB0
 | Back Right 2 | 6       |
 | Back Right 1 | 5       |
 
-### Ponte H3
+### Bridge H3
 
 | Port          | Pin     |
 |:-------------:|:-------:|
