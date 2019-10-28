@@ -430,18 +430,7 @@ void Robot::alignWithShip() {
             rotateRight(0, 180);
         else if (!blueSensorF.getValue() and !blueSensorB.getValue())
             sidewaysLeft(0, 180);
-    }
-
-    // stop();
-    // delay(1000);
-    // // sidewaysLeft
-    // frontLeft.backward(50, 180);
-    // frontRight.forward(50, 180);
-    // backLeft.forward(50, 180);
-    // backRight.backward(50, 180);
-    // delay(1000);
-    // stop();
-    
+    } 
 
     sidewaysRight(1, 100);
     while (!blueSensorF.getValue() or !blueSensorB.getValue()) {
@@ -473,8 +462,6 @@ void Robot::alignWithShip() {
         } else 
             while (!containerSensorB.getValue()) forward(0, 150);   
         
-        
-        Serial.println("Vou dar o backward");
         stop();
         frontLeft.backward(25, 150);
         frontRight.backward(25, 150);
@@ -585,68 +572,63 @@ void Robot::followLineUntilContainer() {
 
     // Se a pilha estiver travada ou a primeira pilha estiver vazia
     if (arena.containers[currentZone].isLocked()) {
-        /*
         Serial.println("Vou para a segunda pilha e a primeria esta travada");
+        /*
+            // forward(1, 150);
 
-        // forward(1, 150);
+            Serial.println("Vou detectar o container");
+            while (!containerSensorB.getValue()) {
 
-        Serial.println("Vou detectar o container");
-        while (!containerSensorB.getValue()) {
+                Serial.print("1 containerSensorB: ");
+                Serial.println(containerSensorB.getValue());
 
-            Serial.print("1 containerSensorB: ");
-            Serial.println(containerSensorB.getValue());
+                if (sensorFL.getValue())
+                    rotateLeft(0, 150);
+                else if (sensorFR.getValue())
+                    rotateRight(0, 150);
+                else
+                    forward(0, 150);
+            }
 
-            if (sensorFL.getValue())
-                rotateLeft(0, 150);
-            else if (sensorFR.getValue())
-                rotateRight(0, 150);
-            else
-                forward(0, 150);
-        }
+            Serial.println("Vou desdetectar o container");
+            while (containerSensorB.getValue()) {
 
-        Serial.println("Vou desdetectar o container");
-        while (containerSensorB.getValue()) {
+                Serial.print("2 containerSensorB: ");
+                Serial.println(containerSensorB.getValue());
 
-            Serial.print("2 containerSensorB: ");
-            Serial.println(containerSensorB.getValue());
+                if (sensorFL.getValue())
+                    rotateLeft(0, 150);
+                else if (sensorFR.getValue())
+                    rotateRight(0, 150);
+                else
+                    forward(0, 100);
+            }
 
-            if (sensorFL.getValue())
-                rotateLeft(0, 150);
-            else if (sensorFR.getValue())
-                rotateRight(0, 150);
-            else
-                forward(0, 100);
-        }
+            // Serial.println("Vou detectar o container");
+            // while (!containerSensorB.getValue()) {
+                if (sensorFL.getValue())
+                    rotateLeft(0, 150);
+                else if (sensorFR.getValue())
+                    rotateRight(0, 150);
+                else
+                    forward(0, 100);
+            // }
+            
+            stop();
+            
+            // Serial.println("Vou sair do container");
+            // while (containerSensorB.getValue()) {
+                if (sensorFL.getValue())
+                    rotateLeft(0, 150);
+                else if (sensorFR.getValue())
+                    rotateRight(0, 150);
+                else
+                    forward(0, 150);
+            // }
 
-        // Serial.println("Vou detectar o container");
-        // while (!containerSensorB.getValue()) {
-            if (sensorFL.getValue())
-                rotateLeft(0, 150);
-            else if (sensorFR.getValue())
-                rotateRight(0, 150);
-            else
-                forward(0, 100);
-        // }
-        
-        stop();
-        
-        // Serial.println("Vou sair do container");
-        // while (containerSensorB.getValue()) {
-            if (sensorFL.getValue())
-                rotateLeft(0, 150);
-            else if (sensorFR.getValue())
-                rotateRight(0, 150);
-            else
-                forward(0, 150);
-        // }
-
-        // stop();
-
+            // stop();
         */
-        
-    } else if (!arena.containers[currentZone].clawSide[0]) {
-        Serial.println("Vou para a segunda pilha e primeira esta vazia");      
-        
+
         while (!containerSensorB.getValue()) {
             if (sensorFL.getValue())
                 rotateLeft(0, 150);
@@ -655,8 +637,7 @@ void Robot::followLineUntilContainer() {
             else
                 forward(0, 150);
         }
-        
-        Serial.println("Entrei no container");
+
         forward(2, 150);
 
         while (containerSensorB.getValue()) {
@@ -676,6 +657,54 @@ void Robot::followLineUntilContainer() {
             else
                 forward(0, 150);
         }
+        
+        stop();
+        frontLeft.forward(75, 150);
+        frontRight.forward(75, 150);
+        backLeft.forward(75, 150);
+        backRight.forward(75, 150);
+        delay(150);
+        stop();
+        
+    } else if (!arena.containers[currentZone].clawSide[0]) {
+        Serial.println("Vou para a segunda pilha e primeira esta vazia");      
+        
+        while (!containerSensorB.getValue()) {
+            if (sensorFL.getValue())
+                rotateLeft(0, 150);
+            else if (sensorFR.getValue())
+                rotateRight(0, 150);
+            else
+                forward(0, 150);
+        }
+        
+        forward(2, 150);
+
+        while (containerSensorB.getValue()) {
+            if (sensorFL.getValue())
+                rotateLeft(0, 150);
+            else if (sensorFR.getValue())
+                rotateRight(0, 150);
+            else
+                forward(0, 150);
+        }
+
+        while (!containerSensorB.getValue()) {
+            if (sensorFL.getValue())
+                rotateLeft(0, 150);
+            else if (sensorFR.getValue())
+                rotateRight(0, 150);
+            else
+                forward(0, 150);
+        }
+
+        stop();
+        frontLeft.forward(75, 150);
+        frontRight.forward(75, 150);
+        backLeft.forward(75, 150);
+        backRight.forward(75, 150);
+        delay(150);
+        stop();
 
         Serial.println("Sai do container");
     } else {
@@ -823,13 +852,13 @@ void Robot::followHorizontalRight() {
 void Robot::followHorizontalLeft() {
     while (!sensorFRR.getValue()) {
         if (sensorFR.getValue() and sensorFL.getValue())
-            forward(0, 200);
+            forward();
         else if (sensorFR.getValue())
             smoothRotateLeft();
         else if (sensorFL.getValue())
             smoothRotateRight();
         else 
-            forward(0, 200);
+            forward();
     }
 
     delay(100);
@@ -837,13 +866,13 @@ void Robot::followHorizontalLeft() {
     if (currentZone != 0) {
         while (sensorFRR.getValue()) {
             if (sensorFR.getValue() and sensorFL.getValue())
-                forward(0, 200);
+                forward();
             else if (sensorFR.getValue())
                 smoothRotateLeft();
             else if (sensorFL.getValue())
                 smoothRotateRight();
             else
-                forward(0, 200); 
+                forward(); 
         }
     }
 
@@ -992,7 +1021,7 @@ void Robot::goToBlueShip() {
 
                 followHorizontalRight();
 
-                forward(7, 200);
+                forward(9, 200);
 
                 while (!sensorFRR.getValue()) sidewaysLeft(0, 180);
                 while (sensorFRR.getValue()) sidewaysLeft(0, 180);
@@ -1210,40 +1239,30 @@ void Robot::goToGreenShip() {
 
 void Robot::goToNextPile() {
     
-    // Serial.println("\ngoToNextPile");
-
-    // Serial.print("currentZone: ");
-    // Serial.println(currentZone);
-
-    // Serial.print("locked: ");
-    // Serial.print(arena.containers[currentZone].locked[0]);
-    // Serial.print(" ");
-    // Serial.println(arena.containers[currentZone].locked[1]);
-
-    // Serial.print("clawSide: ");
-    // Serial.print(arena.containers[currentZone].clawSide[0]);
-    // Serial.print(" ");
-    // Serial.println(arena.containers[currentZone].clawSide[1]);
-
-    // Serial.print("getCurrentPile: ");
-    // Serial.println(arena.containers[currentZone].getCurrentPile());
-
     // Se estiver na pilha 1
     if (arena.containers[currentZone].getCurrentPile()) {
-        Serial.println("Estou na pilha 1");
+        Serial.println("goToNextPile pilha 1");
+        Serial.print("Estou na pilha: ");
+        Serial.println(currentZone);
+
         // Pilha 1
-        Serial.println("backwardUntilBlackLine in goToNextPile");
         backwardUntilBlackLine();
         forward(2, 200);
 
         if (currentZone == 0) {
+
+            Serial.println("Vou para a pilha 0");
             
             if (!arena.containers[1].isEmpty(clawSide)) {
+
                 while (!sensorFL.getValue()) sidewaysLeft();
                 while (sensorFL.getValue()) sidewaysLeft();
 
                 currentZone = 1;
+
             } else if (!arena.containers[2].isEmpty(clawSide)){
+                forward(1, 200);
+                sidewaysLeft(1, 200);
 
                 while (!sensorFL.getValue()) sidewaysLeft();
                 while (sensorFL.getValue()) sidewaysLeft();
@@ -1261,15 +1280,33 @@ void Robot::goToNextPile() {
         } else if (currentZone == 1) {
 
             if (!arena.containers[2].isEmpty(clawSide)) {
+                forward(1, 200);
+                
+                sidewaysRight(2, 200);
+                while (!sensorFL.getValue() or !sensorFRR.getValue()) {
+                    if (sensorFRR.getValue())
+                        rotateLeft(0, 180);
+                    else if (sensorFL.getValue())
+                        rotateRight(0, 180);
+                    else
+                        backward(0, 180);    
+                }
+                forward(2, 200);
+
                 while (!sensorFL.getValue()) sidewaysLeft();
                 while (sensorFL.getValue()) sidewaysLeft();
 
                 currentZone = 2;
+
             } else if (!arena.containers[0].isEmpty(clawSide)) {
+                forward(1, 200);
+                sidewaysRight(2, 200);
+
                 while (!sensorFR.getValue()) sidewaysRight();
                 while (sensorFR.getValue()) sidewaysRight();
 
                 currentZone = 0;
+                
             } else 
                 stop();
 
@@ -1278,50 +1315,50 @@ void Robot::goToNextPile() {
             
             if (!arena.containers[1].isEmpty(clawSide)) {
                 forward(1, 200);
-                while (!sensorFR.getValue()) sidewaysRight();
-                while (sensorFR.getValue()) sidewaysRight(); 
 
+                sidewaysRight(2, 200);
+                while (!sensorFL.getValue() or !sensorFRR.getValue()) {
+                    if (sensorFRR.getValue())
+                        rotateLeft(0, 180);
+                    else if (sensorFL.getValue())
+                        rotateRight(0, 180);
+                    else
+                        backward(0, 180);    
+                }
+                forward(2, 200);
+
+                while (!sensorFR.getValue()) sidewaysRight();
+                while (sensorFR.getValue()) sidewaysRight();
                 
                 currentZone = 1;
 
             } else {
+                forward(1, 200);
+
                 while (!sensorFR.getValue()) sidewaysRight();
-                while (sensorFR.getValue()) sidewaysRight();   
+                while (sensorFR.getValue()) sidewaysRight();
              
                 forward(1, 200);
-                sidewaysRight(1, 200);
+                sidewaysRight(2, 200);
+                while (!sensorFL.getValue() or !sensorFRR.getValue()) {
+                    if (sensorFRR.getValue())
+                        rotateLeft(0, 200);
+                    else if (sensorFL.getValue())
+                        rotateRight(0, 200);
+                    else
+                        backward(0, 200);    
+                }
+                forward(2, 200);
 
                 while (!sensorFR.getValue()) sidewaysRight();
                 while (sensorFR.getValue()) sidewaysRight();
 
                 currentZone = 0;
             }
+
         }
 
-    } else {
-        Serial.println("Estou na pilha 0");
-        // Pilha 0
-        while (containerSensorB.getValue()) {
-            if (sensorFL.getValue())
-                rotateLeft(0, 150);
-            else if (sensorFR.getValue())
-                rotateRight(0, 150);
-            else
-                forward(0, 150);
-        }
-
-        while (!containerSensorB.getValue()) {
-            if (sensorFL.getValue())
-                rotateLeft(0, 150);
-            else if (sensorFR.getValue())
-                rotateRight(0, 150);
-            else
-                forward(0, 150);
-        }
-        
-        // backward(1, 150);
-        stop();
-    }
+    } 
 
     followLineUntilContainer();
     checkColor();
@@ -1400,8 +1437,7 @@ void Robot::thereAndBackAgain() {
             while (!sensorFL.getValue() or !sensorFR.getValue()) forward();
             while (sensorFL.getValue() and sensorFR.getValue()) forward();
 
-            forward(1, 200);
-
+            forward(2, 200);
 
             if (!arena.containers[2].isEmpty(clawSide)) {
                 currentZone = 2;
@@ -1412,16 +1448,7 @@ void Robot::thereAndBackAgain() {
             } else if (!arena.containers[0].isEmpty(clawSide)) {
                 currentZone = 0;
                 alignBetweenContainers();
-            }
-
-            // if (arena.containers[currentZone].isEmpty(clawSide)) {
-            //     currentZone = 0;
-            //     alignBetweenContainers();
-            // } else if (currentZone != 0){
-            //     currentZone = 2;
-            //     alignBetweenContainers();
-            // } else 
-            //     alignBetweenContainers();          
+            }      
 
             stop();
         }
@@ -1435,17 +1462,9 @@ void Robot::thereAndBackAgain() {
             rotateRight(15);
             forward(2, 200);
 
-            Serial.print("Zona 0: ");
-            Serial.println(arena.containers[0].isEmpty(clawSide));
-
-            Serial.print("Zona 1: ");
-            Serial.println(arena.containers[1].isEmpty(clawSide));
-
-            Serial.print("Zona 2: ");
-            Serial.println(arena.containers[2].isEmpty(clawSide));
-
-
             if (!arena.containers[1].isEmpty(clawSide)) {
+
+                forward(1, 200);
               
                 while (!sensorFL.getValue()) sidewaysLeft();
                 while (sensorFL.getValue()) sidewaysLeft();
@@ -1455,18 +1474,33 @@ void Robot::thereAndBackAgain() {
                 currentZone = 1;
 
             } else if (!arena.containers[0].isEmpty(clawSide)) {
-                while (!sensorFR.getValue()) sidewaysLeft();
-                while (sensorFR.getValue()) sidewaysLeft();
+                
+                forward(1, 200);
+
+                while (!sensorFR.getValue()) sidewaysRight();
+                while (sensorFR.getValue()) sidewaysRight();
 
                 forward(1, 200);
 
                 currentZone = 0;
 
             } else if (!arena.containers[2].isEmpty(clawSide)) {
+                
+                forward(1, 200);
+
                 while (!sensorFL.getValue()) sidewaysLeft();
                 while (sensorFL.getValue()) sidewaysLeft();
 
-                forward(1, 200);
+                sidewaysLeft(2, 200);
+                while (!sensorFL.getValue() or !sensorFRR.getValue()) {
+                    if (sensorFRR.getValue())
+                        rotateLeft(0, 200);
+                    else if (sensorFL.getValue())
+                        rotateRight(0, 200);
+                    else
+                        backward(0, 200);    
+                }
+                forward(2, 200);
 
                 while (!sensorFL.getValue()) sidewaysLeft();
                 while (sensorFL.getValue()) sidewaysLeft();
@@ -1505,7 +1539,11 @@ void Robot::thereAndBackAgain() {
             forward(2, 200);
 
             if (!arena.containers[2].isEmpty(clawSide)) {
-                
+
+                Serial.println("Vou para a zona 2");
+
+                forward(1, 200);
+
                 while (!sensorFR.getValue()) sidewaysRight();
                 while (sensorFR.getValue()) sidewaysRight();
 
@@ -1515,10 +1553,23 @@ void Robot::thereAndBackAgain() {
 
             } else if (!arena.containers[1].isEmpty(clawSide)) {
 
+                Serial.println("Vou para a zona 1");
+
+                forward(1, 200);
+        
                 while (!sensorFR.getValue()) sidewaysRight();
                 while (sensorFR.getValue()) sidewaysRight();
 
-                forward(1, 200);
+                sidewaysRight(2, 200);
+                while (!sensorFL.getValue() or !sensorFRR.getValue()) {
+                    if (sensorFRR.getValue())
+                        rotateLeft(0, 150);
+                    else if (sensorFL.getValue())
+                        rotateRight(0, 150);
+                    else
+                        backward(0, 150);    
+                }
+                forward(2, 200);
 
                 while (!sensorFR.getValue()) sidewaysRight();
                 while (sensorFR.getValue()) sidewaysRight();
@@ -1529,15 +1580,38 @@ void Robot::thereAndBackAgain() {
 
             } else if (!arena.containers[0].isEmpty(clawSide)) {
 
+                Serial.println("Vou para a zona 0");
+
+                forward(1, 200);
+                
                 while (!sensorFR.getValue()) sidewaysRight();
                 while (sensorFR.getValue()) sidewaysRight();
 
-                forward(1, 200);
+                sidewaysRight(2, 200);
+                while (!sensorFL.getValue() or !sensorFRR.getValue()) {
+                    if (sensorFRR.getValue())
+                        rotateLeft(0, 150);
+                    else if (sensorFL.getValue())
+                        rotateRight(0, 150);
+                    else
+                        backward(0, 150);    
+                }
+                forward(2, 200);
 
                 while (!sensorFR.getValue()) sidewaysRight();
                 while (sensorFR.getValue()) sidewaysRight();
 
-                forward(1, 200);
+                
+                sidewaysRight(2, 200);
+                while (!sensorFL.getValue() or !sensorFRR.getValue()) {
+                    if (sensorFRR.getValue())
+                        rotateLeft(0, 150);
+                    else if (sensorFL.getValue())
+                        rotateRight(0, 150);
+                    else
+                        backward(0, 150);    
+                }
+                forward(2, 200);
 
                 while (!sensorFR.getValue()) sidewaysRight();
                 while (sensorFR.getValue()) sidewaysRight();
