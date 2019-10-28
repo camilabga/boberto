@@ -11,9 +11,15 @@ Boberto was able to:
 4. If it consisted in a Red container, ignore it and keep moving to the next pile;
 5. Come back and do it all over again;
 
-The official document of the competition can be found bellow:
+The official document of the competition can be found [here](http://www.cbrobotica.org/wp-content/uploads/OPEN2018_2019_en.pdf).
 
-[Rules](http://www.cbrobotica.org/wp-content/uploads/OPEN2018_2019_en.pdf)
+The students that composed the team of LAR-UFRN were:
+* Álvaro Portela (https://github.com/alvaropfn)
+* Camila Barbosa (https://github.com/camilabga)
+* Gabriel Vantuil (https://github.com/GabrielVantuil)
+* Luiz Felipe Santana (https://github.com/LuizFelipeLemon)
+* Richardson Santiago (https://github.com/vanluwin)
+* Wendell Alves (https://github.com/wendellalves)
 
 ## Pinout do Boberto
 
@@ -76,8 +82,6 @@ user@computer:~$ sudo python -c "$(curl -fsSL https://raw.githubusercontent.com/
 user@computer:~/IEEE-2019 $ pio run -t upload --upload-port=/dev/ttyUSB0
 ```
 
-## Esquemático das coisas
+## Esquemático do Arduino Mega
 
 ![arduinoMega](./readme_imgs/arduinoMega.png)
-
-![rasp](./readme_imgs/raspberry.jpeg)
