@@ -2,7 +2,7 @@
 
 Boberto was a robot developed by six students of LAR-UFRN (https://github.com/lar-ect). The competition consisted in proposing, developing and manufacturing a robot able to solve a portuary challenge.
 
-2019 IEEE Open was a part of LARC (Latin American Robotics Competition) and happened in Rio Grande, RS, Brazil. The robot described here accomplished the second place, but is also currently the double Brazilian champion in the category.
+2019 IEEE Open was a part of LARC (Latin American Robotics Competition) and happened in Rio Grande, RS, Brazil. The robot described here accomplished the second place, but is also currently the two-time Brazilian champion in the category.
 
 The main goal was deposit as much containers as possible in a enviroment with a simulation of two ships (one blue and other green) and one train (red). Each container had a different pontuation. The team with the greatest score would win the challenge.
 
