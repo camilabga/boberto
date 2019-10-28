@@ -21,6 +21,26 @@ The students that composed the team of LAR-UFRN were:
 * Richardson Santiago (https://github.com/vanluwin)
 * Wendell Alves (https://github.com/wendellalves)
 
+
+## Utilizando [PlatformIO Cli](http://docs.platformio.org/en/latest/)
+
+* Instalação
+
+```console
+user@computer:~$ sudo python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/develop/scripts/get-platformio.py)"
+```
+
+* Upload de código
+
+```console
+user@computer:~/IEEE-2019 $ pio run -t upload --upload-port=/dev/ttyUSB0
+```
+
+## Esquemático do Arduino Mega
+
+![arduinoMega](./readme_imgs/arduinoMega.png)
+
+
 ## Pinout do Boberto
 
 ### Motor de Passo
@@ -67,21 +87,3 @@ The students that composed the team of LAR-UFRN were:
 | Back Right | 2       |
 | Front Right| 18      |
 | Front Left | 19      |
-
-## Utilizando [PlatformIO Cli](http://docs.platformio.org/en/latest/)
-
-* Instalação
-
-```console
-user@computer:~$ sudo python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/develop/scripts/get-platformio.py)"
-```
-
-* Upload de código
-
-```console
-user@computer:~/IEEE-2019 $ pio run -t upload --upload-port=/dev/ttyUSB0
-```
-
-## Esquemático do Arduino Mega
-
-![arduinoMega](./readme_imgs/arduinoMega.png)
