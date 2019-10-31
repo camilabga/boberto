@@ -53,7 +53,7 @@ user@computer:~/IEEE-2019 $ pio run -t upload --upload-port=/dev/ttyUSB0
 | Step      | 50      |
 | Enable    | 13      |
 
-### Bridge H1
+### H Bridge 1
 
 | Port      | Pin     |
 |:--------: |:-------:|
@@ -63,7 +63,7 @@ user@computer:~/IEEE-2019 $ pio run -t upload --upload-port=/dev/ttyUSB0
 | Motor 2.2 | 10      |
 
 
-### Bridge H2
+### H Bridge 2
 
 | Port         | Pin     |
 |:-----------: |:-------:|
@@ -72,7 +72,7 @@ user@computer:~/IEEE-2019 $ pio run -t upload --upload-port=/dev/ttyUSB0
 | Back Right 2 | 6       |
 | Back Right 1 | 5       |
 
-### Bridge H3
+### H Bridge 3
 
 | Port          | Pin     |
 |:-------------:|:-------:|
